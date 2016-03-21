@@ -1,0 +1,21 @@
+{
+  "name": "dotons",
+  "version": "0.0.1",
+  "description": "dotons",
+  "main": "index.js",
+  "scripts": {
+    "start": "index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sk222sw/dotons.git"
+  },
+  "keywords": [],
+  "author": "Sonny Kjellberg, Alexandre Driaguine",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/sk222sw/dotons/issues"
+  },
+  "homepage": "https://github.com/sk222sw/dotons#readme"
+}
