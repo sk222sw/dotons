@@ -1,2 +1,8 @@
+# c9.io folder
 .c9
+
+# folder created by webstorm
+.idea
+
+# use npm install instead
 node_modules
