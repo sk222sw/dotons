@@ -6,3 +6,5 @@
 
 # use npm install instead
 node_modules
+
+npm-debug.log

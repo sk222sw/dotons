@@ -4,7 +4,7 @@
   "description": "dotons",
   "main": "index.js",
   "scripts": {
-    "start": "index.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,5 +17,15 @@
   "bugs": {
     "url": "https://github.com/sk222sw/dotons/issues"
   },
-  "homepage": "https://github.com/sk222sw/dotons#readme"
+  "homepage": "https://github.com/sk222sw/dotons#readme",
+  "dependencies": {
+    "express": "^4.13.4",
+    "http-proxy": "^1.13.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.7.2",
+    "babel-loader": "^6.2.4",
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.14.1"
+  }
 }
