@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 var httpProxy = require('http-proxy');
 
-var proxy = httpProxy.createProxyServer();
+const proxy = httpProxy.createProxyServer();
 const app = express();
 
 const isProduction = process.env.NODE_ENV === "production";
