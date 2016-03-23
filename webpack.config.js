@@ -20,7 +20,7 @@ var config = {
     loaders: [
       {
         test: /\.js$/,
-        loader: "babel",
+        loaders: ["babel", "eslint-loader"],
         exclude: [nodeModulesPath]
       },
       {

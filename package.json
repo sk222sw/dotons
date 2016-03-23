@@ -7,6 +7,7 @@
     "start": "node server.js",
     "deploy-windows": "SET NODE_ENV=production & node server.js",
     "deploy": "NODE_ENV=production node server.js",
+    "lint": "eslint . --ext .js --ext .jsx || true",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,7 +16,7 @@
   },
   "keywords": [],
   "author": "Sonny Kjellberg, Alexandre Driaguine",
-  "license": "",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/sk222sw/dotons/issues"
   },
@@ -27,6 +28,9 @@
   "devDependencies": {
     "babel-core": "^6.7.2",
     "babel-loader": "^6.2.4",
+    "eslint": "^2.4.0",
+    "eslint-loader": "^1.3.0",
+    "eslint-plugin-react": "^4.2.3",
     "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1"
   }
