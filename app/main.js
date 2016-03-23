@@ -1,1 +1,5 @@
-console.log("main");
+function hej() {
+  return "hej";
+}
+
+hej();

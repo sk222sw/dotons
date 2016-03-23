@@ -9,7 +9,7 @@ const isProduction = process.env.NODE_ENV === "production";
 const port = isProduction ? process.env.PORT : 3000;
 const publicPath = path.resolve(__dirname, "public");
 
-app.use(express.static(publicPath));
+app.use(express.static(publicPath))
 
 if (!isProduction) {
   var bundle = require("./server/bundle.js");
