@@ -1,26 +1,24 @@
-var Webpack = require('webpack');
-var WebpackDevServer = require('webpack-dev-server');
-var webpackConfig = require('./../webpack.config.js');
-var path = require('path');
-var fs = require('fs');
-var mainPath = path.resolve(__dirname, '..', 'app', 'main.js');
+"use strict";
+
+const webpack = require("webpack");
+const WebpackDevServer = require("webpack-dev-server");
+const webpackConfig = require("./../webpack.config.js");
 
 module.exports = function () {
+  let bundleStart = null;
+  const compiler = webpack(webpackConfig);
 
-  var bundleStart = null;
-  var compiler = Webpack(webpackConfig);
-
-  compiler.plugin('compile', function() {
-    console.log('Bundling...');
+  compiler.plugin("compile", () => {
+    console.log("Bundling...");
     bundleStart = Date.now();
   });
 
-  compiler.plugin('done', function() {
-    console.log('Bundled in ' + (Date.now() - bundleStart) + 'ms!');
+  compiler.plugin("done", () => {
+    console.log("Bundled in " + (Date.now() - bundleStart) + "ms!");
   });
 
-  var bundler = new WebpackDevServer(compiler, {
-    publicPath: '/build/',
+  const bundler = new WebpackDevServer(compiler, {
+    publicPath: "/build/",
 
     hot: true,
 
@@ -31,8 +29,7 @@ module.exports = function () {
     }
   });
 
-  bundler.listen(8080, 'localhost', function () {
-    console.log('Bundling project, please wait...');
+  bundler.listen(8080, "localhost", () => {
+    console.log("Bundling project, please wait...");
   });
-
 };

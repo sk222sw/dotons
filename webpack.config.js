@@ -1,10 +1,10 @@
-var Webpack = require('webpack');
-var path = require('path');
-var nodeModulesPath = path.resolve(__dirname, 'node_modules');
-var buildPath = path.resolve(__dirname, 'public', 'build');
-var mainPath = path.resolve(__dirname, 'app', 'main.js');
+const Webpack = require("webpack");
+const path = require("path");
+const nodeModulesPath = path.resolve(__dirname, "node_modules");
+const buildPath = path.resolve(__dirname, "public", "build");
+const mainPath = path.resolve(__dirname, "app", "main.js");
 
-var config = {
+const config = {
   devtool: "eval",
   entry: [
     "webpack/hot/dev-server",
