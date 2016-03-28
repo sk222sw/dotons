@@ -8,3 +8,7 @@
 node_modules
 
 npm-debug.log
+
+# ignore build
+
+public/build
