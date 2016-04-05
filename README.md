@@ -1,7 +1,4 @@
 # dotons
-Trying some sheeet
-
-Testing git workflow
 
 ## Instructions
 
