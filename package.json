@@ -6,6 +6,8 @@
     "start": "supervisor ./bin/www",
     "watch": "webpack --watch --inline --colors",
     "dev": "webpack",
+    "deploy-windows": "SET NODE_ENV=production & supervisor ./bin/www",
+    "deploy": "NODE_ENV=production supervisor ./bin/www",
     "build": "webpack -p"
   },
   "dependencies": {

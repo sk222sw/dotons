@@ -11,9 +11,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        {
-          <p>{this.state.flashMessage}</p>
-        }
+        { <p>{this.state.flashMessage}</p> }
         <p>Hej!</p>
       </div>
     );
