@@ -22,4 +22,17 @@ module.exports = function(app) {
       res.render('dot', context);
     });
   });
+  
+  app.get("/login", (req, res) => {
+    res.render('login', {
+      title: 'dotons - login!'
+    });
+  });
+  
+  app.post("/login", (req, res) => {
+    console.log(req.body);
+    res.render("login", {
+      title: "dotons - loggalainen"
+    });
+  });
 };
