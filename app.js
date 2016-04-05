@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 
 const routes = require('./routes/index');
 const users = require('./routes/users');
+const dotDesings = require('./routes/dotDesigns');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+app.use('/designs', dotDesings);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -55,6 +57,9 @@ app.use((err, req, res) => {
 });
 
 const db = require("./models/mongo.js");
+
 db.connect(app.get('env'));
+const seed = require("./models/seeds");
+seed();
 
 module.exports = app;
