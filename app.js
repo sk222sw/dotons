@@ -54,4 +54,7 @@ app.use((err, req, res) => {
   });
 });
 
+const db = require("./models/mongo.js");
+db.connect(app.get('env'));
+
 module.exports = app;
