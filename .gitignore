@@ -1,14 +1,6 @@
-# c9.io folder
-.c9
-
-# folder created by webstorm
-.idea
-
-# use npm install instead
 node_modules
-
+bat/
+*.bat
 npm-debug.log
-
-# ignore build
-
-public/build
+npm-debug.log.*
+temp

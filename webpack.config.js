@@ -1,36 +1,39 @@
-const Webpack = require("webpack");
 const path = require("path");
-const nodeModulesPath = path.resolve(__dirname, "node_modules");
-const buildPath = path.resolve(__dirname, "public", "build");
-const mainPath = path.resolve(__dirname, "app", "main.js");
+const webpack = require("webpack");
 
-const config = {
-  devtool: "eval",
-  entry: [
-    "webpack/hot/dev-server",
-    "webpack-dev-server/client?http://localhost:8080",
-    mainPath
-  ],
+const PATHS = {
+  app: path.join(__dirname, 'app'),
+  styles: path.join(__dirname, 'public', "stylesheets"),
+  build: path.join(__dirname, 'public', 'javascripts')
+};
+module.exports = {
+  context: path.join(__dirname, "app"),
+  debug: true,
+  devtool: "eval-source-map",
+  entry: {
+    app: "./index.js"
+  },
   output: {
-    path: buildPath,
-    filename: "bundle.js",
-    publicPath: "/build/"
+    path: PATHS.build,
+    filename: "[name].js"
   },
   module: {
     loaders: [
       {
         test: /\.js$/,
         loaders: ["babel", "eslint-loader"],
-        exclude: [nodeModulesPath]
+        include: PATHS.app
       },
       {
         test: /\.css$/,
-        loader: "style!css"
+        loaders: ["style", "css"],
+        include: PATHS.app
       }
     ]
   },
-
-  plugins: [new Webpack.HotModuleReplacementPlugin()]
+  plugins: [
+  new webpack.ProvidePlugin({
+    'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+  })
+  ]
 };
-
-module.exports = config;

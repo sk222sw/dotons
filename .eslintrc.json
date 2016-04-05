@@ -1,6 +1,6 @@
 {
+  "root": true,
   "env": {
-    "production": false,
     "browser": true,
     "es6": true,
     "node": true
@@ -19,7 +19,7 @@
   ],
   "rules": {
     "quotes": [
-      "error",
+      0,
       "double"
     ],
     "semi": [
@@ -28,6 +28,14 @@
     ],
     "comma-dangle": 0,
     "prefer-template": 0,
-    "func-names": 0
+    "func-names": 0,
+    "no-console": 0,
+    "new-cap": 0,
+    "react/prefer-stateless-function": 0,
+    "arrow-body-style": 0,
+    "react/prop-types": 0,
+    "react/jsx-closing-bracket-location": 0,
+    "react/jsx-no-bind": 0,
+    "array-callback-return": 0
   }
 }
