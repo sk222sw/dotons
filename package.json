@@ -8,7 +8,7 @@
     "dev": "webpack",
     "deploy-windows": "SET NODE_ENV=production & supervisor ./bin/www",
     "deploy": "NODE_ENV=production supervisor ./bin/www",
-    "build": "webpack -p"
+    "build": "webpack --config webpack.production.config.js -p"
   },
   "dependencies": {
     "axios": "^0.9.1",
