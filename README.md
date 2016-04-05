@@ -23,6 +23,8 @@
 
 4. `npm run deploy` or `npm run deploy-windows` to run express in production mode
 
+***
+
 ### Contributing
 We have a master-branch that is used in production, and a develop-branch in development. Never make changes directly to master
 To start working on a new feature, follow this workflow:   
