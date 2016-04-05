@@ -4,11 +4,11 @@
 
 ### Development
 
-1. `npm install`
+1. `npm install` to install dependencies
 
-2.
+2. `npm start` to start expressjs backend
 
-3.
+3. `npm run watch` to 
 
 ### Production
 
