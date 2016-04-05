@@ -10,7 +10,7 @@
 
 3. `npm start` to start expressjs backend. node supervisor will auto-restart on save
 
-4. `npm run watch` and webpack will bundle client side code and update on save
+4. `npm run watch` in a new terminal and webpack will bundle client side code and update on save
 
 
 ### Production
