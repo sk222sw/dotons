@@ -8,19 +8,23 @@ Testing git workflow
 ### Development
 
 1. `npm install` to install dependencies
+ 
+2. `npm install -g supervisor` to install supervisor globally
 
-2. `npm start` to start expressjs backend. node supervisor will auto-restart on save
+3. `npm start` to start expressjs backend. node supervisor will auto-restart on save
 
-3. `npm run watch` and webpack will bundle client side code and update on save
+4. `npm run watch` and webpack will bundle client side code and update on save
 
 
 ### Production
 
 1. `npm install` to install dependencies
 
-2. `npm run build` to make webpack bundle and minify client side code
+2. `npm install -g supervisor` to install supervisor globally
 
-3. `npm run deploy` or `npm run deploy-windows` to run express in production mode
+3. `npm run build` to make webpack bundle and minify client side code
+
+4. `npm run deploy` or `npm run deploy-windows` to run express in production mode
 
 ### Contributing
 We have a master-branch that is used in production, and a develop-branch in development. Never make changes directly to master
