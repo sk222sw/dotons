@@ -4,6 +4,14 @@
 
 ### Development
 
+1. `npm install`
+
+2.
+
+3.
+
+### Production
+
 1.
 
 2.
