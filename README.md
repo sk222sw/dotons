@@ -22,5 +22,20 @@ Testing git workflow
 
 3. `npm run deploy` or `npm run deploy-windows` to run express in production mode
 
+### Contributing
+We have a master-branch that is used in production, and a develop-branch in development. Never make changes directly to master
+To start working on a new feature, follow this workflow:  
+1. Make sure the latest changes are fetched from master by typing git pull origin master
+1. Create a new branch with git checkout -b new-feature-name
+2. Make changes to code.
+3. Add the changed files and commit with a good messages
+4. Push to the new-feature-name branch with git push origin/new-feature-branch
+5. Go to the repository on github and create a pull-request from new-feature-name branch to develop branch.
+6. If the feature is tested and works, make a pull-request from develop to master.
+7. Remove the branch with the following steps
+8. git checkout develop
+9. git branch -D new-feature-branch to delete the local branch
+10. git push origin :new-feature-branch to delete the remote branch
+
 
 [wiki](https://github.com/sk222sw/dotons/wiki)
