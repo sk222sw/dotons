@@ -36,7 +36,6 @@
     "react/prop-types": 0,
     "react/jsx-closing-bracket-location": 0,
     "react/jsx-no-bind": 0,
-    "array-callback-return": 0,
-    
+    "array-callback-return": 0
   }
 }
