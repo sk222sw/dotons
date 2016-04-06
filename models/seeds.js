@@ -1,5 +1,5 @@
 const DotDesign = require("./dotDesign");
-
+const User = require("./user");
 
 function seed() {
   DotDesign.find((err, dotDesings) => {
@@ -13,6 +13,20 @@ function seed() {
     const dot2 = new DotDesign({
       name: "Alex Dot",
       imageUrl: "alex-dot.jpg"
+    }).save();
+  });
+
+  User.find((err, user) => {
+    if (user.length) return;
+
+    const user1 = new User({
+      email: "user@user.com",
+      password: "hej"
+    }).save();
+
+    const user2 = new User({
+      email: "nej@hej.nej",
+      password: "hejs"
     }).save();
   });
 }

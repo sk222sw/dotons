@@ -3,14 +3,15 @@ const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const passport = require("passport");
+const mongoose = require("mongoose");
+const LocalStrategy = require("passport-local").Strategy;
 
-const routes = require('./routes/index');
-const users = require('./routes/users');
-const dotDesings = require('./routes/dotDesigns');
 
 const app = express();
 
-
+app.use(passport.initialize());
+require("./config/passport")(passport);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -23,10 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-<<<<<<< HEAD
-=======
 require("./routes/routes.js")(app);
->>>>>>> routes
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
