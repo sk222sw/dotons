@@ -33,7 +33,7 @@ To start working on a new feature, follow this workflow:
 2. Create a new branch with git checkout -b new-feature-name  
 3. Make changes to code.  
 4. Add the changed files and commit with a good messages  
-5. Git pull --rebase origin master
+5. Git pull --rebase origin master  
 6. Push to the new-feature-name branch with git push origin/new-feature-branch  
 7. Go to the repository on github and create a pull-request from new-feature-name branch to develop branch.  
 8. If the feature is tested and works, make a pull-request from develop to master.  
