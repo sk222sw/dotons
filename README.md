@@ -26,20 +26,21 @@
 ***
 ***
 
-### Contributing
+### Git workflow
 We have a master-branch that is used in production, and a develop-branch in development. Never make changes directly to master
 To start working on a new feature, follow this workflow:   
 1. Make sure the latest changes are fetched from master by typing git pull origin master  
 2. Create a new branch with git checkout -b new-feature-name  
 3. Make changes to code.  
 4. Add the changed files and commit with a good messages  
-5. Push to the new-feature-name branch with git push origin/new-feature-branch  
-6. Go to the repository on github and create a pull-request from new-feature-name branch to develop branch.  
-7. If the feature is tested and works, make a pull-request from develop to master.  
-8. Remove the branch with the following steps  
-9. git checkout develop  
-10. git branch -D new-feature-branch to delete the local branch  
-11. git push origin :new-feature-branch to delete the remote branch  
+5. Git pull --rebase origin master
+6. Push to the new-feature-name branch with git push origin/new-feature-branch  
+7. Go to the repository on github and create a pull-request from new-feature-name branch to develop branch.  
+8. If the feature is tested and works, make a pull-request from develop to master.  
+9. Remove the branch with the following steps  
+10. git checkout develop  
+11. git branch -D new-feature-branch to delete the local branch  
+12. git push origin :new-feature-branch to delete the remote branch  
 
 
 [wiki](https://github.com/sk222sw/dotons/wiki)
