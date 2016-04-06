@@ -29,6 +29,17 @@ module.exports = function (app) {
     });
   });
 
+  app.get("/signup", (req, res) => {
+    res.render("signup", {
+      title: "dotons - signup"
+    });
+  });
+
+  app.post("/signup", passport.authenticate(("local-signup"), {
+    successRedirect: "/",
+    failuerRedirect: "login"
+  }));
+
   app.post("/login", passport.authenticate("local-login", {
     successRedirect: "/",
     failuerRedirect: "/login",
