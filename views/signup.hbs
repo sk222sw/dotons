@@ -1,0 +1,23 @@
+<h2>signup</h2>
+
+<form action="/signup" method="post">
+  <div>
+    <label for="email">Email</label>
+    <input type="text" name="email" value="">
+  </div>
+  <div>
+    <label for="password">Password</label>
+    <input type="password" name="password" value="">
+  </div>
+  <div>
+    <label for="accountType">Account Type</label>
+    <select name="accountType">
+      {{#each accountTypes}}
+        <option value="{{@key}}">{{this}}</option>
+      {{/each}}
+    </select>
+  </div>
+  <div>
+    <button type="submit">Signup</button>
+  </div>
+</form>

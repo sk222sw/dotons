@@ -21,24 +21,24 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loaders: ["babel", "eslint-loader"],
+        loaders: ["babel"],
         include: PATHS.app
       },
       {
-        test: /\.css$/,
-        loaders: ["style", "css"],
+        test: /\.scss$/,
+        loaders: ["style", "css", "sass"],
         include: PATHS.app
       }
     ]
   },
   plugins: [
-  new webpack.ProvidePlugin({
-    'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
-  }),
-  new webpack.DefinePlugin({
-    "process.env": {
-      "NOVE_ENV": JSON.stringify("production")
-    }
-  })
+    new webpack.ProvidePlugin({
+      'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+    }),
+    new webpack.DefinePlugin({
+      "process.env": {
+        "NOVE_ENV": JSON.stringify("production")
+      }
+    })
   ]
 };
