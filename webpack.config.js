@@ -25,7 +25,7 @@ module.exports = {
         include: PATHS.app
       },
       {
-        test: /\.css$/,
+        test: /\.scss$/,
         loaders: ["style", "css", "sass"],
         include: PATHS.app
       }

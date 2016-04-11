@@ -44,7 +44,7 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	eval("\"use strict\";\n\n__webpack_require__(!(function webpackMissingModule() { var e = new Error(\"Cannot find module \\\"/stylesheets/style.scss\\\"\"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));\n\nconsole.log(\"cykcyaka\");\nconsole.log(\"cyka again\");//@ sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9pbmRleC5qcz8yNjQ1Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBQUEsb0JBQVEsbUpBQVI7O0FBRUEsUUFBUSxHQUFSLENBQVksVUFBWjtBQUNBLFFBQVEsR0FBUixDQUFZLFlBQVoiLCJmaWxlIjoiMC5qcyIsInNvdXJjZXNDb250ZW50IjpbInJlcXVpcmUoXCIvc3R5bGVzaGVldHMvc3R5bGUuc2Nzc1wiKTtcblxuY29uc29sZS5sb2coXCJjeWtjeWFrYVwiKTtcbmNvbnNvbGUubG9nKFwiY3lrYSBhZ2FpblwiKTtcblxuXG4vKiogV0VCUEFDSyBGT09URVIgKipcbiAqKiAuL2luZGV4LmpzXG4gKiovIl0sInNvdXJjZVJvb3QiOiIifQ==");
+	eval("\"use strict\";\n\n__webpack_require__(!(function webpackMissingModule() { var e = new Error(\"Cannot find module \\\"./stylesheets/style.scss\\\"\"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));\n\nconsole.log(\"cykcyaka\");\nconsole.log(\"cyka again\");\nconsole.log(\"cyka again\");//@ sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9pbmRleC5qcz8yNjQ1Il0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBQUEsb0JBQVEsb0pBQVI7O0FBRUEsUUFBUSxHQUFSLENBQVksVUFBWjtBQUNBLFFBQVEsR0FBUixDQUFZLFlBQVo7QUFDQSxRQUFRLEdBQVIsQ0FBWSxZQUFaIiwiZmlsZSI6IjAuanMiLCJzb3VyY2VzQ29udGVudCI6WyJyZXF1aXJlKFwiLi9zdHlsZXNoZWV0cy9zdHlsZS5zY3NzXCIpO1xuXG5jb25zb2xlLmxvZyhcImN5a2N5YWthXCIpO1xuY29uc29sZS5sb2coXCJjeWthIGFnYWluXCIpO1xuY29uc29sZS5sb2coXCJjeWthIGFnYWluXCIpO1xuXG5cbi8qKiBXRUJQQUNLIEZPT1RFUiAqKlxuICoqIC4vaW5kZXguanNcbiAqKi8iXSwic291cmNlUm9vdCI6IiJ9");
 
 /***/ }
 /******/ ]);
