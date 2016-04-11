@@ -4,24 +4,24 @@ const bcrypt = require("bcrypt-node");
 var info;
 const isCompany = true;
 
-if (isCompany) {
-  info = mongoose.Schema({
-    companyName: String,
-    blabla: String
-  });
-} else {
-  info = mongoose.Schema({
-    firstName: String,
-    lastName: String
-  });
-}
+
+const userInfo = mongoose.Schema({
+  firstName: String,
+  lastName: String
+});
+
+const companyInfo = mongoose.Schema({
+  companyName: String,
+});
+
 
 
 const userSchema = mongoose.Schema({
   email: String,
   password: String,
   accountType: Number,
-  info
+  userInfo,
+  companyInfo
 });
 
 userSchema.methods.generateHash = function(password) {

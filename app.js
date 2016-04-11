@@ -6,12 +6,19 @@ const bodyParser = require('body-parser');
 const passport = require("passport");
 const mongoose = require("mongoose");
 const LocalStrategy = require("passport-local").Strategy;
+const session = require("express-session");
 
 
 const app = express();
 
-app.use(passport.initialize());
+const db = require("./models/mongo.js");
+
+db.connect(app.get('env'));
+// const seed = require("./models/seeds");
+// seed();
+
 require("./config/passport")(passport);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -24,7 +31,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-require("./routes/routes.js")(app);
+// session
+app.use(session({
+  secret: "some-secret",
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+require("./routes/routes.js")(app, passport);
+
+// middleware for checking if user is authenticated, move to own file?
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -56,11 +76,5 @@ app.use((err, req, res) => {
     error: {}
   });
 });
-
-const db = require("./models/mongo.js");
-
-db.connect(app.get('env'));
-const seed = require("./models/seeds");
-seed();
 
 module.exports = app;
