@@ -21,12 +21,12 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loaders: ["babel", "eslint-loader"],
+        loaders: ["babel"],
         include: PATHS.app
       },
       {
         test: /\.css$/,
-        loaders: ["style", "css"],
+        loaders: ["style", "css", "sass"],
         include: PATHS.app
       }
     ]
