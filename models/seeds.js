@@ -21,12 +21,22 @@ function seed() {
 
     const user1 = new User({
       email: "user@user.com",
-      password: "hej"
+      password: "hej",
+      accountType: 1,
+      info: {
+        companyName: "UserComp AB",
+        blabla: "Blabla"
+      }
     }).save();
 
     const user2 = new User({
       email: "nej@hej.nej",
-      password: "hejs"
+      password: "hejs",
+      accountType: 1,
+      info: {
+        companyName: "Sho AB",
+        blabla: "Blabla"
+      }
     }).save();
   });
 }

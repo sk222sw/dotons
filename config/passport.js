@@ -14,10 +14,11 @@ module.exports = function(passport) {
 
   passport.use("local-signup", new LocalStrategy({
     usernameField: "email",
-    passwordField: "password"
-  }, (email, password, done) => {
+    passwordField: "password",
+    passReqToCallback: true,
+  }, (req, email, password, done) => {
     process.nextTick(() => {
-      User.findOne({ "email": email}, (err, user) => {
+      User.findOne({ email } , (err, user) => {
         if (err) { return done(err); }
         if (user) {
           return done(null, false, { message: "email is already taken" });
@@ -26,6 +27,7 @@ module.exports = function(passport) {
 
           newUser.email = email;
           newUser.password = newUser.generateHash(password);
+          newUser.accountType = req.body.accountType;
 
           newUser.save(saveErr => {
             if (err) { throw saveErr; }
