@@ -23,19 +23,18 @@ function seed() {
       email: "user@user.com",
       password: "hej",
       accountType: 1,
-      info: {
-        companyName: "UserComp AB",
-        blabla: "Blabla"
+      companyInfo: {
+        companyName: "UserComp AB"
       }
     }).save();
 
     const user2 = new User({
       email: "nej@hej.nej",
       password: "hejs",
-      accountType: 1,
-      info: {
-        companyName: "Sho AB",
-        blabla: "Blabla"
+      accountType: 2,
+      userInfo: {
+        firstName: "User",
+        lastName: "Hello"
       }
     }).save();
   });

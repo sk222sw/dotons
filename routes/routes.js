@@ -2,6 +2,10 @@ const DotDesign = require('../models/dotDesign');
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 
+
+
+
+
 module.exports = function (app) {
   app.get('/', (req, res) => {
     res.render('index', {
@@ -24,6 +28,7 @@ module.exports = function (app) {
   });
 
   app.get("/login", (req, res) => {
+    if (req.isAuthenticated()) { res.redirect("/profile") };
     res.render('login', {
       title: 'dotons - login!'
     });
@@ -42,14 +47,30 @@ module.exports = function (app) {
     res.render("signup", context);
   });
 
+  app.get("/profile", isLoggedIn, (req, res) => {
+    console.log(req.user);
+
+    console.log("PROFILE PAGE");
+    res.render("profile");
+  });
   app.post("/signup", passport.authenticate(("local-signup"), {
-    successRedirect: "/",
-    failuerRedirect: "login"
+    successRedirect: "/profile",
+    failureRedirect: "/login"
   }));
 
   app.post("/login", passport.authenticate("local-login", {
-    successRedirect: "/",
-    failuerRedirect: "/login",
-    failuerFlash: false
+    successRedirect: "/profile",
+    failureRedirect: "/login",
+    failureFlash: false
   }));
 };
+
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    console.log("I AM AUTHENTICATED");
+    next();
+  } else {
+    console.log("noooope not gonna pass");
+    res.redirect("/login");
+  }
+}
