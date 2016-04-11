@@ -10,6 +10,14 @@
     <input type="password" name="password" value="">
   </div>
   <div>
+    <label for="accountType">Account Type</label>
+    <select name="accountType">
+      {{#each accountTypes}}
+        <option value="{{@key}}">{{this}}</option>
+      {{/each}}
+    </select>
+  </div>
+  <div>
     <button type="submit">Signup</button>
   </div>
 </form>

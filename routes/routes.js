@@ -30,9 +30,16 @@ module.exports = function (app) {
   });
 
   app.get("/signup", (req, res) => {
-    res.render("signup", {
+    const context = {
+      accountTypes: {
+        1: "Private",
+        2: "Retail",
+        3: "Business",
+        4: "Business retail"
+      },
       title: "dotons - signup"
-    });
+    };
+    res.render("signup", context);
   });
 
   app.post("/signup", passport.authenticate(("local-signup"), {
