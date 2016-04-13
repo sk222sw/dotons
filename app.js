@@ -6,18 +6,10 @@ const bodyParser = require('body-parser');
 const passport = require("passport");
 const session = require("express-session");
 const favicon = require('serve-favicon');
-
+const db = require("./models/mongo.js");
 const app = express();
 
-const db = require("./models/mongo.js");
-
-db.connect(app.get('env'));
-const seed = require("./models/seeds");
-seed();
-
 require("./config/passport")(passport);
-
-// view engine setup
 require("./config/handlebars")(app);
 
 // uncomment after placing your favicon in /public
@@ -27,8 +19,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// session
 app.use(session({
   secret: "some-secret",
   resave: false,
@@ -37,11 +27,14 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 require("./routes/routes.js")(app, passport);
 
-// middleware for checking if user is authenticated, move to own file?
-
+connect()
+  .on("error", console.log)
+  .on("disconnected", connect)
+  .once("open", () => {
+    console.log("connection to db open");
+  });
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -73,5 +66,9 @@ app.use((err, req, res) => {
     error: {}
   });
 });
+
+function connect() {
+  return db.connect(app.get("env")).connection;
+}
 
 module.exports = app;
