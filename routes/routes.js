@@ -45,8 +45,7 @@ module.exports = function (app) {
   });
 
   app.get("/profile", isLoggedIn, (req, res) => {
-    console.log(req.user);
-    console.log(req.user.email);
+    console.log(req.user.accountType);
 
     console.log("PROFILE PAGE");
     res.render("profile", {
