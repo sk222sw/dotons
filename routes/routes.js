@@ -1,10 +1,5 @@
 const DotDesign = require('../models/dotDesign');
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-
-
-
-
 
 module.exports = function (app) {
   app.get('/', (req, res) => {
@@ -28,7 +23,7 @@ module.exports = function (app) {
   });
 
   app.get("/login", (req, res) => {
-    if (req.isAuthenticated()) { res.redirect("/profile") };
+    if (req.isAuthenticated()) { res.redirect("/profile"); }
     res.render('login', {
       title: 'dotons - login!'
     });
