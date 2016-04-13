@@ -12,8 +12,8 @@ const app = express();
 const db = require("./models/mongo.js");
 
 db.connect(app.get('env'));
-// const seed = require("./models/seeds");
-// seed();
+const seed = require("./models/seeds");
+seed();
 
 require("./config/passport")(passport);
 
