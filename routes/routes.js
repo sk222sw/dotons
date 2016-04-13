@@ -2,6 +2,7 @@ const DotDesign = require('../models/dotDesign');
 const isLoggedIn = require("../modules/isLoggedIn");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const PriceListDal = require("../models/DAL/PriceListDal");
 
 module.exports = function (app) {
   app.get('/', (req, res) => {
@@ -34,9 +35,9 @@ module.exports = function (app) {
   app.get("/signup", (req, res) => {
     const context = {
       accountTypes: {
-        1: "Private",
-        2: "Retail",
-        3: "Business",
+        1: "Business",
+        2: "Private",
+        3: "Store retail",
         4: "Business retail"
       },
       title: "dotons - signup"
@@ -46,11 +47,36 @@ module.exports = function (app) {
 
   app.get("/profile", isLoggedIn, (req, res) => {
     console.log(req.user.accountType);
+    const priceListPromise = PriceListDal.getPriceList();
+    priceListPromise
+      .then((priceList) => {
+        var price;
+        switch (req.user.accountType) {
+          case 1:
+            price = priceList.businessPrice;
+            break;
+          case 2:
+            price = priceList.privatePrice;
+            break;
+          case 3:
+            price = priceList.privateRetailsPrice;
+            break;
+          case 4:
+            price = priceList.businessRetailPrice;
+            break;
+          default:
+            price = priceList.privatePrice;
+        }
 
+        res.render("profile", {
+          email: req.user.email,
+          price
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     console.log("PROFILE PAGE");
-    res.render("profile", {
-      email: req.user.email
-    });
   });
   app.post("/signup", passport.authenticate(("local-signup"), {
     successRedirect: "/profile",

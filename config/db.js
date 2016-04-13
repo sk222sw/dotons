@@ -4,6 +4,7 @@ const mongo = {
   },
   production: {
     connection_string: "mongodb://dotons:dotons2016@ds013300.mlab.com:13300/dotons"
+    // connection_string: process.env.MONGO_URL
   }
 };
 
