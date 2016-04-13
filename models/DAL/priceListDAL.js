@@ -1,3 +1,12 @@
-const db = require("./models/mongo.js");
+const PriceList = require("../priceList");
 
-db.connect(app.get('env'));
+const PriceListDal = {
+  getPriceList: () => {
+    return PriceList.findOne({}, (err, priceList) => {
+      if (err) console.log(err); // todo: handle shit
+      console.log(priceList);
+    }).exec();
+  }
+};
+
+module.exports = PriceListDal;

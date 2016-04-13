@@ -38,6 +38,7 @@
     "react/jsx-no-bind": 0,
     "array-callback-return": 0,
     "space-before-function-paren": 0,
-    "no-use-before-define": 0
+    "no-use-before-define": 0,
+    "no-var": 0
   }
 }
