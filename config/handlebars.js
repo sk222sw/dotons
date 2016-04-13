@@ -1,6 +1,8 @@
 const path = require("path");
+const hbs = require("hbs");
+const partialsPath = path.join(__dirname, "../", "views", "partials");
 
 module.exports = function(app) {
-  app.set('views', path.join(__dirname, "../", 'views'));
-  app.set('view engine', 'hbs');
+  hbs.registerPartials(partialsPath);
+  app.set("view engine", "hbs");
 };

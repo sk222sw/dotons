@@ -1,19 +1,34 @@
 const DotDesign = require("./dotDesign");
 const User = require("./user");
+const PriceList = require("./priceList");
 
 function seed() {
+  PriceList.find((err, priceLists) => {
+    if (priceLists.length) return;
+
+    const priceList = new PriceList({
+      businessPrice: 16,
+      privatePrice: 69,
+      privateRetailsPrice: 35,
+      businessRetailPrice: 16
+    });
+    priceList.save();
+  });
+
   DotDesign.find((err, dotDesings) => {
     if (dotDesings.length) return;
 
     const dot = new DotDesign({
       name: "Sonnys Dot",
       imageUrl: "sonny-dot.jpg"
-    }).save();
+    });
+    dot.save();
 
     const dot2 = new DotDesign({
       name: "Alex Dot",
       imageUrl: "alex-dot.jpg"
-    }).save();
+    });
+    dot2.save();
   });
 
   User.find((err, user) => {
@@ -26,7 +41,8 @@ function seed() {
       companyInfo: {
         companyName: "UserComp AB"
       }
-    }).save();
+    });
+    user1.save();
 
     const user2 = new User({
       email: "nej@hej.nej",
@@ -36,7 +52,8 @@ function seed() {
         firstName: "User",
         lastName: "Hello"
       }
-    }).save();
+    });
+    user2.save();
   });
 }
 
