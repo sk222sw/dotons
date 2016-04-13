@@ -17,12 +17,13 @@ header {
   height: 100px;
 }
 
-a {
-  color: #00B7FF;
+.header-title {
+  color: black;
+  text-decoration: none;
 }
 
-.product {
-  // border: solid black 1px;
+a {
+  color: #00B7FF;
 }
 
 .slider-image {
