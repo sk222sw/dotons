@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
-const credentials = require("../credentials");
-
-console.log(credentials);
+const credentials = require("../config/db");
 
 const opts = {
   server: {
@@ -14,13 +12,9 @@ const db = {};
 db.connect = function (env) {
   switch (env) {
     case "development":
-      mongoose.connect(credentials.development.connection_string, opts);
-      console.log("Connected to dev");
-      break;
+      return mongoose.connect(credentials.development.connection_string, opts);
     case "production":
-      mongoose.connect(credentials.production.connection_string, opts);
-      console.log("Connected to prod");
-      break;
+      return mongoose.connect(credentials.production.connection_string, opts);
     default:
       throw new Error("Unknown execution enviroment: ${app.get(env)}");
   }
