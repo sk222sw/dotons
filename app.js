@@ -4,10 +4,8 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require("passport");
-const mongoose = require("mongoose");
-const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
-
+const favicon = require('serve-favicon');
 
 const app = express();
 
@@ -20,11 +18,10 @@ db.connect(app.get('env'));
 require("./config/passport")(passport);
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+require("./config/handlebars")(app);
 
 // uncomment after placing your favicon in /public
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', "images", 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
