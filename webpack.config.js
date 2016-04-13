@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const PATHS = {
   app: path.join(__dirname, 'app'),
@@ -26,19 +27,20 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loaders: ["style", "css", "sass"],
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader", "sass-loader"),
         include: PATHS.app
       }
     ]
   },
   plugins: [
     new webpack.ProvidePlugin({
-      'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+      fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch'
     }),
     new webpack.DefinePlugin({
       "process.env": {
-        "NOVE_ENV": JSON.stringify("production")
+        NOVE_ENV: JSON.stringify("production")
       }
-    })
+    }),
+    new ExtractTextPlugin("../stylesheets/main.css")
   ]
 };
