@@ -21,7 +21,7 @@
     "express": "~4.13.1",
     "express-session": "^1.13.0",
     "flux": "^2.1.1",
-    "hbs": "~3.1.0",
+    "hbs": "^3.1.1",
     "history": "^1.17.0",
     "imports-loader": "^0.6.5",
     "lodash": "^4.8.2",
