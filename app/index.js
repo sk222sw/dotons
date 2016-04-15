@@ -1,5 +1,6 @@
 require("./stylesheets/style.scss");
+import request from "superagent";
 
-console.log("cykcyaka");
-console.log("cyka again");
-console.log("cyka again");
+const uploadButton = document.getElementById("upload-submit");
+
+console.log(uploadButton);
