@@ -36,6 +36,13 @@ connect()
     console.log("connection to db open");
   });
 
+const seeds = require("./models/seeds");
+console.log("seed() called in app.js");
+
+seeds();
+
+
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   const err = new Error('Not Found');
@@ -70,5 +77,6 @@ app.use((err, req, res) => {
 function connect() {
   return db.connect(app.get("env")).connection;
 }
+
 
 module.exports = app;

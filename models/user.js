@@ -19,7 +19,7 @@ const companyInfo = mongoose.Schema({
 const userSchema = mongoose.Schema({
   email: String,
   password: String,
-  role: Number,
+  role: String,
   userInfo,
   companyInfo
 });
