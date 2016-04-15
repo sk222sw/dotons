@@ -1,12 +1,29 @@
 const PriceListDal = require("../models/DAL/priceListDAL");
+const _ = require("lodash");
 
 const ctrl = function() {};
 
-const ACCOUNT_TYPES = {
-  BUSINESS: 1,
-  PRIVATE: 2,
-  PRIVATE_RETAIL: 3,
-  BUSINESS_RETAIL: 4
+const ROLES = {
+  ADMIN: {
+    ROLE_ID: 1,
+    Name: "Admin"
+  },
+  BUSINESS: {
+    ROLE_ID: 2,
+    NAME: "Business account"
+  },
+  PRIVATE: {
+    ROLE_ID: 3,
+    NAME: "Private account"
+  },
+  PRIVATE_RETAIL: {
+    ROLE_ID: 4,
+    NAME: "Private-retail account"
+  },
+  BUSINESS_RETAIL: {
+    ROLE_ID: 5,
+    NAME: "Business-retail account"
+  }
 };
 
 // GET /login
@@ -20,15 +37,19 @@ ctrl.prototype.login = function(req, res) {
 // GET /signup
 ctrl.prototype.signup = function(req, res) {
   // Store account types in database later probably
-  const context = {
-    roles: {
-      1: "Business",
-      2: "Private",
-      3: "Store retail",
-      4: "Business retail"
-    },
-    title: "dotons - signup"
-  };
+
+  var a = { a: 1 };
+  var b = { a: 1 };
+
+  console.log(a.a === b.a);
+  var context = {};
+  context.roles = _.cloneDeep(ROLES);
+  delete context.roles.ADMIN; // dont want to create admin accounts
+
+
+  context.title = "dotons - signup";
+  console.log(context);
+  console.log("Hehehe");
   res.render("signup", context);
 };
 
@@ -40,16 +61,16 @@ ctrl.prototype.profile = function(req, res) {
     .then((priceList) => {
       var price;
       switch (req.user.role) {
-        case ACCOUNT_TYPES.BUSINESS:
+        case ROLES.BUSINESS:
           price = priceList.businessPrice;
           break;
-        case ACCOUNT_TYPES.PRIVATE:
+        case ROLES.PRIVATE:
           price = priceList.privatePrice;
           break;
-        case ACCOUNT_TYPES.PRIVATE_RETAIL:
+        case ROLES.PRIVATE_RETAIL:
           price = priceList.privateRetailsPrice;
           break;
-        case ACCOUNT_TYPES.BUSINESS_RETAIL:
+        case ROLES.BUSINESS_RETAIL:
           price = priceList.businessRetailPrice;
           break;
         default:

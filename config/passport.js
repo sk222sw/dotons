@@ -19,21 +19,25 @@ module.exports = function(passport) {
   }, (req, email, password, done) => {
     process.nextTick(() => {
       User.findOne({ email }, (err, user) => {
+        console.log(req.body.role);
         if (err) { return done(err); }
         if (user) {
           return done(null, false, { message: "email is already taken" });
-        } else {
-          const newUser = new User();
-
-          newUser.email = email;
-          newUser.password = newUser.generateHash(password);
-          newUser.role = req.body.role;
-
-          newUser.save(saveErr => {
-            if (err) { throw saveErr; }
-            return done(null, newUser);
-          });
         }
+        if (req.body.role === "1") {
+          console.log("ADMIN SHIT comprimised");
+          return done(null, false, { message: "something went wrong" });
+        }
+        const newUser = new User();
+        console.log("Register admin account successful shit");
+        newUser.email = email;
+        newUser.password = newUser.generateHash(password);
+        newUser.role = req.body.role;
+
+        newUser.save(saveErr => {
+          if (err) { throw saveErr; }
+          return done(null, newUser);
+        });
       });
     });
   }

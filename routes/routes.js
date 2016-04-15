@@ -31,7 +31,7 @@ module.exports = function (app) {
   app.get("/profile", isLoggedIn, users.profile);
   app.post("/signup", passport.authenticate(("local-signup"), {
     successRedirect: "/profile",
-    failureRedirect: "/login"
+    failureRedirect: "/signup"
   }));
   app.post("/login", passport.authenticate("local-login", {
     successRedirect: "/profile",
