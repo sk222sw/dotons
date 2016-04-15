@@ -6,6 +6,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const PriceListDal = require("../models/DAL/PriceListDal");
 const users = require("../controllers/users");
 const admin = require("../controllers/admin");
+const dotDesigner = require("../controllers/dot-designer.js");
 
 module.exports = function (app) {
   app.get('/', (req, res) => {
@@ -40,6 +41,9 @@ module.exports = function (app) {
     failureRedirect: "/login",
     failureFlash: false
   }));
+  // tool
+  app.get("/designer", dotDesigner.index);
+  app.post("/designer/upload", dotDesigner.uploadToMemory);
 
   // admin routes
   app.get("/admin", needsRole("admin"), admin.index);

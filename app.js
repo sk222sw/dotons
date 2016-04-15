@@ -27,6 +27,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// setup multer for fileupload
+
+
+
 require("./routes/routes.js")(app, passport);
 
 connect()

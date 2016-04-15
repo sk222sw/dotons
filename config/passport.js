@@ -23,7 +23,6 @@ module.exports = function(passport) {
         if (user) {
           return done(null, false, { message: "email is already taken" });
         }
-
         const role = req.body.role.toLowerCase();
         if (role === "admin") {
           return done(null, false, { message: "something went wrong" });
