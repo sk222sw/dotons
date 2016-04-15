@@ -37,7 +37,7 @@ function seed() {
     const user1 = new User({
       email: "user@user.com",
       password: "hej",
-      accountType: 1,
+      role: 1,
       companyInfo: {
         companyName: "UserComp AB"
       }
@@ -47,7 +47,7 @@ function seed() {
     const user2 = new User({
       email: "nej@hej.nej",
       password: "hejs",
-      accountType: 2,
+      role: 2,
       userInfo: {
         firstName: "User",
         lastName: "Hello"

@@ -21,7 +21,7 @@ ctrl.prototype.login = function(req, res) {
 ctrl.prototype.signup = function(req, res) {
   // Store account types in database later probably
   const context = {
-    accountTypes: {
+    roles: {
       1: "Business",
       2: "Private",
       3: "Store retail",
@@ -34,12 +34,12 @@ ctrl.prototype.signup = function(req, res) {
 
 // GET /profile
 ctrl.prototype.profile = function(req, res) {
-  console.log(req.user.accountType);
+  console.log(req.user.role);
   const priceListPromise = PriceListDal.getPriceList();
   priceListPromise
     .then((priceList) => {
       var price;
-      switch (req.user.accountType) {
+      switch (req.user.role) {
         case ACCOUNT_TYPES.BUSINESS:
           price = priceList.businessPrice;
           break;
