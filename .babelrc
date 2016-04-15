@@ -1,4 +1,4 @@
 {
-  "presets": ["es2015", "react", "survivejs-kanban"],
+  "presets": ["es2015", "survivejs-kanban"],
   "plugins": ["lodash"]
 }
