@@ -33,27 +33,34 @@ function seed() {
 
   User.find((err, user) => {
     if (user.length) return;
-
+    console.log("SEEDING USERS");
     const user1 = new User({
       email: "user@user.com",
-      password: "hej",
-      role: 1,
+      role: "business",
       companyInfo: {
         companyName: "UserComp AB"
       }
     });
+    user1.password = user1.generateHash("hej");
     user1.save();
 
     const user2 = new User({
       email: "nej@hej.nej",
-      password: "hejs",
-      role: 2,
+      role: "private",
       userInfo: {
         firstName: "User",
         lastName: "Hello"
       }
     });
+    user2.password = user2.generateHash("hejsan");
     user2.save();
+    console.log("saving user 2");
+    const admin = new User({
+      email: "admin@dotons.com",
+      role: "admin"
+    });
+    admin.password = admin.generateHash("123456");
+    admin.save();
   });
 }
 
