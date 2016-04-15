@@ -27,6 +27,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// setup multer for fileupload
+
+
+
 require("./routes/routes.js")(app, passport);
 
 connect()
@@ -35,6 +39,13 @@ connect()
   .once("open", () => {
     console.log("connection to db open");
   });
+
+const seeds = require("./models/seeds");
+console.log("seed() called in app.js");
+
+seeds();
+
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -70,5 +81,6 @@ app.use((err, req, res) => {
 function connect() {
   return db.connect(app.get("env")).connection;
 }
+
 
 module.exports = app;
