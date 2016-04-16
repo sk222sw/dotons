@@ -9,20 +9,21 @@ ctrl.prototype.index = function(req, res) {
   res.render("dotDesigner");
 };
 
-ctrl.prototype.uploadToMemory = function(req, res, next) {
-  console.log("HEHEHE");
+ctrl.prototype.uploadToMemory = function(req, res) {
+
   upload(req, res, err => {
-    console.log("Tjena");
-    console.log("höheee");
     if (err) return res.end("Error uploading file");
     // test to save File
     console.log(req.file);
-    fs.writeFile("uploads/dot_designs/" + req.file.originalname, req.file.buffer, err => {
-      if (err) return next(err);
-      res.end("Success!");
-    });
-
     res.end(req.file.buffer);
+  });
+};
+
+ctrl.prototype.saveFile = function(req, res, next) {
+  const fileName = "uploads/dot_designs/" + req.file.originalname;
+  fs.writeFile(fileName, req.file.buffer, err => {
+    if (err) return next(err);
+    res.end("Success!");
   });
 };
 
