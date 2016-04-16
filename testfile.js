@@ -5,9 +5,9 @@ const _ = require("lodash");
 const u = new User();
 u.email = "";
 u.password = "";
+u.role = "blyat";
 
 u.save(err => {
-  console.log(u);
   if (err) {
     _.forOwn(err.errors, (value) => {
       console.log(value.message);

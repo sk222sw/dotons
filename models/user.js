@@ -25,7 +25,11 @@ const userSchema = mongoose.Schema({
     required: [true, "Password is required"],
     minlength: [6, "Password is too short"]
   },
-  role: String,
+  role: {
+    type: String,
+    required: [true, "No role for user"],
+    enum: ["Admin", "Business", "Private", "Private-retail", "Business-retail"]
+  },
   userInfo,
   companyInfo
 });
