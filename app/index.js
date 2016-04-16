@@ -1,8 +1,22 @@
 require("./stylesheets/style.scss");
 import request from "superagent";
 
-const uploadButton = document.getElementById("upload-submit");
+const form = document.getElementById("upload-form");
 
-if (uploadButton) {
-  console.log("on register");
+if (form) {
+  if (form.addEventListener) {
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const file = document.getElementById("upload-submit").files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const output = document.getElementById("output");
+        output.src = reader.result;
+      }
+      reader.readAsDataURL(file);
+
+      console.log(form);
+    }, false);
+  }
 }
