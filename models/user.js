@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt-node");
 var info;
 const isCompany = true;
 
-
 const userInfo = mongoose.Schema({
   firstName: String,
   lastName: String
@@ -14,11 +13,18 @@ const companyInfo = mongoose.Schema({
   companyName: String,
 });
 
-
-
 const userSchema = mongoose.Schema({
-  email: String,
-  password: String,
+  email: {
+    type: String,
+    required: [true, "Email is required"],
+    minlength: [3, "Email is too short"],
+    maxlength: [100, "Email is too long"]
+  },
+  password: {
+    type: String,
+    required: [true, "Password is required"],
+    minlength: [6, "Password is too short"]
+  },
   role: String,
   userInfo,
   companyInfo

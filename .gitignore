@@ -6,3 +6,4 @@ npm-debug.log.*
 temp
 public/javascripts
 public/stylesheets
+.testfile.js
