@@ -1,15 +1,8 @@
 const PriceListDal = require("../models/DAL/priceListDAL");
 const _ = require("lodash");
+const ROLES = require("../models/enums/roles").roles;
 
 const ctrl = function() {};
-
-const ROLES = {
-  ADMIN: "Admin",
-  BUSINESS: "Business",
-  PRIVATE: "Private",
-  PRIVATE_RETAIL: "Private-retail",
-  BUSINESS_RETAIL: "Business-retail"
-};
 
 // GET /login
 ctrl.prototype.login = function(req, res) {

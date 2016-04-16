@@ -5,7 +5,7 @@ const _ = require("lodash");
 const u = new User();
 u.email = "";
 u.password = "";
-u.role = "blyat";
+u.role = "Business";
 
 u.save(err => {
   if (err) {

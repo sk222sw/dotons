@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt-node");
 
+const roles = require("./enums/roles").getRoleValues;
+
 var info;
 const isCompany = true;
 
@@ -29,7 +31,7 @@ const userSchema = mongoose.Schema({
   role: {
     type: String,
     required: [true, "No role for user"],
-    enum: ["Admin", "Business", "Private", "Private-retail", "Business-retail"]
+    enum: roles()
   },
   userInfo,
   companyInfo
