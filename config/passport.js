@@ -31,6 +31,7 @@ module.exports = function(passport) {
         const newUser = new User();
         newUser.email = email;
         newUser.password = newUser.generateHash(password);
+        console.log("*ÄÄ************************", req.body.role);
         newUser.role = req.body.role;
 
         newUser.save(saveErr => {

@@ -3,4 +3,6 @@ import request from "superagent";
 
 const uploadButton = document.getElementById("upload-submit");
 
-console.log(uploadButton);
+if (uploadButton) {
+  console.log("on register");
+}
