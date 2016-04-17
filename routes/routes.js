@@ -34,13 +34,18 @@ module.exports = function (app) {
   app.get("/profile", isLoggedIn, users.profile);
   app.post("/signup", passport.authenticate(("local-signup"), {
     successRedirect: "/profile",
-    failureRedirect: "/signup"
+    failureRedirect: "/signup",
+    failuerFlash: true
   }));
   app.post("/login", passport.authenticate("local-login", {
     successRedirect: "/profile",
     failureRedirect: "/login",
-    failureFlash: false
+    failureFlash: true
   }));
+  app.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect("/");
+  });
   // tool
   app.get("/designer", dotDesigner.index);
   app.post("/designer/upload", dotDesigner.uploadToMemory);

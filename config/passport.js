@@ -21,17 +21,17 @@ module.exports = function(passport) {
       User.findOne({ email }, (err, user) => {
         if (err) { return done(err); }
         if (user) {
-          return done(null, false, { message: "email is already taken" });
+          return done(null, false, req.flash("signupMessage", "Email is already registered"));
         }
         const role = req.body.role.toLowerCase();
         if (role === "admin") {
-          return done(null, false, { message: "something went wrong" });
+          return done(null, false, req.flash("signupMessage", "something went wrong"));
         }
 
         const newUser = new User();
         newUser.email = email;
         newUser.password = newUser.generateHash(password);
-        console.log("*ÄÄ************************", req.body.role);
+
         newUser.role = req.body.role;
 
         newUser.save(saveErr => {
@@ -49,9 +49,12 @@ module.exports = function(passport) {
   }, (req, email, password, done) => {
     User.findOne({ email }, (err, user) => {
       if (err) return done(err);
-      if (!user) return done(null, false, { message: "no user found" });
+      if (!user) {
+        return done(null, false, req.flash("loginMessage",
+          "Can't find a user with that email"));
+      }
       if (!user.validPassword(password)) {
-        return done(null, false, { message: "wrong password" });
+        return done(null, false, req.flash("loginMessage", "Wrong password"));
       }
       return done(null, user);
     });
