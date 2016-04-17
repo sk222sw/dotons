@@ -15,13 +15,13 @@ ctrl.prototype.login = function(req, res) {
 
 // GET /signup
 ctrl.prototype.signup = function(req, res) {
-
   var context = {};
   context.roles = _.cloneDeep(ROLES);
   delete context.roles.ADMIN; // dont want to create admin accounts
 
-
   context.title = "dotons - signup";
+  context.message = req.flash("signupMessage");
+  console.log("context:", context);
   res.render("signup", context);
 };
 
