@@ -41,6 +41,10 @@ module.exports = function (app) {
     failureRedirect: "/login",
     failureFlash: false
   }));
+  app.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect("/");
+  });
   // tool
   app.get("/designer", dotDesigner.index);
   app.post("/designer/upload", dotDesigner.uploadToMemory);
