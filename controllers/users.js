@@ -6,10 +6,10 @@ const ctrl = function() {};
 
 // GET /login
 ctrl.prototype.login = function(req, res) {
-  console.log(req.isAuthenticated());
   if (req.isAuthenticated()) { res.redirect("/profile"); }
   res.render('login', {
     title: 'dotons - login!',
+    message: req.flash("loginMessage")
   });
 };
 
@@ -20,7 +20,10 @@ ctrl.prototype.signup = function(req, res) {
   delete context.roles.ADMIN; // dont want to create admin accounts
 
   context.title = "dotons - signup";
+
+  // set flash message if exists
   context.message = req.flash("signupMessage");
+
   console.log("context:", context);
   res.render("signup", context);
 };
@@ -48,7 +51,6 @@ ctrl.prototype.profile = function(req, res) {
         default:
           price = priceList.privatePrice;
       }
-
       res.render("profile", {
         email: req.user.email,
         price

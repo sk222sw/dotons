@@ -40,7 +40,7 @@ module.exports = function (app) {
   app.post("/login", passport.authenticate("local-login", {
     successRedirect: "/profile",
     failureRedirect: "/login",
-    failureFlash: false
+    failureFlash: true
   }));
   app.get("/logout", (req, res) => {
     req.logout();
