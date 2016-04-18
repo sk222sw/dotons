@@ -1,5 +1,14 @@
 const multer = require("multer");
-const upload = multer({ dest: "uploads/dot_designs"}).single("dot-design");
+//const upload = multer({ dest: "uploads/dot_designs"}).single("dot-design");
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/dot_designs");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname); // timestamp or smth for file?
+  }
+});
+const upload = multer({ storage: storage }).single("dot-design");
 const path = require("path");
 const fs = require("fs");
 
