@@ -1,5 +1,6 @@
 require("./stylesheets/style.scss");
 import request from "superagent";
+import ImageUploader from "./imageUploader";
 
 const form = document.getElementById("upload-form");
 const ctx = canvas.getContext("2d");
@@ -16,8 +17,6 @@ if (form) {
       const saveButton = document.getElementById("save-submit");
       const target = event.explicitOriginalTarget || event.relatedTarget ||
           document.activeElement || {};
-        console.log(target);
-        console.log
 
       if (target.value === uploadButton.value) {
         const reader = new FileReader();
