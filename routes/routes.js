@@ -3,7 +3,6 @@ const isLoggedIn = require("../modules/isLoggedIn");
 const needsRole = require("../modules/needsRole");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const PriceListDal = require("../models/DAL/PriceListDal");
 const users = require("../controllers/users");
 const admin = require("../controllers/admin");
 const dotDesigner = require("../controllers/dot-designer.js");
