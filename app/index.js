@@ -4,6 +4,8 @@ import request from "superagent";
 const form = document.getElementById("upload-form");
 const ctx = canvas.getContext("2d");
 
+// TODO: needs refactoring badly probably maybe
+
 if (form) {
   if (form.addEventListener) {
     form.addEventListener("submit", e => {
@@ -22,12 +24,10 @@ if (form) {
         reader.onload = () => {
           const output = document.createElement("img");
           output.src = reader.result;
-
           ctx.drawImage(output, 0, 0);
         };
         reader.readAsDataURL(file);
       } else if (target.value === saveButton.value) {
-        console.log(file);
         const formData = new FormData();
         formData.append("dot-design", file);
 
@@ -37,8 +37,6 @@ if (form) {
           .end((err, res) => {
             console.log(res.body);
           });
-
-        console.log(form);
       }
     }, false);
   }
