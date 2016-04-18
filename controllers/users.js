@@ -1,61 +1,56 @@
 const PriceListDal = require("../models/DAL/priceListDAL");
+const _ = require("lodash");
+const ROLES = require("../models/enums/roles").roles;
 
 const ctrl = function() {};
-
-const ACCOUNT_TYPES = {
-  BUSINESS: 1,
-  PRIVATE: 2,
-  PRIVATE_RETAIL: 3,
-  BUSINESS_RETAIL: 4
-};
 
 // GET /login
 ctrl.prototype.login = function(req, res) {
   if (req.isAuthenticated()) { res.redirect("/profile"); }
   res.render('login', {
     title: 'dotons - login!',
+    message: req.flash("loginMessage")
   });
 };
 
 // GET /signup
 ctrl.prototype.signup = function(req, res) {
-  // Store account types in database later probably
-  const context = {
-    accountTypes: {
-      1: "Business",
-      2: "Private",
-      3: "Store retail",
-      4: "Business retail"
-    },
-    title: "dotons - signup"
-  };
+  var context = {};
+  context.roles = _.cloneDeep(ROLES);
+  delete context.roles.ADMIN; // dont want to create admin accounts
+
+  context.title = "dotons - signup";
+
+  // set flash message if exists
+  context.message = req.flash("signupMessage");
+
+  console.log("context:", context);
   res.render("signup", context);
 };
 
 // GET /profile
 ctrl.prototype.profile = function(req, res) {
-  console.log(req.user.accountType);
+  console.log(req.user.role);
   const priceListPromise = PriceListDal.getPriceList();
   priceListPromise
     .then((priceList) => {
       var price;
-      switch (req.user.accountType) {
-        case ACCOUNT_TYPES.BUSINESS:
+      switch (req.user.role) {
+        case ROLES.BUSINESS:
           price = priceList.businessPrice;
           break;
-        case ACCOUNT_TYPES.PRIVATE:
+        case ROLES.PRIVATE:
           price = priceList.privatePrice;
           break;
-        case ACCOUNT_TYPES.PRIVATE_RETAIL:
+        case ROLES.PRIVATE_RETAIL:
           price = priceList.privateRetailsPrice;
           break;
-        case ACCOUNT_TYPES.BUSINESS_RETAIL:
+        case ROLES.BUSINESS_RETAIL:
           price = priceList.businessRetailPrice;
           break;
         default:
           price = priceList.privatePrice;
       }
-
       res.render("profile", {
         email: req.user.email,
         price
