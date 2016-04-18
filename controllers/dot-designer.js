@@ -1,5 +1,5 @@
 const multer = require("multer");
-const upload = multer({ storage: multer.memoryStorage({}) }).single("dot-design");
+const upload = multer({ dest: "uploads/dot_designs"}).single("dot-design");
 const path = require("path");
 const fs = require("fs");
 

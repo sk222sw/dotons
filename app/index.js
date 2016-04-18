@@ -7,7 +7,7 @@ if (form) {
   if (form.addEventListener) {
     form.addEventListener("submit", e => {
       e.preventDefault();
-      const file = document.getElementById("upload-submit").files[0];
+      const file = document.getElementById("dot-design").files[0];
 
       const reader = new FileReader();
       reader.onload = () => {
@@ -15,6 +15,17 @@ if (form) {
         output.src = reader.result;
       }
       reader.readAsDataURL(file);
+
+      console.log(file);
+      const formData = new FormData();
+      formData.append("dot-design", file);
+
+      request
+        .post("/designer/upload")
+        .send(formData)
+        .end((err, res) => {
+          console.log(res.body);
+        });
 
       console.log(form);
     }, false);
