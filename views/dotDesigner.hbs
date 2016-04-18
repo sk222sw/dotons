@@ -1,13 +1,21 @@
-<form id="upload-form"
-         enctype="multipart/form-data"
-         action="/designer/upload"
-         method="post">
-      <input type="file" name="dot-design" id="dot-design"/>
-      <input type="submit" value="Upload Image" name="submit" id="upload-submit" />
-      <span id = "status"></span>
-
-<input type="submit" value="Save Image" name="submit" id="save-submit" />
 
 
 
-<canvas id="canvas" width="300" height="300"></canvas>
+
+
+
+<div class="row">
+  <div class="offset-by-three one-third column">
+    <canvas id="canvas" width="300" height="300"></canvas>
+    <form id="upload-form"
+             enctype="multipart/form-data"
+             action="/designer/upload"
+             method="post">
+          <input type="file" name="dot-design" id="dot-design"/>
+          <input type="submit" value="Upload Image" name="submit" id="upload-submit" />
+          <span id = "status"></span>
+
+    <input type="submit" value="Save Image" name="submit" id="save-submit" />
+
+  </div>
+</div>
