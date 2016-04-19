@@ -68,10 +68,39 @@ describe("routes", () => {
     });
   });
 
+  it("should redirect to login when trying to access admin-page as non admin", done => {
+    server
+    .post("/login")
+    .send({ email: "asd", password: "asd" })
+    .end(() => {
+      server
+      .get("/admin")
+      .end((err, res) => {
+        expect(res.header.location).to.include("/login");
+        done();
+      });
+    });
+  });
+
+  it("should show admin-page when admin tries to access it", done => {
+    // this test fails :S no idea why
+    server
+      .post("/login")
+      .send({ email: "admin@dotons.com", password: "123456" })
+      .end(() => {
+        server
+        .get("/admin")
+        .end((err, res) => {
+          expect(res.header.location).to.include("/admin");
+          done();
+        });
+      });
+  });
+
   it("should redirect to /signup when signup fails", done => {
     server
       .post("/signup")
-      .send({ email: "hej@hej.com", password: "dunno" })
+      .send({ email: "hej@hej.com", password: "asdasd" })
       .end((err, res) => {
         expect(res.header.location).to.include("/signup");
         done();
@@ -95,4 +124,5 @@ describe("routes", () => {
       done();
     });
   });
+
 });

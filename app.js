@@ -39,6 +39,16 @@ app.use((req, res, next) => {
 
 // setup multer for fileupload
 
+const isValidImage = require("./modules/isValidImage");
+const http = require('http');
+var url = 'http://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif';
+http.get(url, function (res) {
+    res.once('data', function (chunk) {
+        res.destroy();
+        console.log(isValidImage(chunk));
+        //=> {ext: 'gif', mime: 'image/gif'}
+    });
+});
 
 
 require("./routes/routes.js")(app, passport);
