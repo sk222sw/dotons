@@ -38,9 +38,6 @@ app.use((req, res, next) => {
 });
 
 // setup multer for fileupload
-
-
-
 require("./routes/routes.js")(app, passport);
 
 connect()
