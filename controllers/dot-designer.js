@@ -18,7 +18,7 @@ ctrl.prototype.index = function(req, res) {
   res.render("dotDesigner");
 };
 
-ctrl.prototype.uploadToMemory = function(req, res) {
+ctrl.prototype.upload = function(req, res) {
 
   upload(req, res, err => {
     if (err) return res.end("Error uploading file");

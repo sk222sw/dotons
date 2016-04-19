@@ -5,6 +5,7 @@ module.exports = function(role, redirectTo) {
       next();
     } else {
       console.log("unahtorazed")
+      
       res.redirect(redirectTo);
     }
   };

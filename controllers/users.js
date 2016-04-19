@@ -24,7 +24,6 @@ ctrl.prototype.signup = function(req, res) {
   // set flash message if exists
   context.message = req.flash("signupMessage");
 
-  console.log("context:", context);
   res.render("signup", context);
 };
 
@@ -61,5 +60,6 @@ ctrl.prototype.profile = function(req, res) {
     });
   console.log("PROFILE PAGE");
 };
+
 
 module.exports = new ctrl();
