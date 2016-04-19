@@ -50,5 +50,5 @@ module.exports = function (app) {
   app.post("/designer/upload", dotDesigner.uploadToMemory);
 
   // admin routes
-  app.get("/admin", needsRole("admin"), admin.index);
+  app.get("/admin", needsRole("admin", "/profile"), admin.index);
 };

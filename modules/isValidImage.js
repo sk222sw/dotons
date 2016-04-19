@@ -4,7 +4,6 @@ module.exports = function(buffer) {
   // Should be sufficient to verify that an image is the right format
   const validExtensions = ["jpg", "png", "gif", "bmp"];
   const validMimes = ["image/jpeg", "image/png", "image/gif", "image/bmp"];
-  console.log(buffer);
   const blob = fileType(buffer);
 
 
