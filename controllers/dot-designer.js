@@ -1,40 +1,28 @@
-const multer = require("multer");
-//const upload = multer({ dest: "uploads/dot_designs"}).single("dot-design");
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/dot_designs");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname); // timestamp or smth for file?
-  }
-});
-const upload = multer({ storage: storage }).single("dot-design");
-const path = require("path");
 const fs = require("fs");
-
+const upload = require("../config/multer.js");
+const isValidImage = require("../modules/isValidImage");
 const ctrl = function() {};
+
+const UPLOAD_PATH = "uploads/dot_designs/";
 
 ctrl.prototype.index = function(req, res) {
   res.render("dotDesigner");
 };
 
-ctrl.prototype.upload = function(req, res) {
-
+ctrl.prototype.upload = function(req, res, next) {
   upload(req, res, err => {
-    if (err) return res.end("Error uploading file");
-    // test to save File
-    console.log(req.file);
-    res.end(req.file.buffer);
+    if (err) return res.end("Something went wrong");
+    if (!isValidImage(req.file.buffer)) return res.end("Wrong file format");
+
+    const filename = UPLOAD_PATH + req.file.originalname;
+    fs.writeFile(filename, req.file.buffer, error => {
+      if (error) {
+        next(error);
+      } else {
+        res.end("Success!");
+      }
+    });
   });
 };
-
-ctrl.prototype.saveFile = function(req, res, next) {
-  const fileName = "uploads/dot_designs/" + req.file.originalname;
-  fs.writeFile(fileName, req.file.buffer, err => {
-    if (err) return next(err);
-    res.end("Success!");
-  });
-};
-
 
 module.exports = new ctrl();
