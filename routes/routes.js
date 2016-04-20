@@ -47,8 +47,8 @@ module.exports = function (app) {
   });
   // tool
   app.get("/designer", dotDesigner.index);
-  app.post("/designer/upload", dotDesigner.uploadToMemory);
+  app.post("/designer/upload", dotDesigner.upload);
 
   // admin routes
-  app.get("/admin", needsRole("admin"), admin.index);
+  app.get("/admin", needsRole("admin", "/profile"), admin.index);
 };

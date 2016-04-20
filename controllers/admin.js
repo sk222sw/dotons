@@ -5,4 +5,5 @@ ctrl.prototype.index = function(req, res) {
 };
 
 
+
 module.exports = new ctrl();
