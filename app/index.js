@@ -11,8 +11,9 @@ if (form && form.addEventListener) {
     e.preventDefault();
 
     const file = document.getElementById("dot-design").files[0];
-    const target = event.explicitOriginalTarget || event.relatedTarget ||
-        document.activeElement || {}; // for knowing which submit was pressed
+    const target = event.explicitOriginalTarget ||
+                   event.relatedTarget ||
+                   document.activeElement || {}; // for knowing which submit was pressed
 
     upload(file, target);
   }, false);
@@ -20,7 +21,6 @@ if (form && form.addEventListener) {
 
 function upload(file, target) {
   const imageUploader = new ImageUploader();
-  const ctx = canvas.getContext("2d");
 
   if (!file) {
     console.log("No file chosen");
@@ -28,17 +28,17 @@ function upload(file, target) {
   }
 
   if (target.value === form.elements["upload-submit"].value) {
-    imageUploader.uploadToClient(file)
-      .then(response => {
-        // is this how to use promises??
-        imageUploader.drawPreview(ctx, response.currentTarget.result);
-      })
+    imageUploader.isValidImage(file)
+      .then(imageUploader.uploadToClient)
+      .then(imageUploader.drawPreview)
       .catch(error => {
         console.log(error);
       });
   } else if (target.value === form.elements["save-submit"].value) {
     imageUploader.uploadToServer(file)
-      .then((response) => { console.log(response); })
+      .then(response => {
+        console.log(response.text);
+      })
       .catch(error => {
         console.log(error);
       });

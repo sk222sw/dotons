@@ -46,12 +46,15 @@ app.use((req, res, next) => {
 require("./routes/routes.js")(app, passport);
 
 
+
 connect()
   .on("error", console.log)
   .on("disconnected", connect)
   .once("open", () => {
     console.log("connection to db open");
   });
+
+
 
 const seeds = require("./models/seeds");
 console.log("seed() called in app.js");

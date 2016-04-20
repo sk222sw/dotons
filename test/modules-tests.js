@@ -1,20 +1,46 @@
 const mocha = require("mocha");
 const assert = require("chai").assert;
-const readChunk = require("read-chunk");
+const fs = require("fs");
 
 const isValidImage = require("../modules/isValidImage");
 
+
 describe("isValidImage-module", () => {
-  // Probably needs more test cases
+  /*
+    file-upload is handled by multer. since multers req.file object
+    looks something like this:
+    {
+      mimetype: "image/png",
+      originalname: "testimage.png"
+    }
+    it should be sufficient to simply make an object that looks
+    the same and send it to isValidImage.
+  */
   describe("isValidImage()", () => {
-    it("should return true on .png", () => {
-      const buffer = readChunk.sync("./public/images/dotons-product.png", 0, 12);
-      assert.equal(isValidImage(buffer), true);
+    it("1. should return true on .png", () => {
+      const image = {
+        mimetype: "image/png",
+        originalname: "testimage.png"
+      };
+      assert.equal(isValidImage(image), true);
     });
 
+    it("2. should return true on .jpg", () => {
+      const image = {
+        mimetype: "image/jpg",
+        originalname: "testimage.jpg"
+      };
+      assert.equal(isValidImage(image), true);
+    });
+
+
+
     it("should return false on .ico", () => {
-      const buffer = readChunk.sync("./public/images/favicon.ico", 0, 12);
-      assert.equal(isValidImage(buffer), false);
+      const image = {
+        mimeType: "image/ico",
+        originalname: "favicon.ico"
+      };
+      assert.equal(isValidImage(image), false);
     });
   });
 });
