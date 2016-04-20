@@ -1,6 +1,6 @@
 require("./stylesheets/style.scss");
 import request from "superagent";
-import ImageUploader from "./ImageUploader";
+import ImageUploader from "./imageUploader";
 
 // TODO: Better error-presentation for the user, flashhshhshshhs-messhahshshhages
 
