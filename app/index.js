@@ -1,7 +1,5 @@
-require("./stylesheets/style.scss");
-import request from "superagent";
 import ImageUploader from "./imageUploader";
-
+import Designer from "./designer";
 // TODO: Better error-presentation for the user, flashhshhshshhs-messhahshshhages
 
 const form = document.getElementById("upload-form");
@@ -21,6 +19,7 @@ if (form && form.addEventListener) {
 
 function upload(file, target) {
   const imageUploader = new ImageUploader();
+  const designer = new Designer();
 
   if (!file) {
     console.log("No file chosen");
@@ -30,7 +29,7 @@ function upload(file, target) {
   if (target.value === form.elements["upload-submit"].value) {
     imageUploader.isValidImage(file)
       .then(imageUploader.uploadToClient)
-      .then(imageUploader.drawPreview)
+      .then(img => designer.initiate(img))
       .catch(error => {
         console.log(error);
       });
