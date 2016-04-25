@@ -1,10 +1,4 @@
 const mongoose = require("mongoose");
+const dotDesignSchema = require("./dotDesignSchema");
 
-const dotDesignSchema = mongoose.Schema({
-  name: String,
-  imageUrl: String
-});
-
-const DotDesign = mongoose.model("DotDesign", dotDesignSchema);
-
-module.exports = DotDesign;
+//module.exports = mongoose.Model("DotDesign", dotDesignSchema);

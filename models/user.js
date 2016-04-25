@@ -2,9 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt-node");
 
 const roles = require("./enums/roles").getRoleValues;
-
-var info;
-const isCompany = true;
+const dotDesignSchema = require("./dotDesignSchema");
 
 const userInfo = mongoose.Schema({
   firstName: String,
@@ -14,6 +12,9 @@ const userInfo = mongoose.Schema({
 const companyInfo = mongoose.Schema({
   companyName: String,
 });
+
+
+
 
 const userSchema = mongoose.Schema({
   email: {
@@ -34,7 +35,8 @@ const userSchema = mongoose.Schema({
     enum: roles()
   },
   userInfo,
-  companyInfo
+  companyInfo,
+  designs: [dotDesignSchema]
 });
 
 userSchema.methods.generateHash = function(password) {
