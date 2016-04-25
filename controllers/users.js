@@ -9,7 +9,7 @@ ctrl.prototype.login = function(req, res) {
   if (req.isAuthenticated()) { res.redirect("/profile"); }
   res.render('login', {
     title: 'dotons - login!',
-    message: req.flash("loginMessage")
+    message: req.flash("loginMessage"),
   });
 };
 
@@ -30,7 +30,7 @@ ctrl.prototype.signup = function(req, res) {
 // GET /profile
 ctrl.prototype.profile = function(req, res) {
   console.log(req.user.role);
-  console.log(req.user);
+  console.log(req.user.designs);
   const priceListPromise = PriceListDal.getPriceList();
   priceListPromise
     .then((priceList) => {
@@ -60,7 +60,6 @@ ctrl.prototype.profile = function(req, res) {
     .catch((error) => {
       console.log(error);
     });
-  console.log("PROFILE PAGE");
 };
 
 
