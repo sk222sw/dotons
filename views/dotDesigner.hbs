@@ -1,12 +1,6 @@
-
-
-
-
-
-
 <div class="row">
   <div class="offset-by-three one-third column">
-    <canvas id="canvas" width="300" height="300"></canvas>
+    <canvas id="canvas"></canvas>
     <form id="upload-form"
              enctype="multipart/form-data"
              action="/designer/upload"
@@ -16,6 +10,7 @@
           <span id = "status"></span>
 
     <input type="submit" value="Save Image" name="submit" id="save-submit" />
-
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.6.0/fabric.min.js"></script>
+  <script src="javascripts/designer.js"></script>
 </div>

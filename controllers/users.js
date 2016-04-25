@@ -30,6 +30,7 @@ ctrl.prototype.signup = function(req, res) {
 // GET /profile
 ctrl.prototype.profile = function(req, res) {
   console.log(req.user.role);
+  console.log(req.user);
   const priceListPromise = PriceListDal.getPriceList();
   priceListPromise
     .then((priceList) => {
@@ -52,7 +53,8 @@ ctrl.prototype.profile = function(req, res) {
       }
       res.render("profile", {
         email: req.user.email,
-        price
+        price,
+        designs: req.user.designs
       });
     })
     .catch((error) => {
