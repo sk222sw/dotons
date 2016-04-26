@@ -1,18 +1,23 @@
-const expect = require("chai").expect;
-const request = require("supertest");
-const Designer = require("../../app/designer");
+// const expect = require("chai").expect;
+import { expect } from "chai";
+import Designer from "../../app/designer";
 
 describe("designer", () => {
-  console.log(typeof Designer);
   const designer = new Designer();
   describe("resize image()", () => {
     it("should change image size to max size if width > max width", () => {
-      var image = {
+      let image = {
+        width: 1000,
+        height: 100
+      };
+
+      const expected = {
         width: 100,
         height: 100
       };
+
       image = designer.resize(image);
-      console.log(image);
+      expect(image.width).to.equal(expected.width);
     });
   });
 });
