@@ -1,6 +1,9 @@
 const multer = require("multer");
-const isValidImage = require("../modules/isValidImage");
 const storage = multer.memoryStorage();
-const upload = multer({ storage }).single("dot-design");
+const limits = {
+  fileSize: 10000, //max file size change to something relevant later
+  files: 1
+};
+const upload = multer({ storage, limits }).single("dot-design");
 
 module.exports = upload;
