@@ -38,6 +38,8 @@ function upload(file, target) {
     imageUploader.uploadToServer(file)
       .then(response => {
         console.log(response.text);
+        // Server responds with LIMIT_FILE_SIZE if the size is bigger 
+        // than the one set in multer config
         if (response.text === "LIMIT_FILE_SIZE") {
           console.log("File size to big man"); // flash message
         }
