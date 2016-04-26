@@ -6,6 +6,8 @@ const LocalStrategy = require("passport-local").Strategy;
 const users = require("../controllers/users");
 const admin = require("../controllers/admin");
 const dotDesigner = require("../controllers/dot-designer.js");
+const fs = require("fs");
+const path = require("path");
 
 module.exports = function (app) {
   app.get('/', (req, res) => {
@@ -48,6 +50,13 @@ module.exports = function (app) {
   // tool
   app.get("/designer", dotDesigner.index);
   app.post("/designer/upload", dotDesigner.upload);
+  app.get("/uploads/dot_designs/:imagename", isLoggedIn, (req, res) => {
+    const imagename = req.params.imagename;
+    fs.readFile("uploads/dot_designs/" + imagename, (err, data) => {
+      if (err) throw err;
+      res.sendFile(path.resolve("uploads/dot_designs/" + imagename));
+    });
+  });
 
   // admin routes
   app.get("/admin", needsRole("admin", "/profile"), admin.index);

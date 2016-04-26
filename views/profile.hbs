@@ -2,5 +2,12 @@
 <p>Welcome {{email}}</p>
 <p>Du betalar {{price}} kr för en dot! </p>
 
+<div id="designs">
+{{#each designs}}
+  <img src="" class="hidden" data-image-url="{{imageUrl}}" />
+{{/each}}
+
+</div>
+
 
 <a href="/logout">logout</a>

@@ -1,12 +1,13 @@
 import ImageUploader from "./imageUploader";
 import Designer from "./designer";
-// TODO: Better error-presentation for the user, flashhshhshshhs-messhahshshhages
+import request from "superagent";
 
+// TODO: Better error-presentation for the user, flashhshhshshhs-messhahshshhages
 const form = document.getElementById("upload-form");
 
 if (form && form.addEventListener) {
-  form.addEventListener("submit", e => {
-    e.preventDefault();
+  form.addEventListener("submit", event => {
+    event.preventDefault();
 
     const file = document.getElementById("dot-design").files[0];
     const target = event.explicitOriginalTarget ||
@@ -42,4 +43,30 @@ function upload(file, target) {
         console.log(error);
       });
   }
+}
+
+/* get user images, refactor to own file l8r */
+/* needs refactor badly //TODO */
+const designsDiv = document.getElementById("designs");
+if (designsDiv) {
+  console.log(designsDiv);
+  const imgs = designsDiv.getElementsByTagName("img");
+
+  Array.prototype.forEach.call(imgs, item => {
+    console.log(item.getAttribute("data-image-url"));
+
+    request
+      .get(item.getAttribute("data-image-url"))
+      .end((err, res) => {
+        console.log("hehlhö");
+        if (err) {
+          console.log("something went wrong");
+        } else {
+          console.log(res);
+          item.src = item.getAttribute("data-image-url");
+          console.log(item);
+          item.classList.toggle("hidden");
+        }
+      });
+  });
 }
