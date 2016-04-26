@@ -5,7 +5,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const users = require("../controllers/users");
 const admin = require("../controllers/admin");
-const dotDesigner = require("../controllers/dot-designer.js");
+const dotDesigner = require("../controllers/dotDesigns.js");
 const fs = require("fs");
 const path = require("path");
 
@@ -48,12 +48,12 @@ module.exports = function (app) {
     res.redirect("/");
   });
   // tool
-  app.get("/designer", isLoggedIn, dotDesigner.index);
-  app.post("/designer/upload", dotDesigner.upload);
+  app.get("/designer", isLoggedIn, dotDesigner.new);
+  app.post("/designer/upload", dotDesigner.create);
   app.get("/uploads/dot_designs/:imagename", isLoggedIn, (req, res) => {
     const imagename = req.params.imagename;
     fs.readFile("uploads/dot_designs/" + imagename, (err, data) => {
-      if (err) throw err;
+      if (err) console.log(err);
       res.sendFile(path.resolve("uploads/dot_designs/" + imagename));
     });
   });

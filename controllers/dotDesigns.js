@@ -6,10 +6,14 @@ const ctrl = function() {};
 const UPLOAD_PATH = "uploads/dot_designs/";
 
 ctrl.prototype.index = function(req, res) {
+  // show generic dots here
+}
+
+ctrl.prototype.new = function(req, res) {
   res.render("dotDesigner");
 };
 
-ctrl.prototype.upload = function(req, res, next) {
+ctrl.prototype.create = function(req, res, next) {
   upload(req, res, err => {
     if (err) return res.end("Something went wrong");
     if (!isValidImage(req.file.buffer)) return res.end("Wrong file format");
