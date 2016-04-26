@@ -19,6 +19,7 @@ ctrl.prototype.signup = function(req, res) {
   context.roles = _.cloneDeep(ROLES);
   delete context.roles.ADMIN; // dont want to create admin accounts
 
+
   context.title = "dotons - signup";
 
   // set flash message if exists
