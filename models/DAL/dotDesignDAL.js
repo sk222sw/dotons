@@ -1,5 +1,5 @@
 const User = require("../user");
-const DotDesign = require("../dotDesignSchema").model;
+const DotDesign = require("../dotDesign").model;
 const mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
 

@@ -1,7 +1,7 @@
 import request from "superagent";
 import Promise from "bluebird";
 
-const MAX_SIZE = 4000;
+const MAX_SIZE = 10000;
 
 export default class ImageUploader {
   uploadToClient(image) {

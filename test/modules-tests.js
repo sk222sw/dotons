@@ -6,33 +6,20 @@ const isValidImage = require("../modules/isValidImage");
 
 
 describe("isValidImage-module", () => {
-  /*
-    file-upload is handled by multer. since multers req.file object
-    looks something like this:
-    {
-      mimetype: "image/png",
-      originalname: "testimage.png"
-    }
-    it should be sufficient to simply make an object that looks
-    the same and send it to isValidImage.
-  */
+  // TODO: More test-cases with different types of images.
+  // could be good to test files that have a changed extension
+  // to ensure that the isValidImage-module checks the real 
+  // mime-type of the image and not just for extension.
   describe("isValidImage()", () => {
     it("1. should return true on .png", () => {
-      const image = {
-        mimetype: "image/png",
-        originalname: "testimage.png"
-      };
+      const image = fs.readFileSync("public/images/dotons-product.png");
       assert.equal(isValidImage(image), true);
     });
 
     it("2. should return true on .jpg", () => {
-      const image = {
-        mimetype: "image/jpg",
-        originalname: "testimage.jpg"
-      };
+      const image = fs.readFileSync("test/assets/ladda_ned.jpg");
       assert.equal(isValidImage(image), true);
     });
-
 
 
     it("should return false on .ico", () => {
