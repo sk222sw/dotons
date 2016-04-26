@@ -60,7 +60,7 @@ if (designsDiv) {
       .end((err, res) => {
         console.log("hehlhö");
         if (err) {
-          console.log("something went wrong");
+          console.log(err);
         } else {
           console.log(res);
           item.src = item.getAttribute("data-image-url");

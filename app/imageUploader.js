@@ -25,7 +25,7 @@ export default class ImageUploader {
         .send(formData)
         .end((err, res) => {
           if (err) {
-            reject("Something went wrong");
+            reject(err);
           } else {
             resolve(res);
           }
