@@ -1,10 +1,7 @@
 import request from "superagent";
+import Promise from "bluebird";
 
 export default class ImageUploader {
-  constructor() {
-
-  }
-
   uploadToClient(image) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -34,10 +31,6 @@ export default class ImageUploader {
           }
         });
     });
-  }
-
-  drawPreview(result) {
-    return result;
   }
 
   isValidImage(image) {
