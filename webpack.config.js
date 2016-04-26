@@ -40,7 +40,7 @@ module.exports = {
       }
     }),
     new ExtractTextPlugin("../stylesheets/main.css"),
-    new webpack.optimize.CommonsChunkPlugin("designer", "designer.js"),
+    // new webpack.optimize.CommonsChunkPlugin("designer", "designer.js"),
   ]
 };
 

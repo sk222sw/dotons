@@ -6,8 +6,8 @@ import request from "superagent";
 const form = document.getElementById("upload-form");
 
 if (form && form.addEventListener) {
-  form.addEventListener("submit", e => {
-    e.preventDefault();
+  form.addEventListener("submit", event => {
+    event.preventDefault();
 
     const file = document.getElementById("dot-design").files[0];
     const target = event.explicitOriginalTarget ||
