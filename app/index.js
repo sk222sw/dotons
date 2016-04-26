@@ -38,6 +38,9 @@ function upload(file, target) {
     imageUploader.uploadToServer(file)
       .then(response => {
         console.log(response.text);
+        if (response.text === "LIMIT_FILE_SIZE") {
+          console.log("File size to big man"); // flash message
+        }
       })
       .catch(error => {
         console.log(error);

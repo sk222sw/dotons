@@ -17,12 +17,13 @@ ctrl.prototype.new = function(req, res) {
 
 ctrl.prototype.create = function(req, res, next) {
   upload(req, res, err => {
-    if (err) return res.end("Something went wrong");
+    if (err) return res.end(err.code);
     if (!isValidImage(req.file.buffer)) return res.end("Wrong file format");
 
     const filename = sanitizeFileName(req.file.originalname);
 
     fs.writeFile(UPLOAD_PATH + filename, req.file.buffer, error => {
+      console.log(req.file);
       if (error) {
         next(error);
       } else {

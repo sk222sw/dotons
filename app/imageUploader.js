@@ -1,6 +1,8 @@
 import request from "superagent";
 import Promise from "bluebird";
 
+const MAX_SIZE = 4000;
+
 export default class ImageUploader {
   uploadToClient(image) {
     return new Promise((resolve, reject) => {
@@ -17,6 +19,7 @@ export default class ImageUploader {
 
   uploadToServer(image) {
     return new Promise((resolve, reject) => {
+      // if (image.size > MAX_SIZE) { return reject(new Error("Image exceeds max size")); }
       const formData = new FormData();
       formData.append("dot-design", image);
 
@@ -59,10 +62,12 @@ export default class ImageUploader {
             type = "unknown"; // Or you can use the blob.type as fallback
             break;
         }
-        if (type === "image/jpeg" || type === "image/png") {
+        if (image.size > MAX_SIZE) {
+          reject(new Error("Image size exceeds the max allowed"));
+        } else if (type === "image/jpeg" || type === "image/png") {
           resolve(image);
         } else {
-          reject("Not a valid image");
+          reject(new Error("Not a valid image"));
         }
       };
       reader.readAsArrayBuffer(image);
