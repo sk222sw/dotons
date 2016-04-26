@@ -1,7 +1,7 @@
 import request from "superagent";
 import Promise from "bluebird";
 
-const MAX_SIZE = 4000;
+const MAX_SIZE = 10000;
 
 export default class ImageUploader {
   uploadToClient(image) {
@@ -19,7 +19,7 @@ export default class ImageUploader {
 
   uploadToServer(image) {
     return new Promise((resolve, reject) => {
-      // if (image.size > MAX_SIZE) { return reject(new Error("Image exceeds max size")); }
+      if (image.size > MAX_SIZE) { return reject(new Error("Image exceeds max size")); }
       const formData = new FormData();
       formData.append("dot-design", image);
 

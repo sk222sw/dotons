@@ -1,4 +1,4 @@
-const DotDesign = require('../models/dotDesignSchema').model;
+const DotDesign = require('../models/dotDesign').model;
 const isLoggedIn = require("../modules/isLoggedIn");
 const needsRole = require("../modules/needsRole");
 const passport = require("passport");
@@ -59,5 +59,5 @@ module.exports = function (app) {
   });
 
   // admin routes
-  app.get("/admin", needsRole("admin", "/profile"), admin.index);
+  app.get("/admin", needsRole("Admin", "/"), admin.index);
 };
