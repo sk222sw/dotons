@@ -33,6 +33,7 @@ ctrl.prototype.profile = function(req, res) {
   console.log(req.user.role);
   console.log(req.user.designs);
   const priceListPromise = PriceListDal.getPriceList();
+
   priceListPromise
     .then((priceList) => {
       var price;

@@ -1,6 +1,8 @@
 const fs = require("fs");
 const upload = require("../config/multer.js");
 const isValidImage = require("../modules/isValidImage");
+const dotDesignDAL = require("../models/DAL/dotDesignDAL");
+const DotDesign = require("../models/dotDesignSchema").model;
 const ctrl = function() {};
 
 const UPLOAD_PATH = "uploads/dot_designs/";
@@ -19,17 +21,23 @@ ctrl.prototype.create = function(req, res, next) {
     if (!isValidImage(req.file.buffer)) return res.end("Wrong file format");
 
     const filename = sanitizeFileName(req.file.originalname);
-    console.log(filename);
+
     fs.writeFile(UPLOAD_PATH + filename, req.file.buffer, error => {
       if (error) {
         next(error);
       } else {
+        console.log(req.user);
+        dotDesignDAL.addDotDesignToUser(req.user.id, new DotDesign({
+          name: filename,
+          imageUrl: UPLOAD_PATH + filename
+        }));
         res.end("Success!");
       }
     });
   });
 };
 
+/** move out to module? */
 function sanitizeFileName(filename) {
   const parts = filename.split(".");
   const ext = parts[parts.length - 1];

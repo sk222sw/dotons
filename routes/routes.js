@@ -1,4 +1,4 @@
-const DotDesign = require('../models/dotDesign');
+const DotDesign = require('../models/dotDesignSchema').model;
 const isLoggedIn = require("../modules/isLoggedIn");
 const needsRole = require("../modules/needsRole");
 const passport = require("passport");

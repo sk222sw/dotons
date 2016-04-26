@@ -1,4 +1,4 @@
-const DotDesign = require("./dotDesign");
+const DotDesign = require("./dotDesignSchema").model;
 const User = require("./user");
 const PriceList = require("./priceList");
 
@@ -16,7 +16,7 @@ function seed() {
   });
 
   User.find((err, user) => {
-    // if (user.length) return;
+    if (user.length) return;
     console.log("SEEDING USERS");
     const user1 = new User({
       email: "user@user.com",
@@ -33,7 +33,7 @@ function seed() {
     });
     const design = user1.designs[0];
     console.log(design);
-    console.log(design.isNew)
+    console.log(design.isNew);
     user1.save(error => {
       if (error) console.log(error);
       console.log("success!");

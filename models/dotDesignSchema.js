@@ -5,4 +5,9 @@ const dotDesignSchema = mongoose.Schema({
   imageUrl: String
 });
 
-module.exports = dotDesignSchema;
+const DotDesign = mongoose.model("DotDesign", dotDesignSchema);
+
+module.exports = {
+  schema: dotDesignSchema,
+  model: DotDesign
+};
