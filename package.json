@@ -9,7 +9,7 @@
     "deploy-windows": "SET NODE_ENV=production & supervisor ./bin/www",
     "deploy": "NODE_ENV=production supervisor ./bin/www",
     "build": "webpack --config webpack.production.config.js -p",
-    "test-client": "node_modules/.bin/mocha/ --compilers js:babel-core/register test/client/"
+    "test-client": "node_modules/.bin/mocha/ -c test/client/designer-tests.js --compilers js:babel-register"
   },
   "dependencies": {
     "bcrypt-node": "^0.1.0",
