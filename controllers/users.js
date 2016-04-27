@@ -1,70 +1,92 @@
 const PriceListDal = require("../models/DAL/priceListDAL");
+const _ = require("lodash");
+const ROLES = require("../models/enums/roles").roles;
 
+/**
+ * Controller for handling users
+ */
 const ctrl = function() {};
 
-const ACCOUNT_TYPES = {
-  BUSINESS: 1,
-  PRIVATE: 2,
-  PRIVATE_RETAIL: 3,
-  BUSINESS_RETAIL: 4
-};
 
-// GET /login
+/**
+ * GET /login
+ *
+ * Action for user login
+ *
+ * @param req (description)
+ * @param res (description)
+ */
 ctrl.prototype.login = function(req, res) {
+  // TODO: Separate controller for login and users?
+  // Like SessionsController - login && UsersController for creating/updating users?
   if (req.isAuthenticated()) { res.redirect("/profile"); }
   res.render('login', {
     title: 'dotons - login!',
+    message: req.flash("loginMessage"),
   });
 };
 
-// GET /signup
+
+/**
+ * GET /signup
+ *
+ * @param req (description)
+ * @param res (description)
+ */
 ctrl.prototype.signup = function(req, res) {
-  // Store account types in database later probably
-  const context = {
-    accountTypes: {
-      1: "Business",
-      2: "Private",
-      3: "Store retail",
-      4: "Business retail"
-    },
-    title: "dotons - signup"
-  };
+  // TODO: rename action to new?
+  var context = {};
+  context.roles = _.cloneDeep(ROLES);
+  delete context.roles.ADMIN; // dont want to create admin accounts
+
+  context.title = "dotons - signup";
+
+  // set flash message if exists
+  context.message = req.flash("signupMessage");
+
   res.render("signup", context);
 };
 
-// GET /profile
+/**
+ *  GET /profile
+ * 
+ * @param req (description)
+ * @param res (description)
+ */
 ctrl.prototype.profile = function(req, res) {
-  console.log(req.user.accountType);
+  // TODO: rename action to show?
+
   const priceListPromise = PriceListDal.getPriceList();
+
   priceListPromise
     .then((priceList) => {
       var price;
-      switch (req.user.accountType) {
-        case ACCOUNT_TYPES.BUSINESS:
+      switch (req.user.role) {
+        case ROLES.BUSINESS:
           price = priceList.businessPrice;
           break;
-        case ACCOUNT_TYPES.PRIVATE:
+        case ROLES.PRIVATE:
           price = priceList.privatePrice;
           break;
-        case ACCOUNT_TYPES.PRIVATE_RETAIL:
+        case ROLES.PRIVATE_RETAIL:
           price = priceList.privateRetailsPrice;
           break;
-        case ACCOUNT_TYPES.BUSINESS_RETAIL:
+        case ROLES.BUSINESS_RETAIL:
           price = priceList.businessRetailPrice;
           break;
         default:
           price = priceList.privatePrice;
       }
-
       res.render("profile", {
         email: req.user.email,
-        price
+        price,
+        designs: req.user.designs
       });
     })
     .catch((error) => {
       console.log(error);
     });
-  console.log("PROFILE PAGE");
 };
+
 
 module.exports = new ctrl();

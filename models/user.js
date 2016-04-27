@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt-node");
 
-var info;
-const isCompany = true;
-
+const roles = require("./enums/roles").getRoleValues;
+const dotDesignSchema = require("./dotDesign").schema;
 
 const userInfo = mongoose.Schema({
   firstName: String,
@@ -16,12 +15,28 @@ const companyInfo = mongoose.Schema({
 
 
 
+
 const userSchema = mongoose.Schema({
-  email: String,
-  password: String,
-  accountType: Number,
+  email: {
+    type: String,
+    required: [true, "Email is required"],
+    minlength: [3, "Email is too short"],
+    maxlength: [100, "Email is too long"]
+  },
+  password: {
+    type: String,
+    required: [true, "Password is required"],
+    minlength: [6, "Password is too short"],
+    maxlength: [200, "Password is too long"]
+  },
+  role: {
+    type: String,
+    required: [true, "No role for user"],
+    enum: roles()
+  },
   userInfo,
-  companyInfo
+  companyInfo,
+  designs: [dotDesignSchema]
 });
 
 userSchema.methods.generateHash = function(password) {
