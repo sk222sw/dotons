@@ -48,7 +48,7 @@ module.exports = function (app) {
     res.redirect("/");
   });
   // tool
-  app.get("/designer", isLoggedIn, dotDesigner.new);
+  app.get("/designer", dotDesigner.new);
   app.post("/designer/upload", dotDesigner.create);
   app.get("/uploads/dot_designs/:imagename", isLoggedIn, (req, res) => {
     const imagename = req.params.imagename;

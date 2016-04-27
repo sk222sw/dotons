@@ -20,7 +20,6 @@ if (form && form.addEventListener) {
 
 function upload(file, target) {
   const imageUploader = new ImageUploader();
-  const designer = new Designer();
 
   if (!file) {
     console.log("No file chosen");
@@ -30,7 +29,7 @@ function upload(file, target) {
   if (target.value === form.elements["upload-submit"].value) {
     imageUploader.isValidImage(file)
       .then(imageUploader.uploadToClient)
-      .then(img => designer.initiate(img))
+      .then(img => new Designer(img))
       .catch(error => {
         console.log(error);
       });

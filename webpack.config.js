@@ -4,9 +4,11 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const PATHS = {
   app: path.join(__dirname, 'app'),
+  style: path.join(__dirname, "app", "stylesheets"),
   styles: path.join(__dirname, 'public', "stylesheets"),
-  build: path.join(__dirname, 'public', 'javascripts'),
+  build: path.join(__dirname, 'public', 'javascripts')
 };
+console.log(PATHS.style);
 module.exports = {
   context: path.join(__dirname, "app"),
   debug: true,
@@ -14,6 +16,11 @@ module.exports = {
   entry: {
     app: "./index.js",
     designer: ["./designer.js", "./imageUploader.js"],
+    main: [
+      "./stylesheets/vendor/normalize.css",
+      "./stylesheets/vendor/skeleton.css",
+      "./stylesheets/style.css"
+    ]
   },
   output: {
     path: PATHS.build,
@@ -27,9 +34,9 @@ module.exports = {
         include: PATHS.app,
       },
       {
-        test: /\.scss$/,
+        test: /\.css$/,
         loader: ExtractTextPlugin.extract("style-loader", "css-loader", "sass-loader"),
-        include: PATHS.app
+        include: PATHS.style
       }
     ]
   },
@@ -39,8 +46,7 @@ module.exports = {
         NOVE_ENV: JSON.stringify("production")
       }
     }),
-    new ExtractTextPlugin("../stylesheets/main.css"),
-    // new webpack.optimize.CommonsChunkPlugin("designer", "designer.js"),
+    new ExtractTextPlugin("../stylesheets/[name].css")
   ]
 };
 
