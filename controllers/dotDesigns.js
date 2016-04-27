@@ -3,6 +3,7 @@ const upload = require("../config/multer.js");
 const isValidImage = require("../modules/isValidImage");
 const dotDesignDAL = require("../models/DAL/dotDesignDAL");
 const DotDesign = require("../models/dotDesign").model;
+const PDFDocument = require("pdfkit");
 const ctrl = function() {};
 
 const UPLOAD_PATH = "uploads/dot_designs/";
@@ -20,6 +21,7 @@ ctrl.prototype.create = function(req, res, next) {
     if (err) return res.end(err.code);
     if (!isValidImage(req.file.buffer)) return res.end("Wrong file format");
 
+    // save the dot-design full size image
     const dot = new DotDesign();
     dot.name = dot.sanitizeFilename(req.file.originalname);
     dot.imageUrl = UPLOAD_PATH + dot.name;
@@ -33,6 +35,13 @@ ctrl.prototype.create = function(req, res, next) {
         res.end("Success!");
       }
     });
+
+    // create a pdf with 11mmx11mm
+    const doc11 = new PDFDocument();
+    doc11.image(UPLOAD_PATH + dot.name, 0, 0, 11, 11);
+
+    console.log(doc11);
+    // create a pdf with 10mmx10mm
   });
 };
 
