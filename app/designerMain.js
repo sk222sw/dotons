@@ -11,8 +11,8 @@ if (form && form.addEventListener) {
 
     const file = document.getElementById("dot-design").files[0];
     const target = event.explicitOriginalTarget ||
-                   event.relatedTarget ||
-                   document.activeElement || {}; // for knowing which submit was pressed
+      event.relatedTarget ||
+      document.activeElement || {}; // for knowing which submit was pressed
 
     upload(file, target);
   }, false);
