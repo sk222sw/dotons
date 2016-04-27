@@ -4,18 +4,46 @@ const isValidImage = require("../modules/isValidImage");
 const dotDesignDAL = require("../models/DAL/dotDesignDAL");
 const DotDesign = require("../models/dotDesign").model;
 const PDFDocument = require("pdfkit");
+
+
+/**
+ * Controller for dot designs. 
+ * Handles the dotDesign model
+ */
 const ctrl = function() {};
+
 
 const UPLOAD_PATH = "uploads/dot_designs/";
 
+/**
+ * Shows all generic dots
+ * 
+ * @param req (description)
+ * @param res (description)
+ */
 ctrl.prototype.index = function(req, res) {
-  // show generic dots here
+
 };
 
+/**
+ * Renders the dot-designer
+ *
+ * @param req (description)
+ * @param res (description)
+ */
 ctrl.prototype.new = function(req, res) {
   res.render("dotDesigner");
 };
 
+/**
+ * Creates a new dot design. Saves the dot design image as 3
+ * separate files - the original image, one 11x11mm pdf, one
+ * 10x10mm pdf.
+ *
+ * @param req (description)
+ * @param res (description)
+ * @param next (description)
+ */
 ctrl.prototype.create = function(req, res, next) {
   upload(req, res, err => {
     if (err) return res.end(err.code);
@@ -23,30 +51,49 @@ ctrl.prototype.create = function(req, res, next) {
 
     // save the dot-design full size image
     const dot = new DotDesign();
-    dot.name = dot.sanitizeFilename(req.file.originalname);
+    const filenames = dot.sanitizeFilename(req.file.originalname);
+    dot.name = filenames.original;
     dot.imageUrl = UPLOAD_PATH + dot.name;
 
     fs.writeFile(dot.imageUrl, req.file.buffer, error => {
-      console.log(req.file);
       if (error) {
         next(error);
       } else {
-        dotDesignDAL.addDotDesignToUser(req.user.id, dot);
-        // create a pdf with 11mmx11mm
-        const doc11 = new PDFDocument();
-        doc11.addPage({
-          size: [11, 11]
-        });
-        doc11.pipe(fs.createWriteStream(UPLOAD_PATH + "hehehe.pdf"));
-        doc11.image(UPLOAD_PATH + dot.name, 0, 0, { with: 11, height: 11 });
+        // create a pdf with 11mmx11mm¨
+        convertToPDF(11, dot.name, filenames.pdf11mm, UPLOAD_PATH);
+        dot.pdf11Url = UPLOAD_PATH + filenames.pdf11mm;
 
-        console.log(doc11);
-        doc11.end();
-    // create a pdf with 10mmx10mm
+        // create a pdf with 10mmx10mm
+
+        convertToPDF(10, filenames.original, filenames.pdf10mm, UPLOAD_PATH);
+        dot.pdf10Url = UPLOAD_PATH + filenames.pdf10mm;
+
+        // finally we save the dot to db and end
+        dotDesignDAL.addDotDesignToUser(req.user.id, dot);
         res.end("Success!");
       }
     });
   });
 };
+
+/**
+ * Creates a PDF-file of the given image
+ * 
+ * @param {Number} imageSize - size in mm
+ * @param {String} imagename - name of the original image
+ * @param {String} pdfname - the name of the output pdf file
+ * @param {String} path - path to where the file will be uploaded
+ */
+function convertToPDF(imageSize, imagename, pdfname, path) {
+  console.log(imagename);
+  console.log(path);
+  const pdfPointSize = imageSize * (72 / 25.4); // magic pdf numbers
+  const doc = new PDFDocument({
+    size: [pdfPointSize, pdfPointSize]
+  });
+  doc.pipe(fs.createWriteStream(path + pdfname));
+  doc.image(UPLOAD_PATH + imagename, 0, 0, { width: pdfPointSize, height: pdfPointSize });
+  doc.end();
+}
 
 module.exports = new ctrl();

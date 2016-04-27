@@ -2,10 +2,23 @@ const PriceListDal = require("../models/DAL/priceListDAL");
 const _ = require("lodash");
 const ROLES = require("../models/enums/roles").roles;
 
+/**
+ * Controller for handling users
+ */
 const ctrl = function() {};
 
-// GET /login
+
+/**
+ * GET /login
+ *
+ * Action for user login
+ *
+ * @param req (description)
+ * @param res (description)
+ */
 ctrl.prototype.login = function(req, res) {
+  // TODO: Separate controller for login and users?
+  // Like SessionsController - login && UsersController for creating/updating users?
   if (req.isAuthenticated()) { res.redirect("/profile"); }
   res.render('login', {
     title: 'dotons - login!',
@@ -13,12 +26,18 @@ ctrl.prototype.login = function(req, res) {
   });
 };
 
-// GET /signup
+
+/**
+ * GET /signup
+ *
+ * @param req (description)
+ * @param res (description)
+ */
 ctrl.prototype.signup = function(req, res) {
+  // TODO: rename action to new?
   var context = {};
   context.roles = _.cloneDeep(ROLES);
   delete context.roles.ADMIN; // dont want to create admin accounts
-
 
   context.title = "dotons - signup";
 
@@ -28,10 +47,15 @@ ctrl.prototype.signup = function(req, res) {
   res.render("signup", context);
 };
 
-// GET /profile
+/**
+ *  GET /profile
+ * 
+ * @param req (description)
+ * @param res (description)
+ */
 ctrl.prototype.profile = function(req, res) {
-  console.log(req.user.role);
-  console.log(req.user.designs);
+  // TODO: rename action to show?
+
   const priceListPromise = PriceListDal.getPriceList();
 
   priceListPromise
