@@ -32,16 +32,20 @@ ctrl.prototype.create = function(req, res, next) {
         next(error);
       } else {
         dotDesignDAL.addDotDesignToUser(req.user.id, dot);
+        // create a pdf with 11mmx11mm
+        const doc11 = new PDFDocument();
+        doc11.addPage({
+          size: [11, 11]
+        });
+        doc11.pipe(fs.createWriteStream(UPLOAD_PATH + "hehehe.pdf"));
+        doc11.image(UPLOAD_PATH + dot.name, 0, 0, { with: 11, height: 11 });
+
+        console.log(doc11);
+        doc11.end();
+    // create a pdf with 10mmx10mm
         res.end("Success!");
       }
     });
-
-    // create a pdf with 11mmx11mm
-    const doc11 = new PDFDocument();
-    doc11.image(UPLOAD_PATH + dot.name, 0, 0, 11, 11);
-
-    console.log(doc11);
-    // create a pdf with 10mmx10mm
   });
 };
 
