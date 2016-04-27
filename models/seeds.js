@@ -1,4 +1,4 @@
-const DotDesign = require("./dotDesignSchema").model;
+const DotDesign = require("./dotDesign").model;
 const User = require("./user");
 const PriceList = require("./priceList");
 

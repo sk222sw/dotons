@@ -1,4 +1,4 @@
-const DotDesign = require('../models/dotDesignSchema').model;
+const DotDesign = require('../models/dotDesign').model;
 const isLoggedIn = require("../modules/isLoggedIn");
 const needsRole = require("../modules/needsRole");
 const passport = require("passport");
@@ -48,7 +48,7 @@ module.exports = function (app) {
     res.redirect("/");
   });
   // tool
-  app.get("/designer", isLoggedIn, dotDesigner.new);
+  app.get("/designer", dotDesigner.new);
   app.post("/designer/upload", dotDesigner.create);
   app.get("/uploads/dot_designs/:imagename", isLoggedIn, (req, res) => {
     const imagename = req.params.imagename;
@@ -59,5 +59,5 @@ module.exports = function (app) {
   });
 
   // admin routes
-  app.get("/admin", needsRole("admin", "/profile"), admin.index);
+  app.get("/admin", needsRole("Admin", "/"), admin.index);
 };

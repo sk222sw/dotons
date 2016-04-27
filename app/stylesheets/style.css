@@ -1,7 +1,3 @@
-@import url("vendor/normalize.css");
-@import url("vendor/skeleton.css");
-@import url(https://fonts.googleapis.com/css?family=Raleway);
-
 * {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -86,4 +82,10 @@ nav {
   text-align: center;
   position: relative;
   width: 100%;
+}
+
+.canvas-area {
+  width: 1000px;
+  height: 500px;
+  border: solid black 1px;
 }

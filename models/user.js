@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt-node");
 
 const roles = require("./enums/roles").getRoleValues;
-const dotDesignSchema = require("./dotDesignSchema").schema;
+const dotDesignSchema = require("./dotDesign").schema;
 
 const userInfo = mongoose.Schema({
   firstName: String,

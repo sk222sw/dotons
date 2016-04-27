@@ -51,7 +51,7 @@ describe("routes", () => {
   it("6. should redirect to /profile when login is successful", done => {
     server
     .post("/login")
-    .send({ email: "hej@hej.com", password: "hej" })
+    .send({ email: "user@user.com", password: "hej" })
     .end((err, res) => {
       expect(res.header.location).to.include("/profile");
       done();
@@ -68,7 +68,7 @@ describe("routes", () => {
     });
   });
 
-  it("8. should redirect to login when trying to access admin-page as non admin", done => {
+  it("8. should redirect to root when trying to access admin-page as non admin", done => {
     server
     .post("/login")
     .send({ email: "asd", password: "asd" })
@@ -76,7 +76,7 @@ describe("routes", () => {
       server
       .get("/admin")
       .end((err, res) => {
-        expect(res.header.location).to.include("/login");
+        expect(res.header.location).to.include("/");
         done();
       });
     });
@@ -100,7 +100,7 @@ describe("routes", () => {
   it("10. should redirect to /signup when signup fails", done => {
     server
       .post("/signup")
-      .send({ email: "hej@hej.com", password: "asdasd" })
+      .send({ email: "user@user.com", password: "hej" })
       .end((err, res) => {
         expect(res.header.location).to.include("/signup");
         done();
@@ -110,6 +110,7 @@ describe("routes", () => {
   it("11. should return redirect status 302 from POST /signup", done => {
     server
     .post("/signup")
+    .send({ email: "user@user.com", password: "hej" })
     .end((err, res) => {
       expect(res.status).to.equal(302);
       done();

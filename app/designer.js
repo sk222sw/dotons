@@ -1,38 +1,77 @@
 /* global fabric */
 
+import _ from "lodash";
+
 export default class Designer {
-  constructor() {
+  constructor(base64Img) {
+    this.c = new fabric.Canvas("canvas");
+    this.imageNode = document.createElement("img");
     this.imageMaxHeight = 500;
     this.imageMaxWidth = 700;
-  }
-
-  initiate(base64Img) {
-    // create img node and fabric canvas object
-    const imageNode = document.createElement("img");
-    const c = new fabric.Canvas("canvas");
-    c.setHeight(500);
-    c.setWidth(700);
-    console.log(this.maxWidth);
-    imageNode.src = base64Img;
-
-    // center the image in canvas element
-    let image = new fabric.Image(imageNode, {
-      left: c.width / 2,
-      top: c.height / 2
+    this.c.setHeight(500);
+    this.c.setWidth(700);
+    this.originalWidth = 100;
+    this.originalHeight = 100;
+    this.imageNode.src = base64Img;
+    this.image = new fabric.Image(this.imageNode);
+    this.centerImage();
+    console.log(this.counter);
+    this.c.on("mouse:up", () => {
+      this.addHistory();
     });
 
-    image = this.resize(image);
+    // EVENTS
+    this.addEvents();
+  }
 
-    // add image to canvas
-    c.add(image);
+  addEvents() {
+    document.getElementById("center-image")
+            .addEventListener("click", () => {
+              this.centerImage();
+            });
+    document.getElementById("reset-image")
+            .addEventListener("click", () => {
+              this.resetImage();
+            });
+    document.body
+            .addEventListener("mouseup", () => {
+            });
+  }
+
+  addHistory() {
+  }
+
+  add() {
+    this.c.remove(this.image); // might be needed to prevent memory leaks?
+    this.c.add(this.image);
   }
 
   resize(image) {
     if (image.width > this.imageMaxWidth || image.height > this.imageMaxHeight) {
-      image.setHeight(10);
-      image.setWidth(10);
+      image.setHeight(50);
+      image.setWidth(50);
       return image;
     }
     return image;
   }
+
+  // ***********************
+  // BUTTON CALLBACKS ******
+  // ***********************
+
+  centerImage() {
+    console.log(this.image.left);
+    this.image.left = (this.c.width / 2) - (this.image.width / 2);
+    this.image.top = (this.c.height / 2) - (this.image.height / 2);
+    this.add();
+  }
+
+  resetImage() {
+    this.image.left = this.c.width / 2;
+    this.image.top = this.c.height / 2;
+    this.image.scaleToWidth(this.originalWidth);
+    this.image.scaleToHeight(this.originalWidth);
+    this.add();
+  }
+
 }
