@@ -39,12 +39,6 @@ export default class Designer {
   }
 
   addHistory() {
-    // console.log(this.image.setWidth(200));
-    const newImg = _.cloneDeep(this.image);
-    console.log(newImg.scaleToWidth(300));
-    this.add();
-    console.log("history:", this.image.width);
-    console.log("history:", newImage.width);
   }
 
   add() {
@@ -66,8 +60,9 @@ export default class Designer {
   // ***********************
 
   centerImage() {
-    this.image.left = this.c.width / 2;
-    this.image.top = this.c.height / 2;
+    console.log(this.image.left);
+    this.image.left = (this.c.width / 2) - (this.image.width / 2);
+    this.image.top = (this.c.height / 2) - (this.image.height / 2);
     this.add();
   }
 
