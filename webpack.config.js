@@ -4,15 +4,23 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const PATHS = {
   app: path.join(__dirname, 'app'),
+  style: path.join(__dirname, "app", "stylesheets"),
   styles: path.join(__dirname, 'public', "stylesheets"),
   build: path.join(__dirname, 'public', 'javascripts')
 };
+console.log(PATHS.style);
 module.exports = {
   context: path.join(__dirname, "app"),
   debug: true,
-  devtool: "eval-source-map",
+  // devtool: "eval-source-map",
   entry: {
-    app: "./index.js"
+    app: "./index.js",
+    designer: ["./designer.js", "./imageUploader.js"],
+    main: [
+      "./stylesheets/vendor/normalize.css",
+      "./stylesheets/vendor/skeleton.css",
+      "./stylesheets/style.css"
+    ]
   },
   output: {
     path: PATHS.build,
@@ -22,13 +30,13 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loaders: ["babel"],
-        include: PATHS.app
+        loader: "babel",
+        include: PATHS.app,
       },
       {
-        test: /\.scss$/,
+        test: /\.css$/,
         loader: ExtractTextPlugin.extract("style-loader", "css-loader", "sass-loader"),
-        include: PATHS.app
+        include: PATHS.style
       }
     ]
   },
@@ -38,7 +46,7 @@ module.exports = {
         NOVE_ENV: JSON.stringify("production")
       }
     }),
-    new ExtractTextPlugin("../stylesheets/main.css")
+    new ExtractTextPlugin("../stylesheets/[name].css")
   ]
 };
 

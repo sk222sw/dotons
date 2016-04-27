@@ -1,11 +1,11 @@
 module.exports = function(role, redirectTo) {
   if (typeof(redirectTo) === "undefined") redirectTo = "/login";
   return function(req, res, next) {
-    if (req.user && req.user.role === role.toLowerCase()) {
+    if (req.user && req.user.role.toLowerCase() === role.toLowerCase()) {
+      console.log("authorized");
       next();
     } else {
-      console.log("unahtorazed")
-      
+      console.log("unahtorazed");
       res.redirect(redirectTo);
     }
   };

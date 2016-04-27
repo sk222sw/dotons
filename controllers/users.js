@@ -9,7 +9,7 @@ ctrl.prototype.login = function(req, res) {
   if (req.isAuthenticated()) { res.redirect("/profile"); }
   res.render('login', {
     title: 'dotons - login!',
-    message: req.flash("loginMessage")
+    message: req.flash("loginMessage"),
   });
 };
 
@@ -18,6 +18,7 @@ ctrl.prototype.signup = function(req, res) {
   var context = {};
   context.roles = _.cloneDeep(ROLES);
   delete context.roles.ADMIN; // dont want to create admin accounts
+
 
   context.title = "dotons - signup";
 
@@ -30,7 +31,9 @@ ctrl.prototype.signup = function(req, res) {
 // GET /profile
 ctrl.prototype.profile = function(req, res) {
   console.log(req.user.role);
+  console.log(req.user.designs);
   const priceListPromise = PriceListDal.getPriceList();
+
   priceListPromise
     .then((priceList) => {
       var price;
@@ -52,13 +55,13 @@ ctrl.prototype.profile = function(req, res) {
       }
       res.render("profile", {
         email: req.user.email,
-        price
+        price,
+        designs: req.user.designs
       });
     })
     .catch((error) => {
       console.log(error);
     });
-  console.log("PROFILE PAGE");
 };
 
 

@@ -37,13 +37,13 @@ app.use((req, res, next) => {
   }
 });
 app.use((req, res, next) => {
-
   res.locals.login = req.isAuthenticated(); // should be able to get this in handlebars no?
   next();
-})
+});
 
 // setup multer for fileupload
 require("./routes/routes.js")(app, passport);
+
 
 
 connect()
@@ -53,12 +53,12 @@ connect()
     console.log("connection to db open");
   });
 
+
+
 const seeds = require("./models/seeds");
 console.log("seed() called in app.js");
 
 seeds();
-
-
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

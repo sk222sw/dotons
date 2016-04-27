@@ -7,3 +7,5 @@ temp
 public/javascripts
 public/stylesheets
 .testfile.js
+.vscode/
+test/client/fabric.js
