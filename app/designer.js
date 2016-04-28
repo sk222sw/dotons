@@ -6,7 +6,6 @@ export default class Designer {
   constructor(base64Img) {
     this.c = new fabric.Canvas("canvas");
     this.imageNode = document.createElement("img");
-    console.log(this.imageNode);
     this.imageMaxHeight = 500;
     this.imageMaxWidth = 700;
     this.c.setHeight(500);
@@ -14,14 +13,11 @@ export default class Designer {
     this.imageNode.src = base64Img;
     this.image = new fabric.Image(this.imageNode);
     this.centerImage();
-    this.c.on("mouse:up", () => {
-      this.addHistory();
-    });
     this.originalWidth = this.image.width;
     this.originalHeight = this.image.height;
-
-    // EVENTS
     this.addEvents();
+    this.add();
+    this.history = [];
   }
 
   addEvents() {
@@ -33,23 +29,39 @@ export default class Designer {
       .addEventListener("click", () => {
         this.resetImage();
       });
-    document.body
-      .addEventListener("mouseup", () => {});
+    this.c.on("mouse:up", () => {
+      this.addHistory();
+    });
   }
 
+  /**
+   * add current image to history array
+   * to allow undo/redo
+   */
   addHistory() {
-    // this.image = this.image.setWidth(5000);
+    const newImg = _.cloneDeep(this.image);
+    newImg.setWidth(100);
+    this.history.push(newImg);
+    _.each(this.history, img => {
+      console.log(img.width);
+    });
+    console.log(this.history);
   }
+
+  /**
+   * used to check if the image changed when mouse was released
+   */
+  imageChanged() {}
 
   /**
    * call this function after making changes to the image object.
    * for example centering or resetting
    */
   add() {
+    console.log("hej");
     this.c.remove(this.image); // might be needed to prevent memory leaks?
     this.c.add(this.image);
   }
-
 
   /**
    * resize image object if it's too big
@@ -63,10 +75,6 @@ export default class Designer {
     }
     return image;
   }
-
-  // ***********************
-  // BUTTON CALLBACKS ******
-  // ***********************
 
   /**
    * center image object.
