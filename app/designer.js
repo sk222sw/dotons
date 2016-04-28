@@ -15,9 +15,11 @@ export default class Designer {
     this.centerImage();
     this.originalWidth = this.image.width;
     this.originalHeight = this.image.height;
+    this.undoIndex = 0;
     this.addEvents();
     this.add();
     this.history = [];
+    this.history.push(this.image);
   }
 
   addEvents() {
@@ -29,8 +31,13 @@ export default class Designer {
       .addEventListener("click", () => {
         this.resetImage();
       });
-    this.c.on("mouse:up", () => {
+    document.getElementById("undo")
+      .addEventListener("click", () => {
+        this.undo();
+      })
+    this.c.on("object:modified", () => {
       this.addHistory();
+      this.writeState();
     });
   }
 
@@ -39,26 +46,38 @@ export default class Designer {
    * to allow undo/redo
    */
   addHistory() {
-    const newImg = _.cloneDeep(this.image);
-    newImg.setWidth(100);
-    this.history.push(newImg);
-    _.each(this.history, img => {
-      console.log(img.width);
-    });
+    if (this.undoIndex < this.history.length) {
+      this.history = this.history.slice(0, this.undoIndex);
+    }
+    const img = _.cloneDeep(this.c.getActiveObject());
+    this.history.push(img);
+    this.undoIndex = this.history.length;
     console.log(this.history);
   }
 
   /**
-   * used to check if the image changed when mouse was released
+   *
    */
-  imageChanged() {}
+  undo() {
+    if (this.undoIndex !== 0) {
+      this.undoIndex--;
+      console.log(this.undoIndex);
+    }
+    this.c.remove(this.image); // DRY but needed or fabric will add a new copy to the canvas :S:S:S
+    if (this.undoIndex === 0) {
+      this.centerImage(); 
+    } else {
+      this.image = this.history[this.undoIndex-1];
+    }
+    this.add();
+    this.writeState();
+  }
 
   /**
    * call this function after making changes to the image object.
    * for example centering or resetting
    */
   add() {
-    console.log("hej");
     this.c.remove(this.image); // might be needed to prevent memory leaks?
     this.c.add(this.image);
   }
@@ -92,5 +111,20 @@ export default class Designer {
     this.centerImage();
     this.image.scaleToWidth(this.originalWidth);
     this.image.scaleToHeight(this.originalWidth);
+  }
+  
+  writeState() {
+    const state = document.querySelector("#state");
+    state.innerHTML = "";
+    state.innerHTML =
+    "<div>"
+      + "<h3>state</h3>"
+      + "<div>"
+        + "index: " + this.undoIndex
+      + "</div>"
+      + "<div>"
+        + "historyLength: " + this.history.length
+      + "</div>"
+    + "</div>";    
   }
 }
