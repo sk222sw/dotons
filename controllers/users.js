@@ -45,6 +45,7 @@ ctrl.prototype.signup = function(req, res) {
   context.message = req.flash("signupMessage");
 
   res.render("signup", context);
+  
 };
 
 /**

@@ -47,7 +47,8 @@ ctrl.prototype.new = function(req, res) {
 ctrl.prototype.create = function(req, res, next) {
   upload(req, res, err => {
     if (err) return res.end(err.code);
-    if (!isValidImage(req.file.buffer)) return res.end("Wrong file format");
+    if (!req.file) return res.render("dotDesigner"); // send flash that no image was sent
+    if (!isValidImage(req.file.buffer)) return res.render("dotDesigner"); // send flash that file is wrong format
 
     // save the dot-design full size image
     const dot = new DotDesign();
@@ -70,7 +71,7 @@ ctrl.prototype.create = function(req, res, next) {
 
         // finally we save the dot to db and end
         dotDesignDAL.addDotDesignToUser(req.user.id, dot);
-        res.end("Success!");
+        res.redirect("/profile");
       }
     });
   });

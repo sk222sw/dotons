@@ -1,4 +1,3 @@
-import request from "superagent";
 import Promise from "bluebird";
 
 const MAX_SIZE = 1000000;
@@ -6,33 +5,21 @@ const MAX_SIZE = 1000000;
 export default class ImageUploader {
   uploadToClient(image) {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onerror = () => {
-        reject("Something went wrong when uploading the file");
-      };
-      reader.onload = event => {
-        resolve(event.currentTarget.result);
-      };
-      reader.readAsDataURL(image);
-    });
-  }
+      if (image.size > MAX_SIZE) {
+        reject(new Error("Image is to BIG"));
+      } else {
+        const reader = new FileReader();
 
-  uploadToServer(image) {
-    return new Promise((resolve, reject) => {
-      if (image.size > MAX_SIZE) { return reject(new Error("Image exceeds max size")); }
-      const formData = new FormData();
-      formData.append("dot-design", image);
+        reader.onerror = () => {
+          reject("Something went wrong when uploading the file");
+        };
 
-      request
-        .post("/designer/upload")
-        .send(formData)
-        .end((err, res) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(res);
-          }
-        });
+        reader.onload = event => {
+          resolve(event.currentTarget.result);
+        };
+
+        reader.readAsDataURL(image);
+      }
     });
   }
 
