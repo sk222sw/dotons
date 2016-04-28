@@ -55,13 +55,11 @@ module.exports = function (app) {
     if (req.isAuthenticated()) {
       next();
     } else {
+      // User wants to save a design but is not logged in..
+      // get the uploaded file via multer mem-storage and 
+      // save it in session until the user has logged in
       const upload = require("../config/multer");
       upload(req, res, err => {
-        if (err) return res.end(err.code);
-        if (!req.file) return res.render("dotDesigner");
-        if (!isValidImage(req.file.buffer)) return res.render("dotDesigner");
-        
-        
         req.session.image = req.file;
         res.redirect("/profile");
       });

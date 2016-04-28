@@ -53,6 +53,7 @@ const DotDesign = require("../models/dotDesign").model;
 const UPLOAD_PATH = "uploads/dot_designs/";
 const convertToPDF = require("../modules/convertToPDF");
 const dotDesignDAL = require("../models/DAL/dotDesignDAL");
+const create = require("../controllers/dotDesigns").create;
 
 /**
  *  GET /profile
@@ -62,6 +63,33 @@ const dotDesignDAL = require("../models/DAL/dotDesignDAL");
  */
 ctrl.prototype.profile = function(req, res, next) {
   // TODO: NEEDS REFACTOR REALLY BADLY 
+  if (req.session.image) {
+    console.log("RAINBOW IMAGE IN TEH SESSION MOTHAFUCKA".red);
+    console.log(req.session.image.originalname);
+    create(req, res, next);
+    
+  } else {
+    PriceListDal.getPriceList()
+    .then((priceList) => {
+      return getPriceByRole(priceList, req.user.role);
+    })
+    .then((price) => {
+      
+      console.log("______RENDERING PROFILE______________".green);
+      res.render("profile", {
+        email: req.user.email,
+        price,
+        designs: req.user.designs
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+  //console.log(create);
+  
+  
+  /*
   if (req.session.image) {
     console.log("USER PROFILE USER PROFILE USER PROFILE");
     console.log("1. IMAGE IN SESSION".green);
@@ -125,6 +153,7 @@ ctrl.prototype.profile = function(req, res, next) {
       });
     
     }
+    */
 };
 
 function getPriceByRole(priceList, role) {

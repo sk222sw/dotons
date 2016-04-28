@@ -52,10 +52,12 @@ ctrl.prototype.create = function(req, res, next) {
     if (err) return res.end(err.code);
     if (!req.file && !req.session.image) return res.render("dotDesigner"); // send flash that no image was sent
     const image = req.file || req.session.image;
-    console.log(image);
-    console.log("HAEHHAEHAEHAEHAEHA".rainbow)
-    if (!isValidImage(image)) return res.render("dotDesigner"); // send flash that file is wrong format
-    console.log("IMAGE IS VALID".green)
+    req.session.image = null;
+    console.log("HAEHHAEHAEHAEHAEHA".rainbow);
+    console.log(image.mimetype);
+    console.log(isValidImage(image.buffer));
+    if (!isValidImage(image.buffer)) return res.render("dotDesigner"); // send flash that file is wrong format
+    console.log("IMAGE IS VALID".green);
     // save the dot-design full size image
     const dot = new DotDesign();
     const filenames = dot.sanitizeFilename(image.originalname);
