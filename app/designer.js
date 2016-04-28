@@ -34,7 +34,11 @@ export default class Designer {
     document.getElementById("undo")
       .addEventListener("click", () => {
         this.undo();
-      })
+      });
+    document.getElementById("redo")
+      .addEventListener("click", () => {
+        this.redo();
+      });
     this.c.on("object:modified", () => {
       this.addHistory();
       this.writeState();
@@ -71,6 +75,20 @@ export default class Designer {
       this.image = this.history[this.undoIndex-1];
     }
     this.add();
+    this.writeState();
+  }
+  
+  /**
+   * 
+   */
+  redo() {
+    if (this.undoIndex < this.history.length) {
+      this.undoIndex++;
+      this.c.remove(this.image); // DRY but needed or fabric will add a new copy to the canvas :S:S:S
+      this.image = _.cloneDeep(this.history[this.undoIndex - 1]);
+      this.add();
+    }
+    
     this.writeState();
   }
 
