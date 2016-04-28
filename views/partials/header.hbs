@@ -2,8 +2,15 @@
   <!-- navigation is one-third column -->
   <a class="header-title" href="/"><h1 class="one-third column"><b>dot</b>ons</h1></a>
   <div class="one-third column">
-    <a href="/login">login</a> / <a href="/signup">register</a>
+    {{#if user}}
+      <a href="/profile">profile</a>
+    {{else}}
+      <a href="/login">login</a> / <a href="/signup">register</a>
+    {{/if}}
+    
+    
   </div>
+  
   {{> navigation}}
   {{> flash }}
 </header>

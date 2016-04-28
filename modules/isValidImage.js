@@ -1,10 +1,13 @@
 const fileType = require('file-type');
+
 /**
-  @param buffer - Buffer
-  @returns bool - if the image is a valid format
-  Takes a buffer of the image-object stored in memory by multer,
-  and checks wheter the file has the correct extension and mimetype.
-*/
+ * Checks if the buffer is of a valid image type.
+ * Supported types are jpg and png. Checks both the
+ * extension and the real mime type
+ * 
+ * @param {Buffer} buffer - Buffer representing the image
+ * @returns {bool} - if the image is valid
+ */
 module.exports = function(buffer) {
   const validExtensions = ["jpg", "png"];
   const validMimes = ["image/jpeg", "image/png"];

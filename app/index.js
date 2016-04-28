@@ -8,17 +8,17 @@ const form = document.getElementById("upload-form");
 if (form && form.addEventListener) {
   form.addEventListener("submit", event => {
     event.preventDefault();
-
     const file = document.getElementById("dot-design").files[0];
     const target = event.explicitOriginalTarget ||
                    event.relatedTarget ||
                    document.activeElement || {}; // for knowing which submit was pressed
 
-    upload(file, target);
+    upload(file, target, event);
   }, false);
+
 }
 
-function upload(file, target) {
+function upload(file, target, event) {
   const imageUploader = new ImageUploader();
 
   if (!file) {
@@ -27,25 +27,24 @@ function upload(file, target) {
   }
 
   if (target.value === form.elements["upload-submit"].value) {
+    event.preventDefault(); // Prevent submitting form on picupload to client
     imageUploader.isValidImage(file)
       .then(imageUploader.uploadToClient)
+      .then((image) => {
+        // toggle elements to hide/show on uploaded client pic
+        form.elements["upload-submit"].classList.toggle("hidden");
+        form.elements["save-submit"].classList.toggle("hidden");
+        form.elements["dot-design"].classList.toggle("hidden");
+        return image;
+      })
       .then(img => new Designer(img))
       .catch(error => {
         console.log(error);
       });
   } else if (target.value === form.elements["save-submit"].value) {
-    imageUploader.uploadToServer(file)
-      .then(response => {
-        console.log(response.text);
-        // Server responds with LIMIT_FILE_SIZE if the size is bigger 
-        // than the one set in multer config
-        if (response.text === "LIMIT_FILE_SIZE") {
-          console.log("File size to big man"); // flash message
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    console.log("sho");
+    document.getElementById("upload-form").submit();
+    form.submit();
   }
 }
 
