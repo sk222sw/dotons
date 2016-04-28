@@ -37,7 +37,7 @@ function upload(file, target) {
   } else if (target.value === form.elements["save-submit"].value) {
     imageUploader.uploadToServer(file)
       .then(response => {
-        console.log(response.text);
+        console.log(response);
       })
       .catch(error => {
         console.log(error);
