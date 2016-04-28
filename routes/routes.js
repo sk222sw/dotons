@@ -49,7 +49,19 @@ module.exports = function (app) {
   });
   // tool
   app.get("/designer", dotDesigner.new);
-  app.post("/designer/upload", dotDesigner.create);
+
+  app.post("/designer/upload", (req, res, next) => {
+    // DRY DRY DRY THIS IS SO DRYYY
+    // cant redirect from posts so need to send something
+    // to the client that indicates that u need to login to
+    // save a design to disk.
+    if (req.isAuthenticated()) {
+      next();
+    } else {
+      res.send({ redirect: "/login" });
+    }
+  }, dotDesigner.create);
+
   app.get("/uploads/dot_designs/:imagename", isLoggedIn, (req, res) => {
     const imagename = req.params.imagename;
     fs.readFile("uploads/dot_designs/" + imagename, (err, data) => {

@@ -36,8 +36,16 @@ function upload(file, target) {
   } else if (target.value === form.elements["save-submit"].value) {
     imageUploader.uploadToServer(file)
       .then(response => {
-        console.log(response.text);
-        // Server responds with LIMIT_FILE_SIZE if the size is bigger 
+
+
+        // CANT redirect when using AJAX from post so sending
+        // { "redirect": "/login" } from server if user is not
+        // logged in and redirect via window.location....
+        // maybe we should not use ajax when posting pictures?
+        if (JSON.parse(response.text).redirect === "/login") {
+          window.location = "/login";
+        }
+        // Server responds with LIMIT_FILE_SIZE if the size is bigger
         // than the one set in multer config
         if (response.text === "LIMIT_FILE_SIZE") {
           console.log("File size to big man"); // flash message
