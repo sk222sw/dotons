@@ -12,13 +12,13 @@ export default class Designer {
     this.c.setWidth(700);
     this.imageNode.src = base64Img;
     this.image = new fabric.Image(this.imageNode);
+    this.history = [];
+    this.undoIndex = 0;
     this.centerImage();
     this.originalWidth = this.image.width;
     this.originalHeight = this.image.height;
-    this.undoIndex = 0;
     this.addEvents();
     this.add();
-    this.history = [];
     this.history.push(this.image);
   }
 
@@ -46,13 +46,14 @@ export default class Designer {
    * to allow undo/redo
    */
   addHistory() {
+    // TODO warning: there is separate addHistory logic
+    // in the centerImage method
     if (this.undoIndex < this.history.length) {
       this.history = this.history.slice(0, this.undoIndex);
     }
     const img = _.cloneDeep(this.c.getActiveObject());
     this.history.push(img);
     this.undoIndex = this.history.length;
-    console.log(this.history);
   }
 
   /**
@@ -61,11 +62,11 @@ export default class Designer {
   undo() {
     if (this.undoIndex !== 0) {
       this.undoIndex--;
-      console.log(this.undoIndex);
     }
     this.c.remove(this.image); // DRY but needed or fabric will add a new copy to the canvas :S:S:S
     if (this.undoIndex === 0) {
-      this.centerImage(); 
+      console.log(this.history[0])
+      this.c.centerObject(this.image);
     } else {
       this.image = this.history[this.undoIndex-1];
     }
@@ -101,6 +102,10 @@ export default class Designer {
    */
   centerImage() {
     this.c.centerObject(this.image);
+    this.history.push(this.image);
+    this.undoIndex = this.history.length;
+    this.add();
+    this.writeState();
   }
 
   /**
