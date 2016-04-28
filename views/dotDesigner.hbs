@@ -1,7 +1,9 @@
 <div class="row">
   <div class="offset-by-three one-third column">
     <button type="button" id="center-image">O</button>
-    <button type="button" id="reset-image">X</button>
+    <button id="undo"><-</button>
+    <button id="redo">-></button>
+    <div id="state"></div>
       <canvas id="canvas" style="border:solid black 1px;"></canvas>
     <form id="upload-form"
              enctype="multipart/form-data"

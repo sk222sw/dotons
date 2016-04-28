@@ -8,6 +8,7 @@ const admin = require("../controllers/admin");
 const dotDesigner = require("../controllers/dotDesigns.js");
 const fs = require("fs");
 const path = require("path");
+const isValidImage = require("../modules/isValidImage");
 
 module.exports = function (app) {
   app.get('/', (req, res) => {
@@ -50,7 +51,22 @@ module.exports = function (app) {
   // tool
   app.get("/designer", dotDesigner.new);
 
-  app.post("/designer/upload", isLoggedIn, dotDesigner.create);
+  app.post("/designer/upload", (req, res, next) => {
+    if (req.isAuthenticated()) {
+      next();
+    } else {
+      const upload = require("../config/multer");
+      upload(req, res, err => {
+        if (err) return res.end(err.code);
+        if (!req.file) return res.render("dotDesigner");
+        if (!isValidImage(req.file.buffer)) return res.render("dotDesigner");
+        
+        
+        req.session.image = req.file;
+        res.redirect("/profile");
+      });
+    }
+  }, dotDesigner.create);
 
   app.get("/uploads/dot_designs/:imagename", isLoggedIn, (req, res) => {
     const imagename = req.params.imagename;

@@ -18,13 +18,17 @@ const dotDesignDAL = {
    * @param {DotDesign} dotDesign - to be added
    */
   addDotDesignToUser: (userid, dotDesign) => {
-    User.findById(userid, (err, user) => {
+    return User.findById(userid, (err, user) => {
       user.designs.push(dotDesign);
       user.save(error => {
         if (error) console.log(err);
         console.log("User saved a design!");
       });
-    });
+    }).exec();
+  },
+  
+  getUserDesigns: (userid) => {
+    return User.findById(userid).exec();
   }
 
 

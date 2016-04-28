@@ -3,11 +3,13 @@ const upload = require("../config/multer.js");
 const isValidImage = require("../modules/isValidImage");
 const dotDesignDAL = require("../models/DAL/dotDesignDAL");
 const DotDesign = require("../models/dotDesign").model;
-const PDFDocument = require("pdfkit");
+const uploadImage = require("../modules/uploadImage");
+const convertToPDF = require("../modules/convertToPDF");
+
 
 
 /**
- * Controller for dot designs. 
+ * Controller for dot designs.
  * Handles the dotDesign model
  */
 const ctrl = function() {};
@@ -17,7 +19,7 @@ const UPLOAD_PATH = "uploads/dot_designs/";
 
 /**
  * Shows all generic dots
- * 
+ *
  * @param req (description)
  * @param res (description)
  */
@@ -31,7 +33,8 @@ ctrl.prototype.index = function(req, res) {
  * @param req (description)
  * @param res (description)
  */
-ctrl.prototype.new = function(req, res) {
+ctrl.prototype.new = function(req, res, next) {
+
   res.render("dotDesigner");
 };
 
@@ -55,46 +58,20 @@ ctrl.prototype.create = function(req, res, next) {
     const filenames = dot.sanitizeFilename(req.file.originalname);
     dot.name = filenames.original;
     dot.imageUrl = UPLOAD_PATH + dot.name;
-
-    fs.writeFile(dot.imageUrl, req.file.buffer, error => {
+    uploadImage(req.file, dot.imageUrl, error => {
       if (error) {
         next(error);
       } else {
-        // create a pdf with 11mmx11mm¨
         convertToPDF(11, dot.name, filenames.pdf11mm, UPLOAD_PATH);
-        dot.pdf11Url = UPLOAD_PATH + filenames.pdf11mm;
-
-        // create a pdf with 10mmx10mm
-
-        convertToPDF(10, filenames.original, filenames.pdf10mm, UPLOAD_PATH);
-        dot.pdf10Url = UPLOAD_PATH + filenames.pdf10mm;
-
-        // finally we save the dot to db and end
-        dotDesignDAL.addDotDesignToUser(req.user.id, dot);
-        res.redirect("/profile");
+        convertToPDF(10, dot.name, filenames.pdf10mm, UPLOAD_PATH);
+        dotDesignDAL.addDotDesignToUser(req.user.id, dot)
+          .then(() => {
+            res.redirect("/profile");
+          });
       }
     });
   });
 };
 
-/**
- * Creates a PDF-file of the given image
- * 
- * @param {Number} imageSize - size in mm
- * @param {String} imagename - name of the original image
- * @param {String} pdfname - the name of the output pdf file
- * @param {String} path - path to where the file will be uploaded
- */
-function convertToPDF(imageSize, imagename, pdfname, path) {
-  console.log(imagename);
-  console.log(path);
-  const pdfPointSize = imageSize * (72 / 25.4); // magic pdf numbers
-  const doc = new PDFDocument({
-    size: [pdfPointSize, pdfPointSize]
-  });
-  doc.pipe(fs.createWriteStream(path + pdfname));
-  doc.image(UPLOAD_PATH + imagename, 0, 0, { width: pdfPointSize, height: pdfPointSize });
-  doc.end();
-}
 
 module.exports = new ctrl();
