@@ -50,26 +50,25 @@ ctrl.prototype.new = function(req, res, next) {
 ctrl.prototype.create = function(req, res, next) {
   upload(req, res, err => {
     if (err) return res.end(err.code);
-    if (!req.file) return res.render("dotDesigner"); // send flash that no image was sent
-    if (!isValidImage(req.file.buffer)) return res.render("dotDesigner"); // send flash that file is wrong format
-
+    if (!req.file) return res.redirect("/designer"); // send flash that no image was sent
+    if (!isValidImage(req.file.buffer)) return res.redirect("/designer"); // send flash that file is wrong format
+    console.log("IMAGE IS VALID".green);
     // save the dot-design full size image
     const dot = new DotDesign();
     const filenames = dot.sanitizeFilename(req.file.originalname);
     dot.name = filenames.original;
     dot.imageUrl = UPLOAD_PATH + dot.name;
-    uploadImage(req.file, dot.imageUrl, error => {
-      if (error) {
-        next(error);
-      } else {
-        convertToPDF(11, dot.name, filenames.pdf11mm, UPLOAD_PATH);
-        convertToPDF(10, dot.name, filenames.pdf10mm, UPLOAD_PATH);
-        dotDesignDAL.addDotDesignToUser(req.user.id, dot)
-          .then(() => {
-            res.redirect("/profile");
-          });
-      }
-    });
+
+    uploadImage(req.file, dot.imageUrl)
+      .then(() => {
+        return dotDesignDAL.addDotDesignToUser(req.user.id, dot);
+      })
+      .then(() => {
+        res.redirect("/profile");
+      })
+      .catch(error => {
+        console.log(error);
+      });
   });
 };
 
