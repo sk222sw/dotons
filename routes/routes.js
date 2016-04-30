@@ -8,6 +8,7 @@ const admin = require("../controllers/admin");
 const dotDesigner = require("../controllers/dotDesigns.js");
 const fs = require("fs");
 const path = require("path");
+const isValidImage = require("../modules/isValidImage");
 
 module.exports = function (app) {
   app.get('/', (req, res) => {
@@ -49,7 +50,22 @@ module.exports = function (app) {
   });
   // tool
   app.get("/designer", dotDesigner.new);
-  app.post("/designer/upload", dotDesigner.create);
+
+  app.post("/designer/upload", (req, res, next) => {
+    if (req.isAuthenticated()) {
+      next();
+    } else {
+      // User wants to save a design but is not logged in..
+      // get the uploaded file via multer mem-storage and 
+      // save it in session until the user has logged in
+      const upload = require("../config/multer");
+      upload(req, res, err => {
+        req.session.image = req.file;
+        res.redirect("/profile");
+      });
+    }
+  }, dotDesigner.create);
+
   app.get("/uploads/dot_designs/:imagename", isLoggedIn, (req, res) => {
     const imagename = req.params.imagename;
     fs.readFile("uploads/dot_designs/" + imagename, (err, data) => {

@@ -89,3 +89,7 @@ nav {
   height: 500px;
   border: solid black 1px;
 }
+
+.hidden {
+  display: none !important;
+}
