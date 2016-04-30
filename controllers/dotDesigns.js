@@ -4,7 +4,7 @@ const isValidImage = require("../modules/isValidImage");
 const dotDesignDAL = require("../models/DAL/dotDesignDAL");
 const DotDesign = require("../models/dotDesign").model;
 const uploadImage = require("../modules/uploadImage");
-const convertToPDF = require("../modules/convertToPDF");
+const convertToPDF = require("../modules/convertToPdf");
 
 
 
