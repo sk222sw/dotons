@@ -5,7 +5,6 @@ const uploadImage = require("../modules/uploadImage");
 const DotDesign = require("../models/dotDesign").model;
 const UPLOAD_PATH = "uploads/dot_designs/";
 const dotDesignDAL = require("../models/DAL/dotDesignDAL");
-const colour = require("colour"); // Debug shit remove later
 
 /**
  * Controller for handling users
@@ -110,7 +109,6 @@ function renderProfile(user, res, flash) {
       return getPriceByRole(priceList, user.role);
     })
     .then((price) => {
-      console.log("______RENDERING PROFILE______________".green);
       res.render("profile", {
         email: user.email,
         price,
