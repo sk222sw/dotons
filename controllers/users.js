@@ -53,7 +53,7 @@ ctrl.prototype.signup = function(req, res) {
 
 };
 
-
+const convertToPDF = require("../modules/convertToPDF");
 
 /**
  *  GET /profile
@@ -67,13 +67,21 @@ ctrl.prototype.profile = function(req, res, next) {
   // Move the uploading code out to separate module / BLL-class that handles it probably
   if (req.session.image) {
     // User tried to save an image but was not logged in
-    // Create the image from session and then render profile
+    // Creating a new instance of a buffer object with the buffer in the session
+    // mysteriosly fixes the bug of creating a corrupt 1kb image from the session..
+    const imagebuf = new Buffer(req.session.image.buffer);
     const dot = new DotDesign();
     const filenames = dot.sanitizeFilename(req.session.image.originalname);
     dot.name = filenames.original;
     dot.imageUrl = UPLOAD_PATH + dot.name;
 
-    uploadImage(req.session.image, dot.imageUrl)
+    uploadImage(imagebuf, dot.imageUrl)
+      .then(() => {
+        dot.pdf10Url = UPLOAD_PATH + filenames.pdf10mm;
+        dot.pdf11Url = UPLOAD_PATH + filenames.pdf11mm;
+        convertToPDF(10, dot.name, filenames.pdf10mm, UPLOAD_PATH);
+        convertToPDF(11, dot.name, filenames.pdf11mm, UPLOAD_PATH);
+      })
       .then(() => {
         return dotDesignDAL.addDotDesignToUser(req.user.id, dot);
       })
@@ -92,6 +100,7 @@ ctrl.prototype.profile = function(req, res, next) {
       });
   } else {
     // User was already logged in, just render the view
+    console.log(req.session.image);
     req.flash("message", "Welcome back");
     renderProfile(req.user, res);
   }
