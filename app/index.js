@@ -42,7 +42,7 @@ function upload(file, target, event) {
         console.log(error);
       });
   } else if (target.value === form.elements["save-submit"].value) {
-    console.log("sho");
+
     document.getElementById("upload-form").submit();
     form.submit();
   }
@@ -52,22 +52,22 @@ function upload(file, target, event) {
 /* needs refactor badly //TODO */
 const designsDiv = document.getElementById("designs");
 if (designsDiv) {
-  console.log(designsDiv);
+
   const imgs = designsDiv.getElementsByTagName("img");
 
   Array.prototype.forEach.call(imgs, item => {
-    console.log(item.getAttribute("data-image-url"));
+
 
     request
       .get(item.getAttribute("data-image-url"))
       .end((err, res) => {
-        console.log("hehlhö");
+
         if (err) {
           console.log(err);
         } else {
-          console.log(res);
+
           item.src = item.getAttribute("data-image-url");
-          console.log(item);
+
           item.classList.toggle("hidden");
         }
       });

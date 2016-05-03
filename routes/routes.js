@@ -36,7 +36,7 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/signup", csrfProtection,  users.signup);
+  app.get("/signup", csrfProtection, users.signup);
   app.get("/login", csrfProtection, users.login);
   app.get("/profile", isLoggedIn, users.profile);
   app.post("/signup", parseForm, csrfProtection, passport.authenticate(("local-signup"), {

@@ -14,11 +14,14 @@ function convertToPDF(imageSize, imagename, pdfname, path) {
   const doc = new PDFDocument({
     size: [pdfPointSize, pdfPointSize]
   });
-  console.log(path);
-  console.log(imagename);
+  
   doc.pipe(fs.createWriteStream(path + pdfname));
+
+
   doc.image(path + imagename, 0, 0, { width: pdfPointSize, height: pdfPointSize });
+
   doc.end();
+
 }
 
 module.exports = convertToPDF;
