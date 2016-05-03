@@ -9,6 +9,10 @@ const favicon = require('serve-favicon');
 const db = require("./models/mongo.js");
 const flash = require("connect-flash");
 const helmet = require("helmet");
+const csrf = require("csurf");
+
+// CSRUF middleware
+
 
 const app = express();
 
@@ -18,6 +22,7 @@ require("./config/handlebars")(app);
 app.use(favicon(path.join(__dirname, 'public', "images", 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -68,6 +73,9 @@ app.use(helmet.frameguard({ action: "deny" }));
 app.use(helmet.hidePoweredBy());
 
 
+
+
+
 app.use((req, res, next) => {
   if (req.url.substr(-1) === "/" && req.url.length > 1) {
     res.redirect(301, req.url.slice(0, -1));
@@ -106,7 +114,13 @@ app.use((req, res, next) => {
   next(err);
 });
 
+
 // error handlers
+app.use((err, req, res, next) => {
+  if (err.code !== "EBADCSRFTOKEN") return next(err);
+  res.status(403);
+  res.send("Form was tampered with");
+});
 
 // development error handler
 // will print stacktrace

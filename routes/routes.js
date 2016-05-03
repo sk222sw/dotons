@@ -9,6 +9,11 @@ const dotDesigner = require("../controllers/dotDesigns.js");
 const fs = require("fs");
 const path = require("path");
 const isValidImage = require("../modules/isValidImage");
+const csrf = require("csurf");
+const bodyParser = require('body-parser');
+
+const csrfProtection = csrf({ cookie: true });
+const parseForm = bodyParser.urlencoded({ extended: false });
 
 module.exports = function (app) {
   app.get('/', (req, res) => {
@@ -31,15 +36,15 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/signup", users.signup);
-  app.get("/login", users.login);
+  app.get("/signup", csrfProtection,  users.signup);
+  app.get("/login", csrfProtection, users.login);
   app.get("/profile", isLoggedIn, users.profile);
-  app.post("/signup", passport.authenticate(("local-signup"), {
+  app.post("/signup", parseForm, csrfProtection, passport.authenticate(("local-signup"), {
     successRedirect: "/profile",
     failureRedirect: "/signup",
     failuerFlash: true
   }));
-  app.post("/login", passport.authenticate("local-login", {
+  app.post("/login", parseForm, csrfProtection, passport.authenticate("local-login", {
     successRedirect: "/profile",
     failureRedirect: "/login",
     failureFlash: true
