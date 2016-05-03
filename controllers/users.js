@@ -26,6 +26,7 @@ ctrl.prototype.login = function(req, res) {
   res.render('login', {
     title: 'dotons - login!',
     message: req.flash("loginMessage"),
+    csrfToken: req.csrfToken()
   });
 };
 
@@ -46,6 +47,7 @@ ctrl.prototype.signup = function(req, res) {
 
   // set flash message if exists
   context.message = req.flash("signupMessage");
+  context.csrfToken = req.csrfToken();
 
   res.render("signup", context);
 

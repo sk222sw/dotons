@@ -8,6 +8,11 @@ const session = require("express-session");
 const favicon = require('serve-favicon');
 const db = require("./models/mongo.js");
 const flash = require("connect-flash");
+const helmet = require("helmet");
+const csrf = require("csurf");
+
+// CSRUF middleware
+
 
 const app = express();
 
@@ -17,13 +22,19 @@ require("./config/handlebars")(app);
 app.use(favicon(path.join(__dirname, 'public', "images", 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: "dootoons",
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // TODO: fix SSL and set to true in production
+    httpOnly: true,
+    // TODO: domain and expires
+  }
 }));
 app.use(flash());
 app.use(passport.initialize());
@@ -33,6 +44,37 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
+
+// CSP 
+app.use(helmet.contentSecurityPolicy({
+  defaultSrc: ["'self"],
+  scriptSrc: [], // scripts like google analytics go here
+  styleSrc: [], // styles (inline) or external allowed here
+  imgSrc: [], // images external allowed here
+  fontSrc: [],
+  objectSrc: [],
+  mediaSrc: [],
+  frameSrc: []
+}));
+
+// XSS
+app.use(helmet.xssFilter());
+
+// Deny X-frames
+app.use(helmet.frameguard({ action: "deny" }));
+
+// Enforce https
+// app.use(helmet.hsts({
+//   maxAge: 7776000000,
+//   includeSubdomains: true
+// }));
+
+// Hide x-powered-by header
+app.use(helmet.hidePoweredBy());
+
+
+
+
 
 app.use((req, res, next) => {
   if (req.url.substr(-1) === "/" && req.url.length > 1) {
@@ -72,7 +114,13 @@ app.use((req, res, next) => {
   next(err);
 });
 
+
 // error handlers
+app.use((err, req, res, next) => {
+  if (err.code !== "EBADCSRFTOKEN") return next(err);
+  res.status(403);
+  res.send("Form was tampered with");
+});
 
 // development error handler
 // will print stacktrace

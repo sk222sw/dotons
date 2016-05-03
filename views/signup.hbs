@@ -5,6 +5,7 @@
   <div class="one-third column sign-up">
     <h2>signup</h2>
     <form action="/signup" method="post">
+      <input type="hidden" name="_csrf" value="{{csrfToken}}">
       <div>
         <label for="email">Email</label>
         <input type="text" name="email" value="">
