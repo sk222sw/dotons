@@ -103,7 +103,7 @@ connect()
 
 
 const seeds = require("./models/seeds");
-console.log("seed() called in app.js");
+
 
 seeds();
 

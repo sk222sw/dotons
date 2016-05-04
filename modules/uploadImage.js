@@ -9,11 +9,12 @@ const fs = require("fs");
  * @param path 
  * @returns {Promise}
  */
-function uploadImage(image, path) {
+function uploadImage(buffer, path) {
   // TOneverDO: Should probably take a buffer object as param
   return new Promise((resolve, reject) => {
-    fs.writeFile(path, image.buffer, error => {
+    fs.writeFile(path, buffer, error => {
       if (error) return reject(error);
+
       resolve();
     });
   });

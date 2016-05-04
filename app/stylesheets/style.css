@@ -22,20 +22,24 @@ a {
   color: #00B7FF;
 }
 
-.slider-image {
-  width: 100%;
-  max-height: 30%;
-}
-
 .scale-with-grid {
-  // outline: 0;
+  outline: 0;
   max-width: 100%;
   height: auto;
 }
 
+.product {
+  padding: 10px;
+}
+
+.product img {
+  box-shadow: 0 0px 6px rgba(0, 0, 0, 0.19), 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
 .image-slider {
   position: relative;
-  background: rgba(0, 0, 0, 0.05);
+  background-image: url("/images/slider-image.png");
+  background-position: center 53.513513513514%;
   height: 500px;
   text-align: center;
   vertical-align: middle;
@@ -93,3 +97,94 @@ nav {
 .hidden {
   display: none !important;
 }
+
+/******************************************/
+/** PURE.CSS MENU THINGY DINGY DING-DONG **/
+/******************************************/
+
+.custom-wrapper {
+    background-color: white;
+    margin-bottom: 1em;
+    -webkit-font-smoothing: antialiased;
+    height: 7.1em;
+    overflow: hidden;
+    -webkit-transition: height 0.5s;
+    -moz-transition: height 0.5s;
+    -ms-transition: height 0.5s;
+    transition: height 0.5s;
+}
+
+.custom-wrapper.open {
+    height: 14em;
+}
+
+.custom-menu-3 {
+    /*text-align: right;*/
+}
+
+.custom-brand {
+  font-size: 3em;
+  text-transform: lowercase;
+}
+
+.custom-toggle {
+    width: 34px;
+    height: 34px;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+}
+
+.custom-toggle .bar {
+    background-color: #777;
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 100px;
+    position: absolute;
+    top: 18px;
+    right: 7px;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.custom-toggle .bar:first-child {
+    -webkit-transform: translateY(-6px);
+    -moz-transform: translateY(-6px);
+    -ms-transform: translateY(-6px);
+    transform: translateY(-6px);
+}
+
+.custom-toggle.x .bar {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.custom-toggle.x .bar:first-child {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+@media (max-width: 47.999em) {
+
+    .custom-menu-3 {
+        text-align: left;
+    }
+
+    .custom-toggle {
+        display: block;
+    }
+
+}
+
+/******************************************/
+/** PURE.CSS MENU THINGY DINGY ENDS HERE **/
+/******************************************/

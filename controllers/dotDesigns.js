@@ -52,14 +52,27 @@ ctrl.prototype.create = function(req, res, next) {
     if (err) return res.end(err.code);
     if (!req.file) return res.redirect("/designer"); // send flash that no image was sent
     if (!isValidImage(req.file.buffer)) return res.redirect("/designer"); // send flash that file is wrong format
-    console.log("IMAGE IS VALID".green);
+    
+    
+    console.log(req.file);
+    console.log(req.session.image);
+    console.log(req.file.size === req.session.image.size);
+    
     // save the dot-design full size image
     const dot = new DotDesign();
     const filenames = dot.sanitizeFilename(req.file.originalname);
     dot.name = filenames.original;
     dot.imageUrl = UPLOAD_PATH + dot.name;
 
-    uploadImage(req.file, dot.imageUrl)
+
+    uploadImage(req.file.buffer, dot.imageUrl)
+      .then(() => {
+
+        dot.pdf10Url = UPLOAD_PATH + filenames.pdf10mm;
+        dot.pdf11Url = UPLOAD_PATH + filenames.pdf11mm;
+        convertToPDF(10, dot.name, filenames.pdf10mm, UPLOAD_PATH);
+        convertToPDF(11, dot.name, filenames.pdf11mm, UPLOAD_PATH);
+      })
       .then(() => {
         return dotDesignDAL.addDotDesignToUser(req.user.id, dot);
       })

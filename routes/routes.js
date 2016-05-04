@@ -16,9 +16,10 @@ const csrfProtection = csrf({ cookie: true });
 const parseForm = bodyParser.urlencoded({ extended: false });
 
 module.exports = function (app) {
-  app.get('/', (req, res) => {
+  app.get('/', csrfProtection, (req, res) => {
     res.render('index', {
-      title: 'dotons - wielkommen!'
+      title: 'dotons - wielkommen!',
+      csrfToken: req.csrfToken()
     });
   });
 
@@ -36,7 +37,7 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/signup", csrfProtection,  users.signup);
+  app.get("/signup", csrfProtection, users.signup);
   app.get("/login", csrfProtection, users.login);
   app.get("/profile", isLoggedIn, users.profile);
   app.post("/signup", parseForm, csrfProtection, passport.authenticate(("local-signup"), {
