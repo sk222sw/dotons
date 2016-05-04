@@ -12,14 +12,14 @@ loginButton.addEventListener("click", () => {
 });
 
 /**
- * close login modal when the user clicks outside the login window
+ * close modal when the user clicks outside the form window
  */
 modalContainer.addEventListener("click", () => {
   modalContainer.classList.add("hidden");
 });
 
 /**
- * prevent login window from inheriting modalContainer click
+ * prevent form window from inheriting modalContainer click
  */
 loginModal.addEventListener("click", (e) => {
   e.stopPropagation();
