@@ -16,7 +16,7 @@
         <div>
           <!--<label for="role">Account Type</label>-->
         </div>
-        <select required>
+        <select name="role" required>
           <option value="" disabled selected><span id="role-selection-first">Select Account Type</span></option>
           {{#each roles}}
             <option value="{{this}}">{{this}}</option>
