@@ -24,7 +24,3 @@ modalContainer.addEventListener("click", () => {
 loginModal.addEventListener("click", (e) => {
   e.stopPropagation();
 });
-
-// window.addEventListener("load", () => {
-//   modalContainer.classList.toggle('hidden');
-// });

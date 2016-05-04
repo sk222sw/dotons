@@ -16,9 +16,10 @@ const csrfProtection = csrf({ cookie: true });
 const parseForm = bodyParser.urlencoded({ extended: false });
 
 module.exports = function (app) {
-  app.get('/', (req, res) => {
+  app.get('/', csrfProtection, (req, res) => {
     res.render('index', {
-      title: 'dotons - wielkommen!'
+      title: 'dotons - wielkommen!',
+      csrfToken: req.csrfToken()
     });
   });
 
