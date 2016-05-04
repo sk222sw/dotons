@@ -59,6 +59,7 @@ a {
   font-size: 1.2rem;
 }
 
+
 nav {
   position: relative;
   margin: 0 auto;
@@ -88,14 +89,37 @@ nav {
   width: 100%;
 }
 
-.canvas-area {
-  width: 1000px;
-  height: 500px;
-  border: solid black 1px;
-}
-
 .hidden {
   display: none !important;
+}
+
+.account-type {
+  margin-top: 30px;
+}
+
+.signup-form input {
+  margin: 0 auto;
+}
+
+#role-selection-first {
+  background: red;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+#designs {
+  text-align: center;
+}
+
+.design {
+  margin-top: 10px;
+}
+
+/******************************************/
+/** PURE.CSS custom things               **/
+/******************************************/
+.button-xlarge {
+  font-size: 125%;
+  
 }
 
 /******************************************/
