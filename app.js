@@ -10,6 +10,7 @@ const db = require("./models/mongo.js");
 const flash = require("connect-flash");
 const helmet = require("helmet");
 const csrf = require("csurf");
+const multer = require("multer");
 
 // CSRUF middleware
 
@@ -39,6 +40,9 @@ app.use(session({
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
+//multer
+
 
 app.use((req, res, next) => {
   res.locals.user = req.user;

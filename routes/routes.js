@@ -55,7 +55,7 @@ module.exports = function (app) {
     res.redirect("/");
   });
   // tool
-  app.get("/designer", dotDesigner.new);
+  app.get("/designer", csrfProtection, dotDesigner.new);
 
   app.post("/designer/upload", (req, res, next) => {
     if (req.isAuthenticated()) {

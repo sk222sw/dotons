@@ -65,6 +65,7 @@ ctrl.prototype.profile = function(req, res, next) {
   // TODO: NEEDS REFACTOR (NOT SO) REALLY BADLY (ANYMORE)
   // Still DRY compared to the create action in the dotDesign-controller
   // Move the uploading code out to separate module / BLL-class that handles it probably
+  console.log(req.user);
   if (req.session.image) {
     // User tried to save an image but was not logged in
     // Creating a new instance of a buffer object with the buffer in the session
@@ -121,6 +122,7 @@ function renderProfile(user, res, flash) {
     })
     .then((price) => {
       res.render("profile", {
+        user,
         email: user.email,
         price,
         designs: user.designs,
