@@ -21,8 +21,9 @@ module.exports = {
       "./stylesheets/vendor/grids-responsive-min.css",
       "./stylesheets/vendor/buttons-min.css",
       "./stylesheets/vendor/menus-min.css",
-      "./stylesheets/partials/formModal.css",
-      "./stylesheets/style.css"
+      "./stylesheets/style.css",
+      "./stylesheets/partials/designer.css",
+      "./stylesheets/partials/formModal.css"
     ]
   },
   output: {

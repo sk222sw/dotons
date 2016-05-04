@@ -88,12 +88,6 @@ nav {
   width: 100%;
 }
 
-.canvas-area {
-  width: 1000px;
-  height: 500px;
-  border: solid black 1px;
-}
-
 .hidden {
   display: none !important;
 }

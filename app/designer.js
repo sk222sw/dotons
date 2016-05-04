@@ -4,10 +4,17 @@ import _ from "lodash";
 
 export default class Designer {
   constructor(base64Img) {
+    const parentNode = document.getElementById("canvas-area");
+    const parentWidth = parentNode.clientWidth;
+    const parentHeight = parentNode.clientHeight;
+
     // create fabric canvas
     this.c = new fabric.Canvas("canvas");
-    this.c.setWidth(451);
-    this.c.setHeight(474);
+    this.c.setWidth(parentWidth);
+    this.c.setHeight(parentHeight);
+
+    console.log(parentWidth);
+    console.log(parentHeight);
 
     // max dimensions
     this.imageMaxHeight = this.c.height;
@@ -19,8 +26,8 @@ export default class Designer {
     this.circle = new fabric.Image(circleNode);
     this.circle.set({
       opacity: 0.8,
-      width: 451,
-      height: 474,
+      width: this.c.width,
+      height: this.c.height,
       selectable: false
     });
     this.circle = this.resize(this.circle);
