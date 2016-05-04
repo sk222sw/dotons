@@ -59,6 +59,7 @@ a {
   font-size: 1.2rem;
 }
 
+
 nav {
   position: relative;
   margin: 0 auto;
@@ -103,6 +104,22 @@ nav {
 #role-selection-first {
   background: red;
   color: rgba(0, 0, 0, 0.6);
+}
+
+#designs {
+  text-align: center;
+}
+
+.design {
+  margin-top: 10px;
+}
+
+/******************************************/
+/** PURE.CSS custom things               **/
+/******************************************/
+.button-xlarge {
+  font-size: 125%;
+  
 }
 
 /******************************************/
