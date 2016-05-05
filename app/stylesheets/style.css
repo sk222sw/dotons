@@ -52,6 +52,7 @@ a {
 
 .middle {
   vertical-align: middle;
+  
 }
 
 .about {
@@ -59,6 +60,24 @@ a {
   font-size: 1.2rem;
 }
 
+/**************************************/
+/***** HEADER                  ********/
+/**************************************/
+
+.pure-menu a {
+  
+}
+.logo {
+  width: 60px;
+  vertical-align: middle;
+  
+}
+
+
+
+.pure-menu span {
+  
+}
 
 nav {
   position: relative;
@@ -129,41 +148,13 @@ nav {
 /*******************************************/
 /*       Admin section                     */
 /*******************************************/
-#admin-navigation {
+
+.settings-icon {
+  font-size: 12em;
+  width: 100px;
   
-  text-align: left;
-  background-color: dimgrey;
-
-  
-  
-  
-
-
-
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 200px;
+  float: right;
 }
-
-.navigation {
-  transition: width 0.3s ease;
-}
-#main-nav:target {
-  width: 20%; 
-}
-
-#admin-navigation a {
-  color: white;
-}
-
-#admin-navigation a:hover {
-  background: lightslategrey;
-}
-
-
 
 
 
@@ -229,9 +220,11 @@ nav {
     transition: height 0.5s;
 }
 
+
 .custom-wrapper.open {
     height: 14em;
 }
+
 
 .custom-menu-3 {
     /*text-align: right;*/
@@ -240,6 +233,8 @@ nav {
 .custom-brand {
   font-size: 3em;
   text-transform: lowercase;
+  text-align: left;
+  padding-left: 0;
 }
 
 .custom-toggle {

@@ -75,10 +75,10 @@ module.exports = function (app) {
   });
 
   // admin routes
-  app.get("/admin", /* needsRole("Admin", "/"), */admin.index);
-  app.get("/users", /* needsRole("Admin", "/"), */users.index);
+  app.get("/admin", needsRole("Admin", "/"), admin.index);
+  app.get("/users", needsRole("Admin", "/"), users.index);
   // TODO: move to controller
-  app.get('/designs', /* needsRole("Admin", "/"), */ (req, res) => {
+  app.get('/designs', needsRole("Admin", "/"), (req, res) => {
     DotDesign.find((err, dotDesigns) => {
       const context = {
         dots: dotDesigns.map(dot => {
