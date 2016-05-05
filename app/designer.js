@@ -87,6 +87,10 @@ export default class Designer {
       .addEventListener("click", () => {
         this.redo();
       });
+    document.getElementById("crop")
+      .addEventListener("click", () => {
+        this.crop();
+      });
     this.c.on("object:modified", () => {
       this.addHistory();
     });
@@ -107,6 +111,28 @@ export default class Designer {
     this.undoIndex = this.history.length;
   }
 
+  /*
+  * crop image to a circle
+  * TODO crop when image is saved?
+  */
+  crop() {
+    this.image.clipTo = function(ctx) {
+      const horizontalOffsetFromCenter = 0;
+      const verticalOffsetFromCenter = 0;
+      const radius = 100; // atleast according to official Fabric demos but i dont really know what it does
+      const iDontKnowWhatThisArgumentDoesBecauseFabricDocumentationSucks = 0;
+      const iThinkThisHasSomethingToDoWithCirclesButImNotSure = 100;
+      
+      ctx.arc(horizontalOffsetFromCenter, 
+              verticalOffsetFromCenter, 
+              radius, 
+              iDontKnowWhatThisArgumentDoesBecauseFabricDocumentationSucks, 
+              iThinkThisHasSomethingToDoWithCirclesButImNotSure
+            );
+    };
+    this.c.renderAll();
+  }
+  
   /**
    * step backwards in history
    */

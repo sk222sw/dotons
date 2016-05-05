@@ -26,6 +26,13 @@ a {
   outline: 0;
   max-width: 100%;
   height: auto;
+  text-align: center;
+}
+
+.product img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .product {
@@ -100,6 +107,19 @@ nav {
   text-align: center;
   position: relative;
   width: 100%;
+}
+
+.info {
+  margin-top: 40px;
+  padding-left: 30px;
+  padding-right: 30px;
+  font-size: 0.75em;
+  text-align:justify;
+  text-justify:inter-word;
+}
+
+.info h5 {
+  font-size: 1.5em;
 }
 
 .sign-up {
