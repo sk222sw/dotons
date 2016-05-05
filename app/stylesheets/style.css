@@ -114,6 +114,97 @@ nav {
   margin-top: 10px;
 }
 
+/*******************************************/
+/*       Profile-info section              */
+/*******************************************/
+#profile-description {
+  
+}
+
+#profile-description h1 {
+  text-align: center;
+}
+
+
+/*******************************************/
+/*       Admin section                     */
+/*******************************************/
+#admin-navigation {
+  
+  text-align: left;
+  background-color: dimgrey;
+
+  
+  
+  
+
+
+
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 200px;
+}
+
+.navigation {
+  transition: width 0.3s ease;
+}
+#main-nav:target {
+  width: 20%; 
+}
+
+#admin-navigation a {
+  color: white;
+}
+
+#admin-navigation a:hover {
+  background: lightslategrey;
+}
+
+
+
+
+
+
+/******************************************
+   new-design is the New Design button on 
+   profile needs different name but naming sucks
+/******************************************/
+.new-design {
+  text-align: center;
+  position: relative;
+ 
+}
+
+.new-design:hover {
+  color: rgba(1, 0, 0, 0.5);
+}
+
+.new-design img {
+   height:200px;
+   width:200px;
+}
+
+.new-design h3 {
+  position: absolute;
+  top: 75px;
+  left: 0;
+  width: 100%;
+}
+
+
+.new-design h3 span {
+  color: white;
+  font: bold 24px;
+  letter-spacing: -1px;
+  background: rgb(0, 0, 0);
+  background: rgba(0, 0, 0, 0.7);
+  padding: 10px;
+}
+
+
 /******************************************/
 /** PURE.CSS custom things               **/
 /******************************************/
@@ -198,7 +289,12 @@ nav {
 }
 
 @media (max-width: 47.999em) {
-
+    #admin-navigation {
+      height: 100%;
+      width: 100%;
+      margin-top: 0px;
+      position: relative;
+    }
     .custom-menu-3 {
         text-align: left;
     }

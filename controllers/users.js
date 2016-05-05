@@ -5,11 +5,51 @@ const uploadImage = require("../modules/uploadImage");
 const DotDesign = require("../models/dotDesign").model;
 const UPLOAD_PATH = "uploads/dot_designs/";
 const dotDesignDAL = require("../models/DAL/dotDesignDAL");
+const User = require("../models/user");
 
 /**
  * Controller for handling users
  */
 const ctrl = function() {};
+
+
+/**
+ * GET /users
+ *
+ * Lists all the users for the admin
+ *
+ * @param req (description)
+ * @param res (description)
+ */
+ctrl.prototype.index = function(req, res) {
+  User.find({}, (err, users) => {
+    var userMap = {};
+    users.forEach(user => {
+      userMap[user._id] = user;
+    });
+
+    res.render("users", {
+      users: userMap
+    });
+  });
+};
+
+
+/**
+ * GET /users/:id
+ *
+ * Shows a single user. For the admin.
+ * Kinda same as /profile but not really
+ * Argument for two different actions (profile and show) is
+ * that the admin needs a more compact view of the user. Or does he?
+ * Probably not.. Use the same or what?
+ *
+ * @param req (description)
+ * @param res (description)
+ */
+ctrl.prototype.show = function(req, res) {
+
+};
 
 /**
  * GET /login
@@ -65,6 +105,7 @@ ctrl.prototype.profile = function(req, res, next) {
   // TODO: NEEDS REFACTOR (NOT SO) REALLY BADLY (ANYMORE)
   // Still DRY compared to the create action in the dotDesign-controller
   // Move the uploading code out to separate module / BLL-class that handles it probably
+  console.log(req.user);
   if (req.session.image) {
     // User tried to save an image but was not logged in
     // Creating a new instance of a buffer object with the buffer in the session
@@ -110,7 +151,7 @@ ctrl.prototype.profile = function(req, res, next) {
 /**
  * Gets the pricelist and then renders the user profile
  * Moved to separate method to eliminate DRY
- * 
+ *
  * @param user (description)
  * @param res (description)
  */
@@ -121,6 +162,7 @@ function renderProfile(user, res, flash) {
     })
     .then((price) => {
       res.render("profile", {
+        user,
         email: user.email,
         price,
         designs: user.designs,
