@@ -136,7 +136,7 @@ nav {
 
   
   
-  position: relative;
+  
 
 
 
@@ -291,7 +291,9 @@ nav {
 @media (max-width: 47.999em) {
     #admin-navigation {
       height: 100%;
+      width: 100%;
       margin-top: 0px;
+      position: relative;
     }
     .custom-menu-3 {
         text-align: left;
