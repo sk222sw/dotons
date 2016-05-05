@@ -90,7 +90,7 @@ ctrl.prototype.signup = function(req, res) {
 
 };
 
-const convertToPDF = require("../modules/convertToPDF");
+const convertToPDF = require("../modules/convertToPdf");
 
 /**
  *  GET /profile
