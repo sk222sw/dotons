@@ -14,12 +14,16 @@ module.exports = {
   debug: true,
   // devtool: "eval-source-map",
   entry: {
-    app: "./index.js",
+    app: ["./index.js", "./lib/toggle-menu.js", "./formModal.js"],
     designer: ["./designer.js", "./imageUploader.js"],
     main: [
-      "./stylesheets/vendor/normalize.css",
-      "./stylesheets/vendor/skeleton.css",
-      "./stylesheets/style.css"
+      "./stylesheets/vendor/pure-min.css",
+      "./stylesheets/vendor/grids-responsive-min.css",
+      "./stylesheets/vendor/buttons-min.css",
+      "./stylesheets/vendor/menus-min.css",
+      "./stylesheets/style.css",
+      "./stylesheets/partials/designer.css",
+      "./stylesheets/partials/formModal.css"
     ]
   },
   output: {

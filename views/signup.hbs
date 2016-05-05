@@ -1,21 +1,23 @@
-<div class="row">
-  <div class="one-third column">
-    &nbsp;
-  </div>
-  <div class="one-third column sign-up">
+<div class="pure-g">
+  <div class="pure-u-1 pure-u-md-1-3"></div>
+  <div class="pure-u-1 pure-u-md-1-3 sign-up">
     <h2>signup</h2>
-    <form action="/signup" method="post">
+    <form class="pure-form signup-form" action="/signup" method="post">
+      <input type="hidden" name="_csrf" value="{{csrfToken}}">
       <div>
-        <label for="email">Email</label>
-        <input type="text" name="email" value="">
+        <!--<label for="email">Email</label>-->
+        <input type="email" placeholder="email" name="email" value="" required>
       </div>
       <div>
-        <label for="password">Password</label>
-        <input type="password" name="password" value="">
+        <!--<label for="password">Password</label>-->
+        <input type="password" placeholder="Password" name="password" value="" required>
       </div>
-      <div>
-        <label for="role">Account Type</label>
-        <select name="role">
+      <div class="account-type">
+        <div>
+          <!--<label for="role">Account Type</label>-->
+        </div>
+        <select name="role" required>
+          <option value="" disabled selected><span id="role-selection-first">Select Account Type</span></option>
           {{#each roles}}
             <option value="{{this}}">{{this}}</option>
           {{/each}}
@@ -26,9 +28,6 @@
         <button type="submit">Signup</button>
       </div>
     </form>
+  </div>
 
-  </div>
-  <div class="one-third column">
-    &nbsp;
-  </div>
 </div>

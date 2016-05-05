@@ -9,37 +9,37 @@ const dotDesigner = require("../controllers/dotDesigns.js");
 const fs = require("fs");
 const path = require("path");
 const isValidImage = require("../modules/isValidImage");
+const csrf = require("csurf");
+const bodyParser = require('body-parser');
+
+const csrfProtection = csrf({ cookie: true });
+const parseForm = bodyParser.urlencoded({ extended: false });
 
 module.exports = function (app) {
-  app.get('/', (req, res) => {
+  app.get('/', csrfProtection, (req, res) => {
     res.render('index', {
-      title: 'dotons - wielkommen!'
+      title: 'dotons - wielkommen!',
+      csrfToken: req.csrfToken()
     });
   });
 
-  app.get('/designs', (req, res) => {
-    DotDesign.find((err, dotDesigns) => {
-      const context = {
-        dots: dotDesigns.map(dot => {
-          return {
-            name: dot.name,
-            imageUrl: dot.imageUrl
-          };
-        })
-      };
-      res.render('dot', context);
-    });
-  });
+  
 
-  app.get("/signup", users.signup);
-  app.get("/login", users.login);
-  app.get("/profile", isLoggedIn, users.profile);
-  app.post("/signup", passport.authenticate(("local-signup"), {
+  app.get("/signup", csrfProtection, users.signup);
+  app.get("/login", csrfProtection, users.login);
+  app.get("/profile", isLoggedIn, (req, res, next) => {
+    if (req.user.role.toLowerCase() === "admin") {
+      res.redirect("/admin");
+    } else {
+      next();
+    }
+  }, users.profile);
+  app.post("/signup", parseForm, csrfProtection, passport.authenticate(("local-signup"), {
     successRedirect: "/profile",
     failureRedirect: "/signup",
     failuerFlash: true
   }));
-  app.post("/login", passport.authenticate("local-login", {
+  app.post("/login", parseForm, csrfProtection, passport.authenticate("local-login", {
     successRedirect: "/profile",
     failureRedirect: "/login",
     failureFlash: true
@@ -49,7 +49,7 @@ module.exports = function (app) {
     res.redirect("/");
   });
   // tool
-  app.get("/designer", dotDesigner.new);
+  app.get("/designer", csrfProtection, dotDesigner.new);
 
   app.post("/designer/upload", (req, res, next) => {
     if (req.isAuthenticated()) {
@@ -76,4 +76,19 @@ module.exports = function (app) {
 
   // admin routes
   app.get("/admin", needsRole("Admin", "/"), admin.index);
+  app.get("/users", needsRole("Admin", "/"), users.index);
+  // TODO: move to controller
+  app.get('/designs', needsRole("Admin", "/"), (req, res) => {
+    DotDesign.find((err, dotDesigns) => {
+      const context = {
+        dots: dotDesigns.map(dot => {
+          return {
+            name: dot.name,
+            imageUrl: dot.imageUrl
+          };
+        })
+      };
+      res.render('designs', context);
+    });
+  });
 };

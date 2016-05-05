@@ -4,27 +4,46 @@ import _ from "lodash";
 
 export default class Designer {
   constructor(base64Img) {
+    const parentNode = document.getElementById("canvas-area");
+    const parentWidth = parentNode.clientWidth;
+    const parentHeight = parentNode.clientHeight;
+
     // create fabric canvas
     this.c = new fabric.Canvas("canvas");
-    this.c.setHeight(300);
-    this.c.setWidth(300);
-    
+    this.c.setWidth(parentWidth);
+    this.c.setHeight(parentHeight);
+
+    console.log(parentWidth);
+    console.log(parentHeight);
+
+    // max dimensions
+    this.imageMaxHeight = this.c.height;
+    this.imageMaxWidth = this.c.width;
+
+    // create foreground circle
+    const circleNode = document.createElement("img");
+    circleNode.src = "./images/dot.png";
+    this.circle = new fabric.Image(circleNode);
+    this.circle.set({
+      opacity: 0.8,
+      width: this.c.width,
+      height: this.c.height,
+      selectable: false
+    });
+    this.circle = this.resize(this.circle);
+    this.c.setOverlayImage(this.circle, this.c.renderAll.bind(this.c));
+
     // create image node
     this.imageNode = document.createElement("img");
     this.imageNode.src = base64Img;
-    
+
     // put image node in fabric
     this.image = new fabric.Image(this.imageNode);
-    
+
     // used for undo/redo
     this.history = [];
     this.undoIndex = 0;
-    
-    // max dimensions
-    this.imageMaxHeight = 300;
-    this.imageMaxWidth = 300;
-    
-    
+
     // initial stuff
     this.addEvents();
     this.image = this.resize(this.image);
@@ -32,26 +51,25 @@ export default class Designer {
     this.add();
     this.history.push(this.image);
   }
-  
+
   /**
    * resize image object if it's too big
    * @returns resized version of image
    */
   resize(image) {
     if (image.width > this.imageMaxWidth) {
-      const perc =  this.imageMaxWidth/image.width;
+      const perc = this.imageMaxWidth / image.width;
       image.setWidth(this.imageMaxWidth);
       image.setHeight(image.height * perc);
       return image;
-    } 
-    else if (image.height > this.imageMaxHeight) {
-      const perc = this.imageMaxHeight/image.height;
+    } else if (image.height > this.imageMaxHeight) {
+      const perc = this.imageMaxHeight / image.height;
       image.setHeight(this.imageMaxHeight);
       image.setWidth(image.width * perc);
-      return image;      
+      return image;
     }
     return image;
-  }  
+  }
 
   /**
    * adds events to buttons and stuff
@@ -100,22 +118,23 @@ export default class Designer {
     if (this.undoIndex === 0) {
       this.c.centerObject(this.image);
     } else {
-      this.image = this.history[this.undoIndex-1];
+      this.image = this.history[this.undoIndex - 1];
     }
     this.add();
   }
-  
+
   /**
    * step forward in history, aka redo
    */
   redo() {
     if (this.undoIndex < this.history.length) {
       this.undoIndex++;
-      this.c.remove(this.image); // DRY but needed or fabric will add a new copy to the canvas :S:S:S
+
+      // DRY but needed or fabric will add a new copy to the canvas :S:S:S
+      this.c.remove(this.image);
       this.image = _.cloneDeep(this.history[this.undoIndex - 1]);
       this.add();
     }
-    
   }
 
   /**
@@ -137,7 +156,7 @@ export default class Designer {
     this.undoIndex = this.history.length;
     this.add();
   }
-  
+
   /**
    * adds html to DOM to keep track of history
    * and undoIndex during development
@@ -154,6 +173,6 @@ export default class Designer {
       + "<div>"
         + "historyLength: " + this.history.length
       + "</div>"
-    + "</div>";    
+    + "</div>";
   }
 }

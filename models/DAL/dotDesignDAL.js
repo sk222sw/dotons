@@ -20,7 +20,7 @@ const dotDesignDAL = {
   addDotDesignToUser: (userid, dotDesign) => {
     return new Promise((resolve, reject) => {
       User.findById(userid, (err, user) => {
-        console.log("USER FOUND IN DOTDESIGN DAL");
+
 
         user.designs.push(dotDesign);
         user.save(error => {

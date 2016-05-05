@@ -17,7 +17,7 @@ function seed() {
 
   User.find((err, user) => {
     if (user.length) return;
-    console.log("SEEDING USERS");
+
     const user1 = new User({
       email: "user@user.com",
       role: "Business",
@@ -32,11 +32,10 @@ function seed() {
       imageUrl: "uploads/dot_designs/ladda_ned.jpg"
     });
     const design = user1.designs[0];
-    console.log(design);
-    console.log(design.isNew);
+
     user1.save(error => {
       if (error) console.log(error);
-      console.log("success!");
+
     });
 
     const user2 = new User({
@@ -51,7 +50,7 @@ function seed() {
     user2.save(err => {
       if (err) console.log(err);
     });
-    console.log("saving user 2");
+
     const admin = new User({
       email: "admin@dotons.com",
       role: "Admin"
