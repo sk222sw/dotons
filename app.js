@@ -46,6 +46,7 @@ app.use(passport.session());
 
 app.use((req, res, next) => {
   res.locals.user = req.user;
+  res.locals.notAdmin = req.user ? req.user.role.toLowerCase() !== "admin" : true;
   next();
 });
 

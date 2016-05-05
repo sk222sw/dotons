@@ -23,23 +23,17 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/designs', (req, res) => {
-    DotDesign.find((err, dotDesigns) => {
-      const context = {
-        dots: dotDesigns.map(dot => {
-          return {
-            name: dot.name,
-            imageUrl: dot.imageUrl
-          };
-        })
-      };
-      res.render('dot', context);
-    });
-  });
+  
 
   app.get("/signup", csrfProtection, users.signup);
   app.get("/login", csrfProtection, users.login);
-  app.get("/profile", isLoggedIn, users.profile);
+  app.get("/profile", isLoggedIn, (req, res, next) => {
+    if (req.user.role.toLowerCase() === "admin") {
+      res.redirect("/admin");
+    } else {
+      next();
+    }
+  }, users.profile);
   app.post("/signup", parseForm, csrfProtection, passport.authenticate(("local-signup"), {
     successRedirect: "/profile",
     failureRedirect: "/signup",
@@ -81,5 +75,20 @@ module.exports = function (app) {
   });
 
   // admin routes
-  app.get("/admin", needsRole("Admin", "/"), admin.index);
+  app.get("/admin", /* needsRole("Admin", "/"), */admin.index);
+  app.get("/users", /* needsRole("Admin", "/"), */users.index);
+  // TODO: move to controller
+  app.get('/designs', /* needsRole("Admin", "/"), */ (req, res) => {
+    DotDesign.find((err, dotDesigns) => {
+      const context = {
+        dots: dotDesigns.map(dot => {
+          return {
+            name: dot.name,
+            imageUrl: dot.imageUrl
+          };
+        })
+      };
+      res.render('designs', context);
+    });
+  });
 };
