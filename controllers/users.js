@@ -23,13 +23,10 @@ const ctrl = function() {};
  */
 ctrl.prototype.index = function(req, res) {
   User.find({}, (err, users) => {
-    var userMap = {};
-    users.forEach(user => {
-      userMap[user._id] = user;
-    });
+    
 
     res.render("users", {
-      users: userMap
+      users
     });
   });
 };
