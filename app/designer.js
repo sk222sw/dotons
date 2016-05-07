@@ -3,7 +3,8 @@
 import _ from "lodash";
 
 export default class Designer {
-  constructor(base64Img) {
+  constructor() {
+    console.log("hehe");
     const parentNode = document.getElementById("canvas-area");
     const parentWidth = parentNode.clientWidth;
     const parentHeight = parentNode.clientHeight;
@@ -21,8 +22,10 @@ export default class Designer {
     this.imageMaxWidth = this.c.width;
 
     // create foreground circle
+    /* Old code I dare not to remove it /sasha
+    
     const circleNode = document.createElement("img");
-    circleNode.src = "./images/dot.png";
+    circleNode.src = "./images/dot-kopia.png";
     this.circle = new fabric.Image(circleNode);
     this.circle.set({
       opacity: 0.8,
@@ -32,10 +35,28 @@ export default class Designer {
     });
     this.circle = this.resize(this.circle);
     this.c.setOverlayImage(this.circle, this.c.renderAll.bind(this.c));
+    */
+    
+    // New code, solves bug of not rendering circle until canvas has been clicked..
+    this.circle = fabric.Image.fromURL("/images/dot.png", image => {
+      image.set({
+        opacity: 0.8,
+        width: this.c.width,
+        height: this.c.height,
+        selectable: false
+      });
+      image = this.resize(image);
+      this.c.setOverlayImage(image);
+      this.c.renderAll();
+    });
 
+  }
+
+  init(image) {
+    console.log("init");
     // create image node
     this.imageNode = document.createElement("img");
-    this.imageNode.src = base64Img;
+    this.imageNode.src = image;
 
     // put image node in fabric
     this.image = new fabric.Image(this.imageNode);
@@ -130,6 +151,7 @@ export default class Designer {
               iThinkThisHasSomethingToDoWithCirclesButImNotSure
             );
     };
+
     this.c.renderAll();
   }
   

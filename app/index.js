@@ -4,8 +4,12 @@ import request from "superagent";
 
 // TODO: Better error-presentation for the user, flashhshhshshhs-messhahshshhages
 const form = document.getElementById("upload-form");
+// declare designer here. Might need to call crop method
+// on saving the image
+let designer = null;
 
 if (form && form.addEventListener) {
+  designer = new Designer();
   form.addEventListener("submit", event => {
     event.preventDefault();
     const file = document.getElementById("dot-design").files[0];
@@ -20,7 +24,6 @@ if (form && form.addEventListener) {
 
 function upload(file, target, event) {
   const imageUploader = new ImageUploader();
-
   if (!file) {
     console.log("No file chosen");
     return;
@@ -37,12 +40,12 @@ function upload(file, target, event) {
         form.elements["dot-design"].classList.toggle("hidden");
         return image;
       })
-      .then(img => new Designer(img))
+      .then(img => designer.init(img)) // call init instead of creating the designer here
       .catch(error => {
         console.log(error);
       });
   } else if (target.value === form.elements["save-submit"].value) {
-
+    console.log(designer);
     document.getElementById("upload-form").submit();
     form.submit();
   }
