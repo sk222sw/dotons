@@ -61,7 +61,8 @@ module.exports = function (app) {
       const upload = require("../config/multer");
       upload(req, res, err => {
         req.session.image = req.file;
-        res.redirect("/profile");
+        res.send("unauthorized");
+        //res.redirect("/profile");
       });
     }
   }, dotDesigner.create);

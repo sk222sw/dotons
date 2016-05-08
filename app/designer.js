@@ -46,31 +46,48 @@ export default class Designer {
         selectable: false
       });
       image = this.resize(image);
-      this.c.setOverlayImage(image);
+      //this.c.setOverlayImage(image);
+      this.c.add(image);
       this.c.renderAll();
     });
 
   }
 
   init(image) {
-    console.log("init");
+    console.log("asdasd");
+
     // create image node
     this.imageNode = document.createElement("img");
     this.imageNode.src = image;
 
-    // put image node in fabric
-    this.image = new fabric.Image(this.imageNode);
+    // // put image node in fabric
+    // this.image = new fabric.Image(this.imageNode);
+    
 
-    // used for undo/redo
+    // // used for undo/redo
     this.history = [];
     this.undoIndex = 0;
 
-    // initial stuff
-    this.addEvents();
-    this.image = this.resize(this.image);
-    this.centerImage();
-    this.add();
-    this.history.push(this.image);
+    // // initial stuff
+    // this.addEvents();
+    // this.image = this.resize(this.image);
+    // this.centerImage();
+    // this.add();
+    // this.history.push(this.image);
+    
+    fabric.Image.fromURL(image, img => {
+      console.log(this);
+      img.globalComositeOperation = "source-atop";
+      this.image = this.resize(img);
+      this.centerImage();
+      this.addEvents();
+      this.add();
+      this.history.push(this.image);
+      this.c.add(img);
+      
+    });
+    
+    
   }
 
   /**
@@ -137,10 +154,13 @@ export default class Designer {
   * TODO crop when image is saved?
   */
   crop() {
+    // Crops to a circle with 300px radius
+    // Kinda buggy, hard to explain but when you move around/resize image 
+    // it crops from the images center, not center of canvas...
     this.image.clipTo = function(ctx) {
       const horizontalOffsetFromCenter = 0;
       const verticalOffsetFromCenter = 0;
-      const radius = 100; // atleast according to official Fabric demos but i dont really know what it does
+      const radius = 300; // atleast according to official Fabric demos but i dont really know what it does
       const iDontKnowWhatThisArgumentDoesBecauseFabricDocumentationSucks = 0;
       const iThinkThisHasSomethingToDoWithCirclesButImNotSure = 100;
       
@@ -153,6 +173,12 @@ export default class Designer {
     };
 
     this.c.renderAll();
+    // Return a base64 representation of the cropped image
+    return this.image.toDataURL({
+      format: "png",
+      left: 0,
+      top: 0 
+    });
   }
   
   /**

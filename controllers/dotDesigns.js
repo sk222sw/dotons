@@ -52,6 +52,9 @@ ctrl.prototype.new = function(req, res, next) {
  */
 ctrl.prototype.create = function(req, res, next) {
   upload(req, res, err => {
+    console.log("REQ.FILE:    ");
+    console.log(req.file);
+    
     if (err) return res.end(err.code);
     if (!req.file) return res.redirect("/designer"); // send flash that no image was sent
     if (!isValidImage(req.file.buffer)) return res.redirect("/designer"); // send flash that file is wrong format
@@ -75,10 +78,12 @@ ctrl.prototype.create = function(req, res, next) {
         return dotDesignDAL.addDotDesignToUser(req.user.id, dot);
       })
       .then(() => {
-        res.redirect("/profile");
+        //res.redirect("/profile");
+        res.send("succes");
       })
       .catch(error => {
         console.log(error);
+        res.send("error");
       });
   });
 };
