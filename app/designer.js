@@ -11,6 +11,7 @@ export default class Designer {
 
     // create fabric canvas
     this.c = new fabric.Canvas("canvas");
+    
     this.c.setWidth(parentWidth);
     this.c.setHeight(parentHeight);
 
@@ -23,7 +24,7 @@ export default class Designer {
 
     // create foreground circle
     /* Old code I dare not to remove it /sasha
-    
+
     const circleNode = document.createElement("img");
     circleNode.src = "./images/dot-kopia.png";
     this.circle = new fabric.Image(circleNode);
@@ -36,7 +37,7 @@ export default class Designer {
     this.circle = this.resize(this.circle);
     this.c.setOverlayImage(this.circle, this.c.renderAll.bind(this.c));
     */
-    
+
     // New code, solves bug of not rendering circle until canvas has been clicked..
     this.circle = fabric.Image.fromURL("/images/dot.png", image => {
       image.set({
@@ -46,31 +47,48 @@ export default class Designer {
         selectable: false
       });
       image = this.resize(image);
-      this.c.setOverlayImage(image);
+      // this.c.setOverlayImage(image);
+      this.c.add(image);
       this.c.renderAll();
     });
 
   }
 
   init(image) {
-    console.log("init");
+    console.log("asdasd");
+
     // create image node
     this.imageNode = document.createElement("img");
     this.imageNode.src = image;
 
-    // put image node in fabric
-    this.image = new fabric.Image(this.imageNode);
+    // // put image node in fabric
+    // this.image = new fabric.Image(this.imageNode);
 
-    // used for undo/redo
+
+    // // used for undo/redo
     this.history = [];
     this.undoIndex = 0;
 
-    // initial stuff
-    this.addEvents();
-    this.image = this.resize(this.image);
-    this.centerImage();
-    this.add();
-    this.history.push(this.image);
+    // // initial stuff
+    // this.addEvents();
+    // this.image = this.resize(this.image);
+    // this.centerImage();
+    // this.add();
+    // this.history.push(this.image);
+
+    fabric.Image.fromURL(image, img => {
+      console.log(this);
+      img.globalComositeOperation = "source-atop";
+      this.image = this.resize(img);
+      this.centerImage();
+      this.addEvents();
+      this.add();
+      this.history.push(this.image);
+      this.c.add(img);
+
+    });
+
+
   }
 
   /**
@@ -137,24 +155,51 @@ export default class Designer {
   * TODO crop when image is saved?
   */
   crop() {
-    this.image.clipTo = function(ctx) {
-      const horizontalOffsetFromCenter = 0;
-      const verticalOffsetFromCenter = 0;
-      const radius = 100; // atleast according to official Fabric demos but i dont really know what it does
-      const iDontKnowWhatThisArgumentDoesBecauseFabricDocumentationSucks = 0;
-      const iThinkThisHasSomethingToDoWithCirclesButImNotSure = 100;
-      
-      ctx.arc(horizontalOffsetFromCenter, 
-              verticalOffsetFromCenter, 
-              radius, 
-              iDontKnowWhatThisArgumentDoesBecauseFabricDocumentationSucks, 
-              iThinkThisHasSomethingToDoWithCirclesButImNotSure
-            );
-    };
+    // Crops to a circle with 300px radius
+    // Kinda buggy, hard to explain but when you move around/resize image
+    // it crops from the images center, not center of canvas...
 
+    // this.image.clipTo = function(ctx) {
+    //   const horizontalOffsetFromCenter = 0;
+    //   const verticalOffsetFromCenter = 0;
+    //   const radius = 300; // atleast according to official Fabric demos but i dont really know what it does
+    //   const iDontKnowWhatThisArgumentDoesBecauseFabricDocumentationSucks = 0;
+    //   const iThinkThisHasSomethingToDoWithCirclesButImNotSure = 100;
+
+    //   ctx.arc(horizontalOffsetFromCenter,
+    //           verticalOffsetFromCenter,
+    //           radius,
+    //           iDontKnowWhatThisArgumentDoesBecauseFabricDocumentationSucks,
+    //           iThinkThisHasSomethingToDoWithCirclesButImNotSure
+    //         );
+    // };
+
+    // make it non selectable and disable controls/borders
+    // else they are seen in the cropped pic
+    this.selectable = false;
+    this.image.hasControls = false;
+    this.image.hasBorders = false;
+    
+    // Clips the canvas in a circle instead of the pic
+    // might need to adjust the radius and shit here
+    // this is buggy as hell in Chrome version 50...
+    this.c.clipTo = function(ctx) {
+      ctx.arc(this.height / 2, this.width / 2, 300, 0, 100);
+    };
+    
     this.c.renderAll();
+    
+    // Return a base64 representation of the cropped CANVAS instead of the image
+    // canvas is cropped in a circle, make it a png-image and the whitespace is
+    // transparent
+    
+    return this.c.toDataURL({
+      format: "png",
+      left: 0,
+      top: 0
+    });
   }
-  
+
   /**
    * step backwards in history
    */
