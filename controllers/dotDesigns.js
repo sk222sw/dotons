@@ -79,7 +79,7 @@ ctrl.prototype.create = function(req, res, next) {
       })
       .then(() => {
         //res.redirect("/profile");
-        res.send("succes");
+        res.send("success");
       })
       .catch(error => {
         console.log(error);

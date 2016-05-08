@@ -157,24 +157,40 @@ export default class Designer {
     // Crops to a circle with 300px radius
     // Kinda buggy, hard to explain but when you move around/resize image 
     // it crops from the images center, not center of canvas...
-    this.image.clipTo = function(ctx) {
-      const horizontalOffsetFromCenter = 0;
-      const verticalOffsetFromCenter = 0;
-      const radius = 300; // atleast according to official Fabric demos but i dont really know what it does
-      const iDontKnowWhatThisArgumentDoesBecauseFabricDocumentationSucks = 0;
-      const iThinkThisHasSomethingToDoWithCirclesButImNotSure = 100;
+    
+    // this.image.clipTo = function(ctx) {
+    //   const horizontalOffsetFromCenter = 0;
+    //   const verticalOffsetFromCenter = 0;
+    //   const radius = 300; // atleast according to official Fabric demos but i dont really know what it does
+    //   const iDontKnowWhatThisArgumentDoesBecauseFabricDocumentationSucks = 0;
+    //   const iThinkThisHasSomethingToDoWithCirclesButImNotSure = 100;
       
-      ctx.arc(horizontalOffsetFromCenter, 
-              verticalOffsetFromCenter, 
-              radius, 
-              iDontKnowWhatThisArgumentDoesBecauseFabricDocumentationSucks, 
-              iThinkThisHasSomethingToDoWithCirclesButImNotSure
-            );
+    //   ctx.arc(horizontalOffsetFromCenter, 
+    //           verticalOffsetFromCenter, 
+    //           radius, 
+    //           iDontKnowWhatThisArgumentDoesBecauseFabricDocumentationSucks, 
+    //           iThinkThisHasSomethingToDoWithCirclesButImNotSure
+    //         );
+    // };
+    
+    // make it non selectable and disable controls/borders
+    // else they are seen in the cropped pic
+    this.selectable = false;
+    this.image.hasControls = false;
+    this.image.hasBorders = false;
+
+    // Clips the canvas in a circle instead of the pic
+    // might need to adjust the radius and shit here    
+    this.c.clipTo = function(ctx) {
+      
+      ctx.arc(this.height / 2, this.width / 2, 300, 0, 100);
     };
 
     this.c.renderAll();
-    // Return a base64 representation of the cropped image
-    return this.image.toDataURL({
+    // Return a base64 representation of the cropped CANVAS instead of the image
+    // canvas is cropped in a circle, make it a png-image and the whitespace is 
+    // transparent
+    return this.c.toDataURL({
       format: "png",
       left: 0,
       top: 0 
