@@ -182,9 +182,8 @@ export default class Designer {
     
     // Clips the canvas in a circle instead of the pic
     // might need to adjust the radius and shit here
-    // this is buggy as hell in Chrome version 50...
     this.c.clipTo = function(ctx) {
-      ctx.arc(this.height / 2, this.width / 2, 300, 0, 100);
+      ctx.arc(this.height / 2, this.width / 2, this.height / 2, 0, 100);
     };
     
     this.c.renderAll();
