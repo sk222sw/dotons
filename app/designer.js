@@ -187,7 +187,8 @@ export default class Designer {
     // Return a base64 representation of the cropped CANVAS instead of the image
     // canvas is cropped in a circle, make it a png-image and the whitespace is
     // transparent
-
+    console.log(this.image);
+    console.log(this.c.item(this.c.size() - 1));
     return this.c.toDataURL({
       format: "png",
       left: 0,
