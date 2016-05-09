@@ -6,6 +6,7 @@
         <button class="pure-button" id="undo">&#8630;</button>
         <button class="pure-button" type="button" id="center-image"><span><b>&#8728;</b></span></button>
         <button class="pure-button" id="redo">&#8631;</button>
+        <button class="pure-button" id="crop">//</button>
       </div>
       <div id="canvas-area">
         <canvas id="canvas"></canvas>
@@ -16,7 +17,7 @@
                 action="/designer/upload"
                 method="post" name="designer">
               <input type="hidden" name="_csrf" value="{{csrfToken}}">  
-              <input type="file" name="dot-design" id="dot-design"/>
+              <input type="file" name="upload" id="dot-design"/>
               <div id="submit-buttons">
                 <input type="submit" class="pure-button" value="Upload Image" name="upload" id="upload-submit" />
                 <input type="submit" class="pure-button hidden" value="Save Image" name="save" id="save-submit" />

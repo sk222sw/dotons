@@ -4,8 +4,12 @@ import request from "superagent";
 
 // TODO: Better error-presentation for the user, flashhshhshshhs-messhahshshhages
 const form = document.getElementById("upload-form");
+// declare designer here. Might need to call crop method
+// on saving the image
+let designer = null;
 
 if (form && form.addEventListener) {
+  designer = new Designer();
   form.addEventListener("submit", event => {
     event.preventDefault();
     const file = document.getElementById("dot-design").files[0];
@@ -20,7 +24,6 @@ if (form && form.addEventListener) {
 
 function upload(file, target, event) {
   const imageUploader = new ImageUploader();
-
   if (!file) {
     console.log("No file chosen");
     return;
@@ -37,15 +40,74 @@ function upload(file, target, event) {
         form.elements["dot-design"].classList.toggle("hidden");
         return image;
       })
-      .then(img => new Designer(img))
+      .then(img => designer.init(img)) // call init instead of creating the designer here
       .catch(error => {
         console.log(error);
       });
   } else if (target.value === form.elements["save-submit"].value) {
 
-    document.getElementById("upload-form").submit();
-    form.submit();
+    const img = designer.crop();
+    const blob = dataURLtoBlob(img);
+    const fd = new FormData();
+    fd.set("dot-design", blob, document.getElementById("dot-design").files[0].name);
+    
+    // superagent post formdata is not playing nicely with multer.
+    // the fileupload NEEDS to be done with AJAX since if you submit
+    // the form with the regular submit-event, the appended formdata with
+    // the cropped picture does not get sent to the server.. bs
+    console.log("XHR YAOOO");
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "designer/upload");
+    xhr.onload = function(event) {
+      if (xhr.status === 200) {
+        console.log(xhr);
+        console.log("UPLOADED");
+        if (xhr.response === "unauthorized") {
+          document.getElementById("form-modal-container").classList.toggle("hidden");
+        } else if (xhr.response === "success") {
+          window.location.href = "/profile";
+        }
+        // window.location.href = xhr.responseURL;
+        // window.location.href = "/profile";
+      } else {
+        console.log("Error: " + xhr.status);
+      }
+    }
+    xhr.send(fd);
+    
+    // request.post("designer/upload")
+    //   .send(fd)
+    //   .end((err, response) => {
+    //     if (err) console.log(err);
+    //     else console.log("done");
+
+    //   });
+    
+        
+    //console.log(document.getElementById("upload-form").elements);
+    //document.getElementById("upload-form").submit();
+    //form.submit();
   }
+}
+
+function dataURLtoBlob(dataURI) {
+  // convert base64/URLEncoded data component to raw binary data held in a string
+  let byteString;
+  if (dataURI.split(',')[0].indexOf('base64') >= 0)
+      byteString = atob(dataURI.split(',')[1]);
+  else
+      byteString = unescape(dataURI.split(',')[1]);
+
+  // separate out the mime component
+  let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+  // write the bytes of the string to a typed array
+  var ia = new Uint8Array(byteString.length);
+  for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+  }
+
+  return new Blob([ia], {type:mimeString});
 }
 
 /* get user images, refactor to own file l8r */
