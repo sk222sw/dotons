@@ -21,7 +21,7 @@ dotDesignSchema.methods.sanitizeFilename = function(filename) {
   const sanitized = name.replace(/[^a-z0-9]/gi, "_").toLowerCase();
 
   const ret = {
-    original: sanitized + "." + ext,
+    original: sanitized + ".png", // all images stored as png
     pdf11mm: "11mm." + sanitized + ".pdf",
     pdf10mm: "10mm." + sanitized + ".pdf"
   };
