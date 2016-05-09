@@ -171,29 +171,32 @@ export default class Designer {
 
     // Clips the canvas in a circle instead of the pic
     // might need to adjust the radius and shit here
-    console.log(this.c.width);
-    console.log(this.c.height);
+    const circleDiameter = 274;
     const x = this.c.width / 2 + 1;
     const y = this.c.height / 2;
-    const radius = 272 / 2;
+    const radius = circleDiameter / 2;
     const startAngle = 0;
     const endAngle = 100;
+
     this.c.clipTo = function(ctx) {
+
       ctx.arc(x, y, radius, startAngle, endAngle);
     };
-
+    this.c.overlayImage = null;
     this.c.renderAll();
 
     // Return a base64 representation of the cropped CANVAS instead of the image
     // canvas is cropped in a circle, make it a png-image and the whitespace is
     // transparent
-    console.log(this.image);
-    console.log(this.c.item(this.c.size() - 1));
-    return this.c.toDataURL({
+    const cropped = this.c.toDataURL({
       format: "png",
-      left: 0,
-      top: 0
+      left: this.c.width / 2 - circleDiameter / 2,
+      top: this.c.height / 2 - circleDiameter / 2,
+      width: circleDiameter,
+      height: circleDiameter
     });
+
+    return cropped;
   }
 
   /**
