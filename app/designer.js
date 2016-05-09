@@ -155,9 +155,9 @@ export default class Designer {
   * TODO crop when image is saved?
   */
   crop() {
-    // Crops to a circle with 300px radius
-    // Kinda buggy, hard to explain but when you move around/resize image
-    // it crops from the images center, not center of canvas...
+    // TODO: Bugs in mobile. Seems like it crops correctly but when
+    //       the image is saved it only saves like 1/4 or even less
+    //       of it...
 
     // this.image.clipTo = function(ctx) {
     //   const horizontalOffsetFromCenter = 0;
