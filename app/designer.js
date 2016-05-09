@@ -4,19 +4,15 @@ import _ from "lodash";
 
 export default class Designer {
   constructor() {
-    console.log("hehe");
     const parentNode = document.getElementById("canvas-area");
     const parentWidth = parentNode.clientWidth;
     const parentHeight = parentNode.clientHeight;
 
     // create fabric canvas
     this.c = new fabric.Canvas("canvas");
-    
+
     this.c.setWidth(parentWidth);
     this.c.setHeight(parentHeight);
-
-    console.log(parentWidth);
-    console.log(parentHeight);
 
     // max dimensions
     this.imageMaxHeight = this.c.height;
@@ -39,24 +35,21 @@ export default class Designer {
     */
 
     // New code, solves bug of not rendering circle until canvas has been clicked..
-    this.circle = fabric.Image.fromURL("/images/dot.png", image => {
+    this.circle = fabric.Image.fromURL("/images/dotty.png", image => {
       image.set({
-        opacity: 0.8,
+        opacity: 0.82,
         width: this.c.width,
         height: this.c.height,
         selectable: false
       });
       image = this.resize(image);
-      // this.c.setOverlayImage(image);
+      this.c.setOverlayImage(image);
       this.c.add(image);
       this.c.renderAll();
     });
-
   }
 
   init(image) {
-    console.log("asdasd");
-
     // create image node
     this.imageNode = document.createElement("img");
     this.imageNode.src = image;
@@ -77,7 +70,6 @@ export default class Designer {
     // this.history.push(this.image);
 
     fabric.Image.fromURL(image, img => {
-      console.log(this);
       img.globalComositeOperation = "source-atop";
       this.image = this.resize(img);
       this.centerImage();
@@ -85,10 +77,7 @@ export default class Designer {
       this.add();
       this.history.push(this.image);
       this.c.add(img);
-
     });
-
-
   }
 
   /**
@@ -179,19 +168,27 @@ export default class Designer {
     this.selectable = false;
     this.image.hasControls = false;
     this.image.hasBorders = false;
-    
+
     // Clips the canvas in a circle instead of the pic
     // might need to adjust the radius and shit here
+    console.log(this.c.width);
+    console.log(this.c.height);
+    const x = this.c.width / 2 + 1;
+    const y = this.c.height / 2;
+    const radius = 272 / 2;
+    const startAngle = 0;
+    const endAngle = 100;
     this.c.clipTo = function(ctx) {
-      ctx.arc(this.height / 2, this.width / 2, this.height / 2, 0, 100);
+      ctx.arc(x, y, radius, startAngle, endAngle);
     };
-    
+
     this.c.renderAll();
-    
+
     // Return a base64 representation of the cropped CANVAS instead of the image
     // canvas is cropped in a circle, make it a png-image and the whitespace is
     // transparent
-    
+    console.log(this.image);
+    console.log(this.c.item(this.c.size() - 1));
     return this.c.toDataURL({
       format: "png",
       left: 0,
