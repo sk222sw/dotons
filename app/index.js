@@ -30,6 +30,7 @@ function upload(file, target, event) {
   }
 
   if (target.value === form.elements["upload-submit"].value) {
+    console.log("upload-submit");
     event.preventDefault(); // Prevent submitting form on picupload to client
     imageUploader.isValidImage(file)
       .then(imageUploader.uploadToClient)
@@ -45,7 +46,7 @@ function upload(file, target, event) {
         console.log(error);
       });
   } else if (target.value === form.elements["save-submit"].value) {
-
+    console.log("hehehe");
     const img = designer.crop();
     const blob = dataURLtoBlob(img);
     const fd = new FormData();
