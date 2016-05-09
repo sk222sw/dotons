@@ -178,8 +178,10 @@ export default class Designer {
     const radius = 272 / 2;
     const startAngle = 0;
     const endAngle = 100;
-    this.c.clipTo = function(ctx) {
-      ctx.arc(x, y, radius, startAngle, endAngle);
+    const curcle = new fabric.Circle({ radius: 272 / 2, fill: '#f55', top: 100, left: 100 });
+    this.image.clipTo = function(ctx) {
+      curcle.render(ctx);
+      // ctx.arc(x, y, radius, startAngle, endAngle);
     };
 
     this.c.renderAll();
@@ -187,9 +189,10 @@ export default class Designer {
     // Return a base64 representation of the cropped CANVAS instead of the image
     // canvas is cropped in a circle, make it a png-image and the whitespace is
     // transparent
+    
     console.log(this.image);
     console.log(this.c.item(this.c.size() - 1));
-    return this.c.toDataURL({
+    return this.c.item(this.c.size() - 1).toDataURL({
       format: "png",
       left: 0,
       top: 0
