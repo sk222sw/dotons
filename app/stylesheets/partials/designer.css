@@ -11,17 +11,24 @@
 
 /* some weird hacks to make the height equal the width */
 #designer-area #canvas-area {
-    position: relative;
+    /*position: relative;
     margin: 20px auto;
     width: inherit;
     height: 0;
     padding-bottom: 100%;
-    box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.15);
+    box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.15);*/
 }
 
 #designer-area #controls-area {
     width: 90%;
     margin: 0 auto;
+}
+
+#canvas-area {
+    /*border: solid white 1px;*/
+    box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.15);
+    width: 640px;
+    height: 400px;
 }
 
 #controls-area button {
@@ -37,8 +44,8 @@
 }
 
 canvas {
-    width: inherit;
-    height: inherit;
+    /*width: inherit;
+    height: inherit;*/
     position: relative;
     margin: 0 auto;
 }
