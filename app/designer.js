@@ -68,8 +68,10 @@ export default class Designer {
     // this.centerImage();
     // this.add();
     // this.history.push(this.image);
+    console.log("In designer.init()");
 
     fabric.Image.fromURL(image, img => {
+      console.log("In Image.fromURL");
       img.globalComositeOperation = "source-atop";
       this.image = this.resize(img);
       this.centerImage();
@@ -174,12 +176,11 @@ export default class Designer {
     const circleDiameter = 274;
     const x = this.c.width / 2 + 1;
     const y = this.c.height / 2;
-    const radius = circleDiameter / 2;
+    const radius = circleDiameter / 2 - 3;
     const startAngle = 0;
     const endAngle = 100;
 
     this.c.clipTo = function(ctx) {
-
       ctx.arc(x, y, radius, startAngle, endAngle);
     };
     this.c.overlayImage = null;

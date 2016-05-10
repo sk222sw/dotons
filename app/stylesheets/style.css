@@ -77,13 +77,6 @@ a {
 .logo {
   width: 60px;
   vertical-align: middle;
-  
-}
-
-
-
-.pure-menu span {
-  
 }
 
 nav {
@@ -150,7 +143,23 @@ nav {
 }
 
 .design {
-  margin-top: 10px;
+  margin-top: 20px;
+}
+
+.design .image-container {
+  margin: 0 auto;
+  padding: 25px 0;
+  width: 30%;
+  height: 150px;
+}
+
+.design img {
+  background: white;
+  margin-bottom: -8px;
+}
+
+.dot-design-name {
+  font-size: 0.8em;
 }
 
 /*******************************************/
@@ -163,7 +172,6 @@ nav {
 #profile-description h1 {
   text-align: center;
 }
-
 
 /*******************************************/
 /*       Admin section                     */
