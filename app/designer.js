@@ -176,7 +176,7 @@ export default class Designer {
     const circleDiameter = 274;
     const x = this.c.width / 2 + 1;
     const y = this.c.height / 2;
-    const radius = circleDiameter / 2;
+    const radius = circleDiameter / 2 - 3;
     const startAngle = 0;
     const endAngle = 100;
 
