@@ -4,48 +4,122 @@
 }
 
 #designer-area {
+    width: 640px;
+    position: relative;
+    margin: 0 auto;
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.25);
+}
+
+#canvas-area {
+    width: 640px;
+    height: 400px;
+}
+
+#center-image {
+    background: url("/images/radio_white.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #448AFF;
+}
+
+#undo {
+    background: url("/images/undo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #448AFF;    
+}
+
+#redo {
+    background: url("/images/redo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #448AFF;    
+}
+
+#center-image:hover, #undo:hover, #redo:hover {
+    background-color: rgba(48, 108, 235, 1);
+    cursor: pointer;
+}
+
+#controls-area {
     width: 100%;
+    padding: 0;
+}
+
+.designer-button {
     position: relative;
-    margin: 0 auto;
-}
-
-/* some weird hacks to make the height equal the width */
-#designer-area #canvas-area {
-    position: relative;
-    margin: 20px auto;
-    width: inherit;
-    height: 0;
-    padding-bottom: 100%;
-    box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.15);
-}
-
-#designer-area #controls-area {
-    width: 90%;
-    margin: 0 auto;
-}
-
-#controls-area button {
-    position: relative;
-    margin: 0 auto;
-    width: 31%;
-    height: 50px;
-    font-size: 2em;
-    text-align: center;
-}
-
-#center-image span {
+    display: inline-block;
+    height: 60px;
+    border-radius: 0;
 }
 
 canvas {
-    width: inherit;
-    height: inherit;
     position: relative;
     margin: 0 auto;
 }
 
 .upload-area {
-    margin-top: 40px;
-    position: relative;
+    background-color: rgba(98, 168, 255, 1);
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.25);
+    height: 50px;
+}
+
+.upload-label {
+    background-color: blue;
+    height: 50px;
     width: 100%;
-    text-align: center;
+}
+
+.upload-label span {
+    float: left;
+    height: 50px;
+    background: url("/images/pictures.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    color: white;
+    width: 50%;
+    background-color: rgba(98, 168, 255, 1);
+    border-radius: 0;
+}
+
+.upload-label span:hover {
+    float: left;
+    height: 50px;
+    background: url("/images/pictures.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    color: white;
+    width: 50%;
+    background-color: rgba(98, 168, 255, 1);
+    border-radius: 0;    
+}
+
+#upload-submit, #save-submit {
+    display: inline-block;
+    width: 50%;
+    height: 50px;
+    float: right;
+    color: white;
+    background-color: rgba(98, 168, 255, 1);
+    border-radius: 0;
+}
+
+#upload-submit {
+    background: url("/images/upload.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#save-submit {
+    background: url("/images/save.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#upload-submit:hover, #save-submit:hover, .upload-label span:hover {
+    background-color: rgba(48, 108, 235, 1);
+} 
+
+#dot-design {
+    display: none;
 }
