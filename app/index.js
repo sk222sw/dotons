@@ -1,3 +1,5 @@
+/* global atob Blob */
+
 import ImageUploader from "./imageUploader";
 import Designer from "./designer";
 import request from "superagent";

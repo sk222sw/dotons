@@ -16,23 +16,14 @@
 }
 
 #center-image {
-    background: url("/images/radio_white.png");
-    background-repeat: no-repeat;
-    background-position: center;
     background-color: #448AFF;
 }
 
 #undo {
-    background: url("/images/undo.png");
-    background-repeat: no-repeat;
-    background-position: center;
     background-color: #448AFF;    
 }
 
 #redo {
-    background: url("/images/redo.png");
-    background-repeat: no-repeat;
-    background-position: center;
     background-color: #448AFF;    
 }
 
@@ -51,6 +42,7 @@
     display: inline-block;
     height: 60px;
     border-radius: 0;
+    color: white;
 }
 
 canvas {
@@ -73,21 +65,16 @@ canvas {
 .upload-label span {
     float: left;
     height: 50px;
-    background: url("/images/pictures.png");
-    background-repeat: no-repeat;
-    background-position: center;
     color: white;
     width: 50%;
     background-color: rgba(98, 168, 255, 1);
     border-radius: 0;
+    line-height: 35px;
 }
 
 .upload-label span:hover {
     float: left;
     height: 50px;
-    background: url("/images/pictures.png");
-    background-repeat: no-repeat;
-    background-position: center;
     color: white;
     width: 50%;
     background-color: rgba(98, 168, 255, 1);
@@ -105,15 +92,11 @@ canvas {
 }
 
 #upload-submit {
-    background: url("/images/upload.png");
-    background-repeat: no-repeat;
-    background-position: center;
+
 }
 
 #save-submit {
-    background: url("/images/save.png");
-    background-repeat: no-repeat;
-    background-position: center;
+
 }
 
 #upload-submit:hover, #save-submit:hover, .upload-label span:hover {
