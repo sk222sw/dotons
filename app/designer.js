@@ -181,7 +181,6 @@ export default class Designer {
     const endAngle = 100;
 
     this.c.clipTo = function(ctx) {
-
       ctx.arc(x, y, radius, startAngle, endAngle);
     };
     this.c.overlayImage = null;
