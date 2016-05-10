@@ -7,7 +7,7 @@ const MAX_SIZE = 1000000;
 
 export default class ImageUploader {
   uploadToClient(file) {
-    console.log(this);
+    // TODO: refactor into smaller functions
     return new Promise((resolve, reject) => {
       if (file.image.size > MAX_SIZE) {
         reject(new Error("Image is to BIG"));
@@ -21,8 +21,13 @@ export default class ImageUploader {
         reader.onload = event => {
           PdfJs.worker = PdfJsWorker;
           const result = event.currentTarget.result;
-          // PDF fix
-          if (file.type === "application/pdf") { 
+
+          // PDF fix since PDF files does not play well with FabricJS
+          // Takes the b64string representing the pdf and converts it to
+          // a Uint8Array so PdfJs can read it
+          // Then draws it on a canvas elements and then converts to a PNG
+          // to finally draw it on the main (fabric) canvas
+          if (file.type === "application/pdf") {
             const pdfAsArray = convertDataURIToBinary(result);
             PdfJs.getDocument(pdfAsArray).then(pdf => {
               pdf.getPage(1).then(page => {
@@ -31,36 +36,31 @@ export default class ImageUploader {
                 canvas.width = viewport.width;
                 canvas.height = viewport.height;
                 const context = canvas.getContext("2d");
-                
+
                 const renderContext = {
                   canvasContext: context,
                   viewport
-                }
+                };
+
+                // PDFJs callback for pageRenering so the image is fully drawn
+                // on the canvas before resolving the promise
                 const pageRendering = page.render(renderContext);
                 const completeCallback = pageRendering._internalRenderTask.callback;
+
                 pageRendering._internalRenderTask.callback = function(error) {
-                  const img = canvas.toDataURL();
-                  console.log(canvas);
-                  window.open(img);
                   resolve(canvas.toDataURL("png"));
                   completeCallback.call(this, error);
-                  
-                }
-                
+                };
               });
             });
           } else {
             resolve(event.currentTarget.result);
           }
-          
         };
-
         reader.readAsDataURL(file.image);
       }
     });
   }
-  
-  
 
   isValidImage(image) {
     // http://stackoverflow.com/a/29672957 how to check the real mime-type in js
@@ -107,18 +107,18 @@ export default class ImageUploader {
 }
 
 function convertDataURIToBinary(dataURI) {
-  console.log("DATA URI: " + dataURI);
+  // Used to convert a base64 representation of a pdf to
+  // a binary array
   const BASE64_MARKER = ';base64,';
   const base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
   const base64 = dataURI.substring(base64Index);
   const raw = window.atob(base64);
   const rawLength = raw.length;
   const array = new Uint8Array(new ArrayBuffer(rawLength));
-  
+
   for (let i = 0; i < rawLength; i++) {
     array[i] = raw.charCodeAt(i);
   }
   console.log(array);
   return array;
-  
 }
