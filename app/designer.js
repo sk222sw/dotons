@@ -68,8 +68,10 @@ export default class Designer {
     // this.centerImage();
     // this.add();
     // this.history.push(this.image);
+    console.log("In designer.init()");
 
     fabric.Image.fromURL(image, img => {
+      console.log("In Image.fromURL");
       img.globalComositeOperation = "source-atop";
       this.image = this.resize(img);
       this.centerImage();

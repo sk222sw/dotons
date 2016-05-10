@@ -30,7 +30,6 @@ function upload(file, target, event) {
   }
 
   if (target.value === form.elements["upload-submit"].value) {
-    console.log("upload-submit");
     event.preventDefault(); // Prevent submitting form on picupload to client
     imageUploader.isValidImage(file)
       .then(imageUploader.uploadToClient)
@@ -46,7 +45,7 @@ function upload(file, target, event) {
         console.log(error);
       });
   } else if (target.value === form.elements["save-submit"].value) {
-    console.log("hehehe");
+
     const img = designer.crop();
     const blob = dataURLtoBlob(img);
     const fd = new FormData();
@@ -56,59 +55,44 @@ function upload(file, target, event) {
     // the fileupload NEEDS to be done with AJAX since if you submit
     // the form with the regular submit-event, the appended formdata with
     // the cropped picture does not get sent to the server.. bs
-    console.log("XHR YAOOO");
+
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "designer/upload");
     xhr.onload = function(event) {
       if (xhr.status === 200) {
         console.log(xhr);
-        console.log("UPLOADED");
+
         if (xhr.response === "unauthorized") {
           document.getElementById("form-modal-container").classList.toggle("hidden");
         } else if (xhr.response === "success") {
           window.location.href = "/profile";
         }
-        // window.location.href = xhr.responseURL;
-        // window.location.href = "/profile";
       } else {
         console.log("Error: " + xhr.status);
       }
     }
     xhr.send(fd);
-    
-    // request.post("designer/upload")
-    //   .send(fd)
-    //   .end((err, response) => {
-    //     if (err) console.log(err);
-    //     else console.log("done");
-
-    //   });
-    
-        
-    //console.log(document.getElementById("upload-form").elements);
-    //document.getElementById("upload-form").submit();
-    //form.submit();
   }
 }
 
 function dataURLtoBlob(dataURI) {
   // convert base64/URLEncoded data component to raw binary data held in a string
   let byteString;
-  if (dataURI.split(',')[0].indexOf('base64') >= 0)
-      byteString = atob(dataURI.split(',')[1]);
-  else
-      byteString = unescape(dataURI.split(',')[1]);
-
+  if (dataURI.split(',')[0].indexOf('base64') >= 0) {
+    byteString = atob(dataURI.split(',')[1]);
+  } else {
+    byteString = unescape(dataURI.split(',')[1]);
+  }
   // separate out the mime component
   let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
   // write the bytes of the string to a typed array
-  var ia = new Uint8Array(byteString.length);
+  const ia = new Uint8Array(byteString.length);
   for (var i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
+    ia[i] = byteString.charCodeAt(i);
   }
 
-  return new Blob([ia], {type:mimeString});
+  return new Blob([ia], { type: mimeString });
 }
 
 /* get user images, refactor to own file l8r */
