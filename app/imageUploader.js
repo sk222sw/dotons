@@ -30,7 +30,6 @@ export default class ImageUploader {
                 const canvas = document.createElement("canvas");
                 canvas.width = viewport.width;
                 canvas.height = viewport.height;
-                document.body.appendChild(canvas);
                 const context = canvas.getContext("2d");
                 
                 const renderContext = {
