@@ -12,47 +12,30 @@ var fs = require("fs");
 var path = require("path");
 
 var port;
+var isProduction = process.env.NODE_ENV === "production";
 
 
 /**
  * Get port from environment and store in Express.
  */
-if (process.env.NODE_ENV === "production") {
-  // port = 443;
-  // var server = https.createServer({
-  //   key: fs.readFileSync("./tls/privkey.pem"),
-  //   cert: fs.readFileSync("./tls/fullchain.pem"),
-  //   ca: fs.readFileSync("./tls/chain.pem"),
-  //   app
-  // });
-
-  // server.listen(port);
-  // app.set("port", port);
-  // //pp.listen(80);
-  // server.on('error', onError);
-  // server.on('listening', onListening);
-
-  // console.log(process.env.NODE_ENV);
-  
+if (isProduction) {
   var options = {
     key: fs.readFileSync("./tls/privkey.pem"),
     cert: fs.readFileSync("./tls/fullchain.pem"),
     ca: fs.readFileSync("./tls/chain.pem"),
   };
-  
-  
+
+  // Create the app server
   https.createServer(options, app).listen(443);
-  
-  // http.createServer(app);  
-  // http.listen(80);
-  
+
+  // Create a http-server to redirect to https
   http.createServer((req, res) => {
     res.writeHead(301, { "Location": "https://" + req.headers["host"] + req.url });
     res.end();
   }).listen(80);
-  
 
 } else {
+  // create the development server and set it to port 3000
   port = normalizePort(process.env.PORT || '3000');
   app.set('port', port);
 
@@ -69,7 +52,6 @@ if (process.env.NODE_ENV === "production") {
   server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);
-
 }
 
 

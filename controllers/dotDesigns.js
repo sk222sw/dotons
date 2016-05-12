@@ -52,13 +52,10 @@ ctrl.prototype.new = function(req, res, next) {
  */
 ctrl.prototype.create = function(req, res, next) {
   upload(req, res, err => {
-    console.log("REQ.FILE:    ");
-    console.log(req.file);
-    
+
     if (err) return res.end(err.code);
     if (!req.file) return res.redirect("/designer"); // send flash that no image was sent
     if (!isValidImage(req.file.buffer)) return res.redirect("/designer"); // send flash that file is wrong format
-
 
     // save the dot-design full size image
     const dot = new DotDesign();
@@ -78,7 +75,6 @@ ctrl.prototype.create = function(req, res, next) {
         return dotDesignDAL.addDotDesignToUser(req.user.id, dot);
       })
       .then(() => {
-        //res.redirect("/profile");
         // Send a message, maybe something nicer.
         // Since image is posted with AJAX we need an indication
         // of wheter if succeeded or if maybe the user wasnt logged in
