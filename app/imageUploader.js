@@ -7,6 +7,8 @@ const MAX_SIZE = 1000000;
 
 export default class ImageUploader {
   uploadToClient(file) {
+      console.log("new");
+
     // TODO: refactor into smaller functions
     return new Promise((resolve, reject) => {
       if (file.image.size > MAX_SIZE) {
