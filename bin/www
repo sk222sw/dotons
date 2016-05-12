@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === "production") {
   var server = https.createServer({
     key: fs.readFileSync("./tls/privkey.pem"),
     cert: fs.readFileSync("./tls/fullchain.pem"),
-    ca: fs.readFileSync("./tls/chain.pem");
+    ca: fs.readFileSync("./tls/chain.pem"),
     app
   });
 
