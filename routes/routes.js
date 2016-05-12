@@ -62,7 +62,6 @@ module.exports = function (app) {
       upload(req, res, err => {
         req.session.image = req.file;
         res.send("unauthorized");
-        //res.redirect("/profile");
       });
     }
   }, dotDesigner.create);

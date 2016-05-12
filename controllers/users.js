@@ -23,8 +23,6 @@ const ctrl = function() {};
  */
 ctrl.prototype.index = function(req, res) {
   User.find({}, (err, users) => {
-    
-
     res.render("users", {
       users
     });
