@@ -13,7 +13,7 @@ const csrf = require("csurf");
 const multer = require("multer");
 
 // path
-global.appRoot = path.resolve(___dirname);
+global.appRoot = path.resolve(__dirname);
 
 // CSRUF middleware
 
