@@ -1,6 +1,11 @@
 const LocalStrategy = require("passport-local").Strategy;
 const User = require("../models/user");
 
+/**
+ * Configures passport.js for authentication of the app
+ * 
+ * @param passport (description)
+ */
 module.exports = function(passport) {
   passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -11,7 +16,10 @@ module.exports = function(passport) {
       done(err, user);
     });
   });
-
+  
+  /**
+   * Passport strategy for registration
+   */
   passport.use("local-signup", new LocalStrategy({
     usernameField: "email",
     passwordField: "password",
@@ -41,7 +49,10 @@ module.exports = function(passport) {
       });
     });
   }));
-
+  
+  /**
+   * Passport strategy for login
+   */
   passport.use("local-login", new LocalStrategy({
     usernameField: "email",
     passwordField: "password",

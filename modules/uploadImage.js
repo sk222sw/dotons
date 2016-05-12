@@ -2,11 +2,11 @@ const fs = require("fs");
 
 
 /**
- * Uploads an image to filesystem and returns a 
- * Promise. 
- * 
- * @param image 
- * @param path 
+ * Uploads an image to filesystem and returns a
+ * Promise.
+ *
+ * @param image
+ * @param path
  * @returns {Promise}
  */
 function uploadImage(buffer, path) {

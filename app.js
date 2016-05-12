@@ -9,16 +9,12 @@ const favicon = require('serve-favicon');
 const db = require("./models/mongo.js");
 const flash = require("connect-flash");
 const helmet = require("helmet");
-const csrf = require("csurf");
-const multer = require("multer");
 
 // path
 global.appRoot = path.resolve(__dirname);
 
-// CSRUF middleware
-
-
 const app = express();
+const isProduction = process.env.NODE_ENV === "production";
 
 require("./config/passport")(passport);
 require("./config/handlebars")(app);
@@ -35,7 +31,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false, // TODO: fix SSL and set to true in production
+    secure: isProduction, // TODO: fix SSL and set to true in production
     httpOnly: true,
     // TODO: domain and expires
   }
@@ -44,16 +40,16 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-//multer
 
 
+// Middleware for checking if user is admin
 app.use((req, res, next) => {
   res.locals.user = req.user;
   res.locals.notAdmin = req.user ? req.user.role.toLowerCase() !== "admin" : true;
   next();
 });
 
-// CSP 
+// CSP
 app.use(helmet.contentSecurityPolicy({
   defaultSrc: ["'self"],
   scriptSrc: [], // scripts like google analytics go here
@@ -72,18 +68,17 @@ app.use(helmet.xssFilter());
 app.use(helmet.frameguard({ action: "deny" }));
 
 // Enforce https
-// app.use(helmet.hsts({
-//   maxAge: 7776000000,
-//   includeSubdomains: true
-// }));
+if (isProduction) {
+  app.use(helmet.hsts({
+    maxAge: 7776000000,
+    includeSubdomains: true
+  }));
+}
 
 // Hide x-powered-by header
 app.use(helmet.hidePoweredBy());
 
-
-
-
-
+// URL slash fix middleware
 app.use((req, res, next) => {
   if (req.url.substr(-1) === "/" && req.url.length > 1) {
     res.redirect(301, req.url.slice(0, -1));
@@ -91,16 +86,17 @@ app.use((req, res, next) => {
     next();
   }
 });
+
+
 app.use((req, res, next) => {
   res.locals.login = req.isAuthenticated(); // should be able to get this in handlebars no?
   next();
 });
 
-// setup multer for fileupload
+// setup app routes
 require("./routes/routes.js")(app, passport);
 
-
-
+// connect to db
 connect()
   .on("error", console.log)
   .on("disconnected", connect)
@@ -109,10 +105,8 @@ connect()
   });
 
 
-
+// TODO: Remove when finished
 const seeds = require("./models/seeds");
-
-
 seeds();
 
 // catch 404 and forward to error handler
@@ -121,7 +115,6 @@ app.use((req, res, next) => {
   err.status = 404;
   next(err);
 });
-
 
 // error handlers
 app.use((err, req, res, next) => {
@@ -155,6 +148,5 @@ app.use((err, req, res) => {
 function connect() {
   return db.connect(app.get("env")).connection;
 }
-
 
 module.exports = app;
