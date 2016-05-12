@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === "production") {
     cert: fs.readFileSync("./tls/cert.pem"),
     app
   });
-  server.listen(ports[1]);
+  server.listen(ports[1][7]);
   app.listen(ports[0]);
   server.on('error', onError);
   server.on('listening', onListening);
