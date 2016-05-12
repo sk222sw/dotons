@@ -19,13 +19,13 @@ var path = require("path");
 if (process.env.NODE_ENV === "production") {
   var ports = [80, 443];
   var server = https.createServer({
-    key: fs.readFileSync(appRoot + "/tls/key.pem"),
-    cert: fs.readFileSync(appRoot + "/tls/cert.pem"),
+    key: fs.readFileSync("./tls/key.pem"),
+    cert: fs.readFileSync("./tls/cert.pem"),
     app
   });
   
   server.listen(ports[1][7]);
-  app.listen(ports[0]);
+  app.set("port", ports[0])
   server.on('error', onError);
   server.on('listening', onListening);
   
