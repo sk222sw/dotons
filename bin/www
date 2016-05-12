@@ -23,12 +23,11 @@ if (process.env.NODE_ENV === "production") {
     cert: fs.readFileSync("./tls/cert.pem"),
     app
   });
-  
-  server.listen(ports[1][7]);
-  app.set("port", ports[0])
+  server.listen(ports[1]);
+  app.listen(ports[0]);
   server.on('error', onError);
   server.on('listening', onListening);
-  
+
 } else {
   var port = normalizePort(process.env.PORT || '3000');
   app.set('port', port);
@@ -46,7 +45,7 @@ if (process.env.NODE_ENV === "production") {
   server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);
-  
+
 }
 
 
