@@ -20,11 +20,11 @@
 }
 
 #undo {
-    background-color: #448AFF;    
+    background-color: #448AFF;
 }
 
 #redo {
-    background-color: #448AFF;    
+    background-color: #448AFF;
 }
 
 #center-image:hover, #undo:hover, #redo:hover {
@@ -78,7 +78,7 @@ canvas {
     color: white;
     width: 50%;
     background-color: rgba(98, 168, 255, 1);
-    border-radius: 0;    
+    border-radius: 0;
 }
 
 #upload-submit, #save-submit {
@@ -101,7 +101,7 @@ canvas {
 
 #upload-submit:hover, #save-submit:hover, .upload-label span:hover {
     background-color: rgba(48, 108, 235, 1);
-} 
+}
 
 #dot-design {
     display: none;

@@ -4,7 +4,7 @@ import ImageUploader from "./imageUploader";
 import Designer from "./designer";
 import request from "superagent";
 
-// TODO: Better error-presentation for the user, flashhshhshshhs-messhahshshhages
+// TODO: Better error-presentation for the user, flashhshhshshhs-messhahshshhages <-lol
 const form = document.getElementById("upload-form");
 // declare designer here. Might need to call crop method
 // on saving the image
@@ -70,8 +70,7 @@ function upload(file, target, event) {
       .then(imageUploader.uploadToClient)
       .then((image) => {
         // toggle elements to hide/show on uploaded client pic
-        form.elements["upload-submit"].classList.toggle("hidden");
-        form.elements["save-submit"].classList.toggle("hidden");
+        form.elements["save-submit"].disabled = false;
         form.elements["dot-design"].classList.toggle("hidden");
         return image;
       })
