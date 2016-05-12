@@ -46,7 +46,7 @@ if (process.env.NODE_ENV === "production") {
   // http.createServer(app);  
   // http.listen(80);
   
-  http.createServer((req, res) {
+  http.createServer((req, res) => {
     res.writeHead(301, { "Location": "https://" + req.headers["host"] + req.url });
     res.end();
   }).listen(80);
