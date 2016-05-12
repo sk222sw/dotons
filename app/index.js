@@ -4,11 +4,12 @@ import ImageUploader from "./imageUploader";
 import Designer from "./designer";
 import request from "superagent";
 
-// TODO: Better error-presentation for the user, flashhshhshshhs-messhahshshhages
+// TODO: Better error-presentation for the user, flashhshhshshhs-messhahshshhages <-lol
 const form = document.getElementById("upload-form");
 // declare designer here. Might need to call crop method
 // on saving the image
 let designer = null;
+console.log("tjena");
 
 if (form && form.addEventListener) {
   designer = new Designer();
@@ -21,7 +22,20 @@ if (form && form.addEventListener) {
 
     upload(file, target, event);
   }, false);
+}
 
+const dotDesign = document.getElementById("dot-design");
+console.log(dotDesign);
+
+if (dotDesign) {
+  dotDesign.onchange = function(event) {
+    designer.removeImage();
+    const file = document.getElementById("dot-design").files[0];
+    const target = event.explicitOriginalTarget ||
+                  event.relatedTarget ||
+                  document.activeElement || {}; // for knowing which submit was pressed
+    upload(file, target, event);
+  };
 }
 
 function upload(file, target, event) {
@@ -31,39 +45,21 @@ function upload(file, target, event) {
     return;
   }
 
-  if (target.value === form.elements["upload-submit"].value) {
-    event.preventDefault(); // Prevent submitting form on picupload to client
-    imageUploader.isValidImage(file)
-      .then(imageUploader.uploadToClient)
-      .then((image) => {
-        // toggle elements to hide/show on uploaded client pic
-        form.elements["upload-submit"].classList.toggle("hidden");
-        form.elements["save-submit"].classList.toggle("hidden");
-        form.elements["dot-design"].classList.toggle("hidden");
-        return image;
-      })
-      .then(img => designer.init(img)) // call init instead of creating the designer here
-      .catch(error => {
-        console.log(error);
-      });
-  } else if (target.value === form.elements["save-submit"].value) {
-
+  if (target.value === form.elements["save-submit"].value) {
     const img = designer.crop();
     const blob = dataURLtoBlob(img);
     const fd = new FormData();
     fd.set("dot-design", blob, document.getElementById("dot-design").files[0].name);
-    
-    // superagent post formdata is not playing nicely with multer.
-    // the fileupload NEEDS to be done with AJAX since if you submit
-    // the form with the regular submit-event, the appended formdata with
-    // the cropped picture does not get sent to the server.. bs
+
+      // superagent post formdata is not playing nicely with multer.
+      // the fileupload NEEDS to be done with AJAX since if you submit
+      // the form with the regular submit-event, the appended formdata with
+      // the cropped picture does not get sent to the server.. bs
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "designer/upload");
     xhr.onload = function(event) {
       if (xhr.status === 200) {
-        console.log(xhr);
-
         if (xhr.response === "unauthorized") {
           document.getElementById("form-modal-container").classList.toggle("hidden");
         } else if (xhr.response === "success") {
@@ -72,8 +68,22 @@ function upload(file, target, event) {
       } else {
         console.log("Error: " + xhr.status);
       }
-    }
+    };
     xhr.send(fd);
+  } else {
+    event.preventDefault(); // Prevent submitting form on picupload to client
+    imageUploader.isValidImage(file)
+      .then(imageUploader.uploadToClient)
+      .then((image) => {
+        // toggle elements to hide/show on uploaded client pic
+        form.elements["save-submit"].disabled = false;
+        form.elements["dot-design"].classList.toggle("hidden");
+        return image;
+      })
+      .then(img => designer.init(img)) // call init instead of creating the designer here
+      .catch(error => {
+        console.log(error);
+      });
   }
 }
 
@@ -86,36 +96,36 @@ function dataURLtoBlob(dataURI) {
     byteString = unescape(dataURI.split(',')[1]);
   }
   // separate out the mime component
-  let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+  const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
   // write the bytes of the string to a typed array
   const ia = new Uint8Array(byteString.length);
-  for (var i = 0; i < byteString.length; i++) {
+  for (let i = 0; i < byteString.length; i++) {
     ia[i] = byteString.charCodeAt(i);
   }
 
   return new Blob([ia], { type: mimeString });
 }
+console.log("hehe");
 
 /* get user images, refactor to own file l8r */
 /* needs refactor badly //TODO */
 const designsDiv = document.getElementById("designs");
+console.log(designsDiv);
 if (designsDiv) {
-
   const imgs = designsDiv.getElementsByTagName("img");
+  console.log("hehe");
 
   Array.prototype.forEach.call(imgs, item => {
-
-
     request
       .get(item.getAttribute("data-image-url"))
       .end((err, res) => {
-
         if (err) {
           console.log(err);
         } else {
-
+          console.log(item);
           item.src = item.getAttribute("data-image-url");
+          console.log(item);
 
           item.classList.toggle("hidden");
         }
