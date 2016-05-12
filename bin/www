@@ -40,8 +40,14 @@ if (process.env.NODE_ENV === "production") {
     ca: fs.readFileSync("./tls/chain.pem"),
   };
   
-  http.createServer(app).listen(80);
+  
   https.createServer(options, app).listen(443);
+  http.createServer(app);
+  http.get("*", (req, res) => {
+    res.redirect("https://dotons.xyz" + req.url);
+  });
+  
+  http.listen(80);
   
 
 } else {
