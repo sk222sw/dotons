@@ -18,8 +18,8 @@ var fs = require("fs");
 if (process.env.NODE_ENV === "production") {
   var ports = [80, 443];
   var server = https.createServer({
-    key: fs.readFileSync("/tls/key.pem"),
-    cert: fs.readFileSync("/tls/cert.pem"),
+    key: fs.readFileSync("tls/key.pem"),
+    cert: fs.readFileSync("tls/cert.pem"),
     app
   });
   
