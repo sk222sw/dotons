@@ -69,6 +69,14 @@ export default class Designer {
     // this.add();
     // this.history.push(this.image);
     console.log("In designer.init()");
+    if (this.image) {
+      console.log("hehe");
+
+      this.image.remove();
+      this.image = null;
+      this.c.remove(this.c.getObjects()[0]);
+      this.c.renderAll();
+    }
 
     fabric.Image.fromURL(image, img => {
       console.log("In Image.fromURL");
@@ -76,9 +84,8 @@ export default class Designer {
       this.image = this.resize(img);
       this.centerImage();
       this.addEvents();
-      this.add();
       this.history.push(this.image);
-      this.c.add(img);
+      //this.c.add(this.image);
     });
   }
 
@@ -139,6 +146,10 @@ export default class Designer {
     const img = _.cloneDeep(this.c.getActiveObject());
     this.history.push(img);
     this.undoIndex = this.history.length;
+  }
+  
+  removeImage() {
+
   }
 
   /*

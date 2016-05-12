@@ -9,6 +9,7 @@ const form = document.getElementById("upload-form");
 // declare designer here. Might need to call crop method
 // on saving the image
 let designer = null;
+console.log("tjena");
 
 if (form && form.addEventListener) {
   designer = new Designer();
@@ -23,16 +24,21 @@ if (form && form.addEventListener) {
   }, false);
 }
 
-document.getElementById("dot-design").onchange = function() {
-  const file = document.getElementById("dot-design").files[0];
-  const target = event.explicitOriginalTarget ||
-                event.relatedTarget ||
-                document.activeElement || {}; // for knowing which submit was pressed
-  upload(file, target, event);
-};
+const dotDesign = document.getElementById("dot-design");
+console.log(dotDesign);
+
+if (dotDesign) {
+  dotDesign.onchange = function(event) {
+    designer.removeImage();
+    const file = document.getElementById("dot-design").files[0];
+    const target = event.explicitOriginalTarget ||
+                  event.relatedTarget ||
+                  document.activeElement || {}; // for knowing which submit was pressed
+    upload(file, target, event);
+  };
+}
 
 function upload(file, target, event) {
-  console.log("le target", target);
   const imageUploader = new ImageUploader();
   if (!file) {
     console.log("No file chosen");
@@ -100,12 +106,15 @@ function dataURLtoBlob(dataURI) {
 
   return new Blob([ia], { type: mimeString });
 }
+console.log("hehe");
 
 /* get user images, refactor to own file l8r */
 /* needs refactor badly //TODO */
 const designsDiv = document.getElementById("designs");
+console.log(designsDiv);
 if (designsDiv) {
   const imgs = designsDiv.getElementsByTagName("img");
+  console.log("hehe");
 
   Array.prototype.forEach.call(imgs, item => {
     request
@@ -114,7 +123,9 @@ if (designsDiv) {
         if (err) {
           console.log(err);
         } else {
+          console.log(item);
           item.src = item.getAttribute("data-image-url");
+          console.log(item);
 
           item.classList.toggle("hidden");
         }
