@@ -20,8 +20,9 @@ var port;
 if (process.env.NODE_ENV === "production") {
   port = 443;
   var server = https.createServer({
-    key: fs.readFileSync("./tls/key.pem"),
-    cert: fs.readFileSync("./tls/cert.pem"),
+    key: fs.readFileSync("./tls/privkey.pem"),
+    cert: fs.readFileSync("./tls/fullchain.pem"),
+    ca: fs.readFileSync("./tls/chain.pem");
     app
   });
 
