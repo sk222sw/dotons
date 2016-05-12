@@ -9,6 +9,7 @@ var debug = require('debug')('dotons:server');
 var http = require('http');
 var https = require("https");
 var fs = require("fs");
+var path = require("path");
 
 
 
@@ -18,8 +19,8 @@ var fs = require("fs");
 if (process.env.NODE_ENV === "production") {
   var ports = [80, 443];
   var server = https.createServer({
-    key: fs.readFileSync("../tls/key.pem"),
-    cert: fs.readFileSync("../tls/cert.pem"),
+    key: fs.readFileSync(appRoot + "/tls/key.pem"),
+    cert: fs.readFileSync(appRoot + "/tls/cert.pem"),
     app
   });
   

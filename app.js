@@ -11,6 +11,10 @@ const flash = require("connect-flash");
 const helmet = require("helmet");
 const csrf = require("csurf");
 const multer = require("multer");
+const path = require("path");
+
+// path
+global.appRoot = path.resolve(___dirname);
 
 // CSRUF middleware
 
