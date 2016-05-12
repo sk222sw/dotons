@@ -26,7 +26,8 @@ if (process.env.NODE_ENV === "production") {
   });
 
   server.listen(port);
-  app.listen(80);
+  app.set("port", port);
+  //pp.listen(80);
   server.on('error', onError);
   server.on('listening', onListening);
 
