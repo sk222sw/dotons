@@ -105,9 +105,11 @@ connect()
   });
 
 
-// TODO: Remove when finished
+
 const seeds = require("./models/seeds");
 seeds();
+
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

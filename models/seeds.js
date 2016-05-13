@@ -1,6 +1,7 @@
 const DotDesign = require("./dotDesign").model;
 const User = require("./user");
 const PriceList = require("./priceList");
+const isProduction = process.env.NODE_ENV === "production";
 
 function seed() {
   PriceList.find((err, priceLists) => {
@@ -14,7 +15,10 @@ function seed() {
     });
     priceList.save();
   });
-
+  
+  // Dont want to seed production with users
+  if (isProduction) return;
+  
   User.find((err, user) => {
     if (user.length) return;
 
