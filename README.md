@@ -31,7 +31,8 @@ We have at least 2 branches at all times, *Master* and *Develop*.
 * **Master** - only has production-ready code that works and is tested(heh) and is the branch that is pushed to deployment on Digital Ocean. **NEVER** work against this branch.   
 * **Develop** - the branch that contains code that works but may not be ready for production yet. **AVOID** working against this branch.  
 
-**Daily workflow**  
+**Daily workflow**
+
 1. `git checkout -b new-branch` create a new local branch that you will work against  
 
 2. `git pull origin develop` make sure you have the latest changes from develop  
@@ -40,7 +41,22 @@ We have at least 2 branches at all times, *Master* and *Develop*.
 
 4. `git add . ` or `git add filename` to stage the changes for a commit  
 
-5. `git commit -am "This is a meaningful commit message that explains what I've done`  
+5. `git commit -am "This is a meaningful commit message that explains what I've done`
+
+6. `git pull --rebase origin develop` to get the latest changes if someone else has been working.
+
+7. Solve possible conflicts
+
+8. `git checkout develop` to switch branch
+
+9. `git merge --no-ff new-branch` to merge your changes with develop
+
+10. `git push origin develop` finally push your changes to github
+
+11. `git branch -d new-branch` if you want to delete the local branch. Or keep it to work in it again.
+
+
+
 
 
 
