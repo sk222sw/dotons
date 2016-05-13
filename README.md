@@ -1,5 +1,7 @@
 # dotons
 
+[wiki](https://github.com/sk222sw/dotons/wiki)
+
 ## Instructions
 
 ### Development
@@ -24,12 +26,11 @@
 4. `npm run deploy` or `npm run deploy-windows` to run express in production mode
 
 ***
-***
 
 ### Contributing
 We have at least 2 branches at all times, *Master* and *Develop*.  
 * **Master** - only has production-ready code that works and is tested(heh) and is the branch that is pushed to deployment on Digital Ocean. **NEVER** work against this branch.   
-* **Develop** - the branch that contains code that works but may not be ready for production yet. **AVOID** working against this branch.  
+* **Develop** - the branch that contains code that works but may not be ready for production yet. **AVOID** working against this branch. 
 
 **Daily workflow**
 
@@ -56,8 +57,23 @@ We have at least 2 branches at all times, *Master* and *Develop*.
 11. `git branch -d new-branch` if you want to delete the local branch. Or keep it to work in it again.
 
 
+**Push to production**
+
+1. Make sure you are on the develop branch and no files are unstaged (else follow Daily Workflow first)
+
+2. `git pull origin develop` to get the latest changes
+
+3. `git checkout master` 
+
+4. `git merge --no-ff develop` merge develop into master
+
+5. `git push origin master` - update remote master branch
+
+6. `git push live master` - push to the live branch (DigitalOcean droplet) 
 
 
 
 
-[wiki](https://github.com/sk222sw/dotons/wiki)
+
+
+
