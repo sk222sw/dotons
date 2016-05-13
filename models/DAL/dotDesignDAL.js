@@ -13,6 +13,7 @@ const dotDesignDAL = {
 
   /**
    * Adds a dot design to the current user
+   * 
    *
    * @param {String} userid - id of the current user
    * @param {DotDesign} dotDesign - to be added
