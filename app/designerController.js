@@ -2,12 +2,28 @@
 
 // /////////////////////////////////////////////////////////////
 // Contains designer stuff considering saving, uploading etc  //
+//  - maybe not really a controller but meow meow woof        //
 // /////////////////////////////////////////////////////////////
 
 import ImageUploader from "./imageUploader";
 import Designer from "./designer";
 import request from "superagent";
-// import DesignerController from "./designerController";
+
+const flash = document.getElementById("designer-flash");
+const flashMessage = document.getElementById("designer-flash-message");
+
+function displayDesignerFlash(error) {
+  flashMessage.innerHTML = error;
+  flash.classList.remove("hidden");
+  setTimeout(() => {
+    hideDesignerFlash();
+  }, 3000);
+}
+
+function hideDesignerFlash() {
+  flash.classList.add("hidden");
+  flashMessage.innerHTML = "";
+}
 
 // TODO: Better error-presentation for the user, flashhshhshshhs-messhahshshhages <-lol
 const form = document.getElementById("upload-form");
@@ -44,6 +60,7 @@ if (dotDesign) {
 function upload(file, target, event) {
   const imageUploader = new ImageUploader();
   if (!file) {
+    displayDesignerFlash();
     console.log("No file chosen");
     return;
   }
@@ -85,6 +102,7 @@ function upload(file, target, event) {
       })
       .then(img => designer.init(img)) // call init instead of creating the designer here
       .catch(error => {
+        displayDesignerFlash("Not a valid file format");
         console.log(error);
       });
   }
