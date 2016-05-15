@@ -1,1 +1,0 @@
-// TODO move designer logic from index.js here

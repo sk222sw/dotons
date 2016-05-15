@@ -18,22 +18,6 @@ export default class Designer {
     this.imageMaxHeight = this.c.height;
     this.imageMaxWidth = this.c.width;
 
-    // create foreground circle
-    /* Old code I dare not to remove it /sasha
-
-    const circleNode = document.createElement("img");
-    circleNode.src = "./images/dot-kopia.png";
-    this.circle = new fabric.Image(circleNode);
-    this.circle.set({
-      opacity: 0.8,
-      width: this.c.width,
-      height: this.c.height,
-      selectable: false
-    });
-    this.circle = this.resize(this.circle);
-    this.c.setOverlayImage(this.circle, this.c.renderAll.bind(this.c));
-    */
-
     // New code, solves bug of not rendering circle until canvas has been clicked..
     this.circle = fabric.Image.fromURL("/images/dotty.png", image => {
       image.set({
@@ -85,7 +69,6 @@ export default class Designer {
       this.centerImage();
       this.addEvents();
       this.history.push(this.image);
-      //this.c.add(this.image);
     });
   }
 
@@ -147,7 +130,7 @@ export default class Designer {
     this.history.push(img);
     this.undoIndex = this.history.length;
   }
-  
+
   removeImage() {
 
   }
@@ -157,25 +140,6 @@ export default class Designer {
   * TODO crop when image is saved?
   */
   crop() {
-    // TODO: Bugs in mobile. Seems like it crops correctly but when
-    //       the image is saved it only saves like 1/4 or even less
-    //       of it...
-
-    // this.image.clipTo = function(ctx) {
-    //   const horizontalOffsetFromCenter = 0;
-    //   const verticalOffsetFromCenter = 0;
-    //   const radius = 300; // atleast according to official Fabric demos but i dont really know what it does
-    //   const iDontKnowWhatThisArgumentDoesBecauseFabricDocumentationSucks = 0;
-    //   const iThinkThisHasSomethingToDoWithCirclesButImNotSure = 100;
-
-    //   ctx.arc(horizontalOffsetFromCenter,
-    //           verticalOffsetFromCenter,
-    //           radius,
-    //           iDontKnowWhatThisArgumentDoesBecauseFabricDocumentationSucks,
-    //           iThinkThisHasSomethingToDoWithCirclesButImNotSure
-    //         );
-    // };
-
     // make it non selectable and disable controls/borders
     // else they are seen in the cropped pic
     this.selectable = false;
