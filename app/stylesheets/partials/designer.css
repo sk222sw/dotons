@@ -106,3 +106,15 @@ canvas {
 #dot-design {
     display: none;
 }
+
+#designer-flash {
+    background: red;
+    text-align: center;
+}
+
+#designer-flash-message {
+    color: white;
+    margin: 10px;
+    padding: 10px;
+    font-size: 1.2em;
+}
