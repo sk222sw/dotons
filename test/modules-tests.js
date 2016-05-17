@@ -5,6 +5,7 @@ const fs = require("fs");
 const isValidImage = require("../modules/isValidImage");
 
 
+
 describe("isValidImage-module", () => {
   // TODO: More test-cases with different types of images.
   // could be good to test files that have a changed extension
@@ -31,3 +32,6 @@ describe("isValidImage-module", () => {
     });
   });
 });
+
+
+
