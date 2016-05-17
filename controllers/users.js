@@ -5,6 +5,7 @@ const uploadImage = require("../modules/uploadImage");
 const DotDesign = require("../models/dotDesign").model;
 const UPLOAD_PATH = "uploads/dot_designs/";
 const dotDesignDAL = require("../models/DAL/dotDesignDAL");
+const userDAL = require("../models/DAL/userDAL");
 const User = require("../models/user");
 
 /**
@@ -22,11 +23,16 @@ const ctrl = function() {};
  * @param res (description)
  */
 ctrl.prototype.index = function(req, res) {
-  User.find({}, (err, users) => {
-    res.render("users", {
-      users
+  userDAL.getUsers()
+    .then(users => {
+      console.log(users);
+      res.render("users", { users });
+    })
+    .catch(error => {
+      // db error
+      console.log("DB error");
+      console.log(error);
     });
-  });
 };
 
 
@@ -43,7 +49,7 @@ ctrl.prototype.index = function(req, res) {
  * @param res (description)
  */
 ctrl.prototype.show = function(req, res) {
-
+  
 };
 
 /**
@@ -97,11 +103,11 @@ const convertToPDF = require("../modules/convertToPdf");
  * @param req (description)
  * @param res (description)
  */
-ctrl.prototype.profile = function(req, res, next) {
+ctrl.prototype.show = function(req, res, next) {
   // TODO: NEEDS REFACTOR (NOT SO) REALLY BADLY (ANYMORE)
   // Still DRY compared to the create action in the dotDesign-controller
   // Move the uploading code out to separate module / BLL-class that handles it probably
-  console.log(req.user);
+
   if (req.session.image) {
     // User tried to save an image but was not logged in
     // Creating a new instance of a buffer object with the buffer in the session

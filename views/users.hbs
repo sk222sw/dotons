@@ -1,5 +1,40 @@
-{{#each users}}
-  <p>{{email}}</p>
-{{/each}}
+
+
+<table class="pure-table pure-table-horizontal">
+  <thead>
+    <tr>
+      <th>User id</th>
+      <th>Email </th>
+      <th>Account type</th>
+      <th>Status</th>
+      <th></th>
+    </tr>  
+  </thead>
+  
+  <tbody>
+    {{#each users}}
+      <tr>
+        <td data-label="User id">{{_id}}</td>
+        <td data-label="Email">{{email}}</td>
+        <td data-label="Account type">{{role}}</td>
+        <td data-label="Status">
+          {{#if activated}}
+            Activated
+          {{else}}
+            Not activated
+          {{/if}}
+        </td>
+        <td>
+          <a href="/users/{{_id}}">
+            Profile
+          </a>
+        </td>
+        
+      </tr>
+    {{/each}}
+    
+  </tbody>
+</table>
+
 
 <!-- <script type="text/javascript" src="/javascripts/entry2.bundle.js"></script> -->
