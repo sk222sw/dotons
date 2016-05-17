@@ -1,5 +1,6 @@
 const LocalStrategy = require("passport-local").Strategy;
 const User = require("../models/user");
+const mailer = require("../modules/mailer");
 
 /**
  * Configures passport.js for authentication of the app
@@ -16,7 +17,7 @@ module.exports = function(passport) {
       done(err, user);
     });
   });
-  
+
   /**
    * Passport strategy for registration
    */
@@ -39,8 +40,26 @@ module.exports = function(passport) {
         const newUser = new User();
         newUser.email = email;
         newUser.password = newUser.generateHash(password);
-
         newUser.role = req.body.role;
+        
+        console.log(newUser.role);
+        
+        if (role === "business") {
+          var text = "<h1>Welcome to dotons!</h1>";
+          text += "<p>Please await activation of your account before you can order dots</p>";
+          mailer.sendMail({
+            recipient: newUser.email,
+            subject: "Welcome to dotons!",
+            html: "<p>Hello and welcome to dotons!</p>"
+          });
+          
+          mailer.sendMail({
+            recipient: "ad222kr@student.lnu.se",
+            subject: "New business account awaiting activation",
+            html: "<p>A new account needs activating</p>"
+          });
+        }
+        newUser.activated = role === "private";
 
         newUser.save(saveErr => {
           if (err) { throw saveErr; }

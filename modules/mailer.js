@@ -12,7 +12,7 @@ const sendMail = function(options) {
     from,
     to: options.recipient,
     subject: options.subject,
-    text: options.text
+    html: options.html
   };
 
   mailgun.messages().send(data, (error, body) => {
