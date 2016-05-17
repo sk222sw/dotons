@@ -15,7 +15,24 @@ const bodyParser = require('body-parser');
 const csrfProtection = csrf({ cookie: true });
 const parseForm = bodyParser.urlencoded({ extended: false });
 
+/**
+ * mailgun shizzle
+ */
+const mailer = require("../modules/mailer.js");
+
 module.exports = function (app) {
+  
+  /**
+   * Node mailer test
+   */
+  app.get("/sayHello", (req, res) => {
+    mailer.sendMail({
+      recipient: "alexdriagin12@gmail.com",
+      subject: "test mailer module",
+      text: "Hello there my nice friend!"
+    });
+  });
+  
   app.get('/', csrfProtection, (req, res) => {
     res.render('index', {
       title: 'dotons - wielkommen!',
