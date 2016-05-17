@@ -2,23 +2,17 @@ const DotDesign = require('../models/dotDesign').model;
 const isLoggedIn = require("../modules/isLoggedIn");
 const needsRole = require("../modules/needsRole");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 const users = require("../controllers/users");
 const admin = require("../controllers/admin");
 const dotDesigner = require("../controllers/dotDesigns.js");
 const fs = require("fs");
 const path = require("path");
-const isValidImage = require("../modules/isValidImage");
 const csrf = require("csurf");
 const bodyParser = require('body-parser');
-
+const hasProfileAccess = require("../modules/hasProfileAccess");
 const csrfProtection = csrf({ cookie: true });
 const parseForm = bodyParser.urlencoded({ extended: false });
 
-/**
- * mailgun shizzle
- */
-const mailer = require("../modules/mailer.js");
 
 module.exports = function (app) {
   
@@ -37,13 +31,7 @@ module.exports = function (app) {
 
   app.get("/signup", csrfProtection, users.signup);
   app.get("/login", csrfProtection, users.login);
-  app.get("/profile", isLoggedIn, (req, res, next) => {
-    if (req.user.role.toLowerCase() === "admin") {
-      res.redirect("/admin");
-    } else {
-      next();
-    }
-  }, users.profile);
+  app.get("/users/:id", [isLoggedIn, hasProfileAccess()], users.show);
   app.post("/signup", parseForm, csrfProtection, passport.authenticate(("local-signup"), {
     successRedirect: "/profile",
     failureRedirect: "/signup",
@@ -90,10 +78,10 @@ module.exports = function (app) {
   });
 
   // admin routes
-  app.get("/admin", needsRole("Admin", "/"), admin.index);
-  app.get("/users", needsRole("Admin", "/"), users.index);
+  app.get("/admin", /*needsRole("Admin", "/"),*/ admin.index);
+  app.get("/users", /*needsRole("Admin", "/"),*/ users.index);
   // TODO: move to controller
-  app.get('/designs', needsRole("Admin", "/"), (req, res) => {
+  app.get('/designs', /* needsRole("Admin", "/"), */ (req, res) => {
     DotDesign.find((err, dotDesigns) => {
       const context = {
         dots: dotDesigns.map(dot => {
