@@ -169,6 +169,10 @@ nav {
   
 }
 
+.account-info p {
+  text-align: center;
+}
+
 #profile-description h1 {
   text-align: center;
 }

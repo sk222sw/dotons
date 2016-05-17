@@ -34,6 +34,10 @@ const userSchema = mongoose.Schema({
     required: [true, "No role for user"],
     enum: roles()
   },
+  activated: {
+    type: Boolean,
+    default: false
+  },
   userInfo,
   companyInfo,
   designs: [dotDesignSchema]

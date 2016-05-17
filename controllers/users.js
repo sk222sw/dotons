@@ -77,6 +77,8 @@ ctrl.prototype.signup = function(req, res) {
   var context = {};
   context.roles = _.cloneDeep(ROLES);
   delete context.roles.ADMIN; // dont want to create admin accounts
+  delete context.roles.PRIVATE_RETAIL; // no suport for this type of account yet
+  delete context.roles.BUSINESS_RETAIL; // no support for this type of account yet
 
   context.title = "dotons - signup";
 
@@ -85,7 +87,6 @@ ctrl.prototype.signup = function(req, res) {
   context.csrfToken = req.csrfToken();
 
   res.render("signup", context);
-
 };
 
 const convertToPDF = require("../modules/convertToPdf");

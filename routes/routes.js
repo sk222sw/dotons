@@ -25,13 +25,6 @@ module.exports = function (app) {
   /**
    * Node mailer test
    */
-  app.get("/sayHello", (req, res) => {
-    mailer.sendMail({
-      recipient: "alexdriagin12@gmail.com",
-      subject: "test mailer module",
-      text: "Hello there my nice friend!"
-    });
-  });
   
   app.get('/', csrfProtection, (req, res) => {
     res.render('index', {
@@ -69,7 +62,12 @@ module.exports = function (app) {
   app.get("/designer", csrfProtection, dotDesigner.new);
 
   app.post("/designer/upload", (req, res, next) => {
-    if (req.isAuthenticated()) {
+    if (!req.user.activated) {
+      // TODO: flash
+      console.log("Not activated account");
+      res.redirect("/profile");
+    }
+    else if (req.isAuthenticated()) {
       next();
     } else {
       // User wants to save a design but is not logged in..
