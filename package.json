@@ -29,6 +29,7 @@
     "imports-loader": "^0.6.5",
     "lodash": "^4.8.2",
     "mailgun-js": "^0.7.11",
+    "method-override": "^2.3.5",
     "mongoose": "^4.4.11",
     "morgan": "~1.6.1",
     "multer": "^1.1.0",

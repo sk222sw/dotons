@@ -25,7 +25,6 @@ const ctrl = function() {};
 ctrl.prototype.index = function(req, res) {
   userDAL.getUsers()
     .then(users => {
-      console.log(users);
       res.render("users", { users });
     })
     .catch(error => {
@@ -33,6 +32,31 @@ ctrl.prototype.index = function(req, res) {
       console.log("DB error");
       console.log(error);
     });
+};
+
+ctrl.prototype.activate = function (req, res) {
+  userDAL.activateUser(req.params.id)
+    .then((user) => {
+      console.log(user);
+      res.redirect("/users");
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  
+  
+};
+
+ctrl.prototype.deactivate = function (req, res) {
+  userDAL.deactivateUser(req.params.id)
+    .then((user) => {
+      console.log(user);
+      res.redirect("/users");
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  
 };
 
 
@@ -49,7 +73,17 @@ ctrl.prototype.index = function(req, res) {
  * @param res (description)
  */
 ctrl.prototype.show = function(req, res) {
-  
+  const userId = req.params.id;
+  console.log(userId);
+  userDAL.getUserById(userId)
+    .then(user => {
+      console.log(user);
+      renderProfile(user, res, req);
+    })
+    .catch(error => {
+      console.log("DB error");
+      console.log(error);
+    });
 };
 
 /**
@@ -103,11 +137,10 @@ const convertToPDF = require("../modules/convertToPdf");
  * @param req (description)
  * @param res (description)
  */
-ctrl.prototype.show = function(req, res, next) {
+ctrl.prototype.profile = function(req, res, next) {
   // TODO: NEEDS REFACTOR (NOT SO) REALLY BADLY (ANYMORE)
   // Still DRY compared to the create action in the dotDesign-controller
   // Move the uploading code out to separate module / BLL-class that handles it probably
-
   if (req.session.image) {
     // User tried to save an image but was not logged in
     // Creating a new instance of a buffer object with the buffer in the session
@@ -136,7 +169,7 @@ ctrl.prototype.show = function(req, res, next) {
         req.session.image = null;
       })
       .then(() => {
-        renderProfile(req.user, res);
+        renderProfile(req.user, res, req);
       })
       .catch(error => {
         console.log(error);
@@ -145,7 +178,7 @@ ctrl.prototype.show = function(req, res, next) {
     // User was already logged in, just render the view
     console.log(req.session.image);
     req.flash("message", "Welcome back");
-    renderProfile(req.user, res);
+    renderProfile(req.user, res, req);
   }
 };
 
@@ -157,7 +190,7 @@ ctrl.prototype.show = function(req, res, next) {
  * @param user (description)
  * @param res (description)
  */
-function renderProfile(user, res, flash) {
+function renderProfile(user, res, req, flash) {
   PriceListDal.getPriceList()
     .then((priceList) => {
       return getPriceByRole(priceList, user.role);
@@ -168,7 +201,8 @@ function renderProfile(user, res, flash) {
         email: user.email,
         price,
         designs: user.designs,
-        message: flash
+        message: flash,
+        csrfToken: req.csrfToken()
       });
     })
     .catch((error) => {
