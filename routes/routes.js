@@ -9,7 +9,6 @@ const fs = require("fs");
 const path = require("path");
 const csrf = require("csurf");
 const bodyParser = require('body-parser');
-const hasProfileAccess = require("../modules/hasProfileAccess");
 const csrfProtection = csrf({ cookie: true });
 const parseForm = bodyParser.urlencoded({ extended: false });
 
@@ -31,12 +30,18 @@ module.exports = function (app) {
 
   app.get("/signup", csrfProtection, users.signup);
   app.get("/login", csrfProtection, users.login);
-  app.get("/users/:id", [isLoggedIn, hasProfileAccess()], users.show);
   app.post("/signup", parseForm, csrfProtection, passport.authenticate(("local-signup"), {
     successRedirect: "/profile",
     failureRedirect: "/signup",
     failuerFlash: true
   }));
+  app.get("/profile", isLoggedIn, (req, res, next) => {
+    if (req.user.role.toLowerCase() === "admin") {
+      res.redirect("/admin");
+    } else {
+      next();
+    }
+  }, users.profile);
   app.post("/login", parseForm, csrfProtection, passport.authenticate("local-login", {
     successRedirect: "/profile",
     failureRedirect: "/login",
@@ -80,6 +85,10 @@ module.exports = function (app) {
   // admin routes
   app.get("/admin", /*needsRole("Admin", "/"),*/ admin.index);
   app.get("/users", /*needsRole("Admin", "/"),*/ users.index);
+  // admin view for single user exposes the id, no need for fancy /profile url here
+  app.get("/users/:id", csrfProtection, /*needsRole("Admin", "/"), */ users.show);
+  app.post("/users/:id/activate", parseForm, csrfProtection, users.activate);
+  app.post("/users/:id/deactivate", parseForm, csrfProtection, users.deactivate);
   // TODO: move to controller
   app.get('/designs', /* needsRole("Admin", "/"), */ (req, res) => {
     DotDesign.find((err, dotDesigns) => {
