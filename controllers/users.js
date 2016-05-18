@@ -5,6 +5,7 @@ const uploadImage = require("../modules/uploadImage");
 const DotDesign = require("../models/dotDesign").model;
 const UPLOAD_PATH = "uploads/dot_designs/";
 const dotDesignDAL = require("../models/DAL/dotDesignDAL");
+const userDAL = require("../models/DAL/userDAL");
 const User = require("../models/user");
 
 /**
@@ -22,11 +23,40 @@ const ctrl = function() {};
  * @param res (description)
  */
 ctrl.prototype.index = function(req, res) {
-  User.find({}, (err, users) => {
-    res.render("users", {
-      users
+  userDAL.getUsers()
+    .then(users => {
+      res.render("users", { users });
+    })
+    .catch(error => {
+      // db error
+      console.log("DB error");
+      console.log(error);
     });
-  });
+};
+
+ctrl.prototype.activate = function (req, res) {
+  userDAL.activateUser(req.params.id)
+    .then((user) => {
+      console.log(user);
+      res.redirect("/users");
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  
+  
+};
+
+ctrl.prototype.deactivate = function (req, res) {
+  userDAL.deactivateUser(req.params.id)
+    .then((user) => {
+      console.log(user);
+      res.redirect("/users");
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  
 };
 
 
@@ -43,7 +73,17 @@ ctrl.prototype.index = function(req, res) {
  * @param res (description)
  */
 ctrl.prototype.show = function(req, res) {
-
+  const userId = req.params.id;
+  console.log(userId);
+  userDAL.getUserById(userId)
+    .then(user => {
+      console.log(user);
+      renderProfile(user, res, req);
+    })
+    .catch(error => {
+      console.log("DB error");
+      console.log(error);
+    });
 };
 
 /**
@@ -77,6 +117,8 @@ ctrl.prototype.signup = function(req, res) {
   var context = {};
   context.roles = _.cloneDeep(ROLES);
   delete context.roles.ADMIN; // dont want to create admin accounts
+  delete context.roles.PRIVATE_RETAIL; // no suport for this type of account yet
+  delete context.roles.BUSINESS_RETAIL; // no support for this type of account yet
 
   context.title = "dotons - signup";
 
@@ -85,7 +127,6 @@ ctrl.prototype.signup = function(req, res) {
   context.csrfToken = req.csrfToken();
 
   res.render("signup", context);
-
 };
 
 const convertToPDF = require("../modules/convertToPdf");
@@ -100,7 +141,6 @@ ctrl.prototype.profile = function(req, res, next) {
   // TODO: NEEDS REFACTOR (NOT SO) REALLY BADLY (ANYMORE)
   // Still DRY compared to the create action in the dotDesign-controller
   // Move the uploading code out to separate module / BLL-class that handles it probably
-  console.log(req.user);
   if (req.session.image) {
     // User tried to save an image but was not logged in
     // Creating a new instance of a buffer object with the buffer in the session
@@ -129,7 +169,7 @@ ctrl.prototype.profile = function(req, res, next) {
         req.session.image = null;
       })
       .then(() => {
-        renderProfile(req.user, res);
+        renderProfile(req.user, res, req);
       })
       .catch(error => {
         console.log(error);
@@ -138,7 +178,7 @@ ctrl.prototype.profile = function(req, res, next) {
     // User was already logged in, just render the view
     console.log(req.session.image);
     req.flash("message", "Welcome back");
-    renderProfile(req.user, res);
+    renderProfile(req.user, res, req);
   }
 };
 
@@ -150,7 +190,7 @@ ctrl.prototype.profile = function(req, res, next) {
  * @param user (description)
  * @param res (description)
  */
-function renderProfile(user, res, flash) {
+function renderProfile(user, res, req, flash) {
   PriceListDal.getPriceList()
     .then((priceList) => {
       return getPriceByRole(priceList, user.role);
@@ -161,7 +201,8 @@ function renderProfile(user, res, flash) {
         email: user.email,
         price,
         designs: user.designs,
-        message: flash
+        message: flash,
+        csrfToken: req.csrfToken()
       });
     })
     .catch((error) => {

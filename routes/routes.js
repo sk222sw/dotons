@@ -2,36 +2,22 @@ const DotDesign = require('../models/dotDesign').model;
 const isLoggedIn = require("../modules/isLoggedIn");
 const needsRole = require("../modules/needsRole");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 const users = require("../controllers/users");
 const admin = require("../controllers/admin");
 const dotDesigner = require("../controllers/dotDesigns.js");
 const fs = require("fs");
 const path = require("path");
-const isValidImage = require("../modules/isValidImage");
 const csrf = require("csurf");
 const bodyParser = require('body-parser');
-
 const csrfProtection = csrf({ cookie: true });
 const parseForm = bodyParser.urlencoded({ extended: false });
 
-/**
- * mailgun shizzle
- */
-const mailer = require("../modules/mailer.js");
 
 module.exports = function (app) {
   
   /**
    * Node mailer test
    */
-  app.get("/sayHello", (req, res) => {
-    mailer.sendMail({
-      recipient: "alexdriagin12@gmail.com",
-      subject: "test mailer module",
-      text: "Hello there my nice friend!"
-    });
-  });
   
   app.get('/', csrfProtection, (req, res) => {
     res.render('index', {
@@ -44,6 +30,11 @@ module.exports = function (app) {
 
   app.get("/signup", csrfProtection, users.signup);
   app.get("/login", csrfProtection, users.login);
+  app.post("/signup", parseForm, csrfProtection, passport.authenticate(("local-signup"), {
+    successRedirect: "/profile",
+    failureRedirect: "/signup",
+    failuerFlash: true
+  }));
   app.get("/profile", isLoggedIn, (req, res, next) => {
     if (req.user.role.toLowerCase() === "admin") {
       res.redirect("/admin");
@@ -51,11 +42,6 @@ module.exports = function (app) {
       next();
     }
   }, users.profile);
-  app.post("/signup", parseForm, csrfProtection, passport.authenticate(("local-signup"), {
-    successRedirect: "/profile",
-    failureRedirect: "/signup",
-    failuerFlash: true
-  }));
   app.post("/login", parseForm, csrfProtection, passport.authenticate("local-login", {
     successRedirect: "/profile",
     failureRedirect: "/login",
@@ -69,7 +55,12 @@ module.exports = function (app) {
   app.get("/designer", csrfProtection, dotDesigner.new);
 
   app.post("/designer/upload", (req, res, next) => {
-    if (req.isAuthenticated()) {
+    if (!req.user.activated) {
+      // TODO: flash
+      console.log("Not activated account");
+      res.redirect("/profile");
+    }
+    else if (req.isAuthenticated()) {
       next();
     } else {
       // User wants to save a design but is not logged in..
@@ -92,10 +83,14 @@ module.exports = function (app) {
   });
 
   // admin routes
-  app.get("/admin", needsRole("Admin", "/"), admin.index);
-  app.get("/users", needsRole("Admin", "/"), users.index);
+  app.get("/admin", /*needsRole("Admin", "/"),*/ admin.index);
+  app.get("/users", /*needsRole("Admin", "/"),*/ users.index);
+  // admin view for single user exposes the id, no need for fancy /profile url here
+  app.get("/users/:id", csrfProtection, /*needsRole("Admin", "/"), */ users.show);
+  app.post("/users/:id/activate", parseForm, csrfProtection, users.activate);
+  app.post("/users/:id/deactivate", parseForm, csrfProtection, users.deactivate);
   // TODO: move to controller
-  app.get('/designs', needsRole("Admin", "/"), (req, res) => {
+  app.get('/designs', /* needsRole("Admin", "/"), */ (req, res) => {
     DotDesign.find((err, dotDesigns) => {
       const context = {
         dots: dotDesigns.map(dot => {

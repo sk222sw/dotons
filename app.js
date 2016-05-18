@@ -9,6 +9,7 @@ const favicon = require('serve-favicon');
 const db = require("./models/mongo.js");
 const flash = require("connect-flash");
 const helmet = require("helmet");
+const methodOverride = require("method-override");
 
 // path
 global.appRoot = path.resolve(__dirname);
@@ -39,6 +40,7 @@ app.use(session({
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(methodOverride("_method"));
 
 
 
