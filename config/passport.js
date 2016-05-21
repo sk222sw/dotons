@@ -44,25 +44,33 @@ module.exports = function(passport) {
         
         console.log(newUser.role);
         
-        if (role === "business") {
+        
+        newUser.activated = role === "private";
+
+        newUser.save((saveErr, user) => {
+          if (err) { throw saveErr; }
+          if (role === "business") {
           var text = "<h1>Welcome to dotons!</h1>";
           text += "<p>Please await activation of your account before you can order dots</p>";
           mailer.sendMail({
-            recipient: newUser.email,
+            recipient: user.email,
             subject: "Welcome to dotons!",
             html: "<p>Hello and welcome to dotons!</p>"
           });
           
+          const activationLink = "http://localhost:3000/users/" + user.id;
+          
           mailer.sendMail({
             recipient: "ad222kr@student.lnu.se",
             subject: "New business account awaiting activation",
-            html: "<p>A new account needs activating</p>"
+            html: "<p>A new account needs activating</p>" + 
+                  "<a href='www.google.com'>Google</a>" +
+                  "<a href='" + activationLink + "'>Activate</a>" +
+                  "<p>localhost:3000/users/" + user.id + "</p>" + 
+                  "<a href='http://localhost:3000/users/5740726b33df889c1c07dad3'>Test</a>"
           });
         }
-        newUser.activated = role === "private";
-
-        newUser.save(saveErr => {
-          if (err) { throw saveErr; }
+          
           return done(null, newUser);
         });
       });
