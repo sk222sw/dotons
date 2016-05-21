@@ -20,6 +20,7 @@ module.exports = function (app) {
    */
   
   app.get('/', csrfProtection, (req, res) => {
+    console.log(req.csrfToken());
     res.render('index', {
       title: 'dotons - wielkommen!',
       csrfToken: req.csrfToken()
@@ -35,7 +36,7 @@ module.exports = function (app) {
     failureRedirect: "/signup",
     failuerFlash: true
   }));
-  app.get("/profile", isLoggedIn, (req, res, next) => {
+  app.get("/profile", csrfProtection, isLoggedIn, (req, res, next) => {
     if (req.user.role.toLowerCase() === "admin") {
       res.redirect("/admin");
     } else {

@@ -176,7 +176,7 @@ ctrl.prototype.profile = function(req, res, next) {
       });
   } else {
     // User was already logged in, just render the view
-    console.log(req.session.image);
+    console.log("CSRFTOKEN IN PROFILE:    " + req.csrfToken());
     req.flash("message", "Welcome back");
     renderProfile(req.user, res, req);
   }

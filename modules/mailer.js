@@ -8,6 +8,7 @@ const from = "Dotons dotons@example.com"; // sender
 
 
 const sendMail = function(options) {
+  console.log(process.env.MAILGUN_API_KEY);
   const data = {
     from,
     to: options.recipient,
@@ -20,6 +21,7 @@ const sendMail = function(options) {
       // handle error
       console.log(error);
     } else {
+      console.log("Message sent to: " + options.recipient);
       console.log(body);
     }
   });
