@@ -43,8 +43,8 @@ ctrl.prototype.activate = function (req, res) {
     .catch(error => {
       console.log(error);
     });
-  
-  
+
+
 };
 
 ctrl.prototype.deactivate = function (req, res) {
@@ -56,7 +56,7 @@ ctrl.prototype.deactivate = function (req, res) {
     .catch(error => {
       console.log(error);
     });
-  
+
 };
 
 
@@ -119,6 +119,8 @@ ctrl.prototype.signup = function(req, res) {
   delete context.roles.ADMIN; // dont want to create admin accounts
   delete context.roles.PRIVATE_RETAIL; // no suport for this type of account yet
   delete context.roles.BUSINESS_RETAIL; // no support for this type of account yet
+
+  console.log(context.roles);
 
   context.title = "dotons - signup";
 
@@ -196,6 +198,7 @@ function renderProfile(user, res, req, flash) {
       return getPriceByRole(priceList, user.role);
     })
     .then((price) => {
+      console.log("renderProfile() called. CSRF: " + req.csrfToken());
       res.render("profile", {
         user,
         email: user.email,

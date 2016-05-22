@@ -4,6 +4,7 @@ const needsRole = require("../modules/needsRole");
 const passport = require("passport");
 const users = require("../controllers/users");
 const admin = require("../controllers/admin");
+const orders = require("../controllers/orders");
 const dotDesigner = require("../controllers/dotDesigns.js");
 const csrf = require("csurf");
 const bodyParser = require('body-parser');
@@ -45,6 +46,11 @@ module.exports = function (app) {
     req.logout();
     res.redirect("/");
   });
+  // order
+  app.get("/order/new", csrfProtection, isLoggedIn, orders.new);
+  app.post("/order/add", csrfProtection, parseForm, orders.addToOrder);
+  app.post("/order/create", parseForm, csrfProtection, orders.create);
+
   // tool
   app.get("/designer", csrfProtection, dotDesigner.new);
 
