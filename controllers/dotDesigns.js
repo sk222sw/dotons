@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 const upload = require("../config/multer.js");
 const isValidImage = require("../modules/isValidImage");
 const dotDesignDAL = require("../models/DAL/dotDesignDAL");
@@ -86,6 +87,15 @@ ctrl.prototype.create = function(req, res, next) {
         res.send("error");
       });
   });
+};
+
+ctrl.prototype.getImage = function(req, res) {
+  const imagename = req.params.imagename;
+  res.sendFile(path.resolve("uploads/dot_designs/" + imagename));
+  // fs.readFile("uploads/dot_designs/" + imagename, (err, data) => {
+  //   if (err) console.log(err);
+  //   res.sendFile(path.resolve("uploads/dot_designs/" + imagename));
+  // });
 };
 
 

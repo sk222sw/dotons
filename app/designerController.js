@@ -84,6 +84,9 @@ function upload(file, target, event) {
           document.getElementById("form-modal-container").classList.toggle("hidden");
         } else if (xhr.response === "success") {
           window.location.href = "/profile";
+        } else if (xhr.response === "deactivated") {
+          console.log("Your account is not activated");
+          // show a message here probably
         }
       } else {
         console.log("Error: " + xhr.status);

@@ -59,7 +59,7 @@ module.exports = function (app) {
     if (!req.user.activated) {
       // TODO: flash
       console.log("Not activated account");
-      res.redirect("/profile");
+      res.send("deactivated");
     }
     else if (req.isAuthenticated()) {
       next();
@@ -75,13 +75,7 @@ module.exports = function (app) {
     }
   }, dotDesigner.create);
 
-  app.get("/uploads/dot_designs/:imagename", isLoggedIn, (req, res) => {
-    const imagename = req.params.imagename;
-    fs.readFile("uploads/dot_designs/" + imagename, (err, data) => {
-      if (err) console.log(err);
-      res.sendFile(path.resolve("uploads/dot_designs/" + imagename));
-    });
-  });
+  app.get("/uploads/dot_designs/:imagename", isLoggedIn, dotDesigner.getImage);
 
   // admin routes
   app.get("/admin", /*needsRole("Admin", "/"),*/ admin.index);
