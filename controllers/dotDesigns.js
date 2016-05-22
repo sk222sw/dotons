@@ -55,8 +55,8 @@ ctrl.prototype.create = function(req, res, next) {
   upload(req, res, err => {
 
     if (err) return res.end(err.code);
-    if (!req.file) return res.redirect("/designer"); // send flash that no image was sent
-    if (!isValidImage(req.file.buffer)) return res.redirect("/designer"); // send flash that file is wrong format
+    if (!req.file) return res.send("no-imgage"); // send flash that no image was sent
+    if (!isValidImage(req.file.buffer)) return res.send("not-valid-image"); // send flash that file is wrong format
 
     // save the dot-design full size image
     const dot = new DotDesign();

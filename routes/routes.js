@@ -5,8 +5,6 @@ const passport = require("passport");
 const users = require("../controllers/users");
 const admin = require("../controllers/admin");
 const dotDesigner = require("../controllers/dotDesigns.js");
-const fs = require("fs");
-const path = require("path");
 const csrf = require("csurf");
 const bodyParser = require('body-parser');
 const csrfProtection = csrf({ cookie: true });
@@ -14,11 +12,9 @@ const parseForm = bodyParser.urlencoded({ extended: false });
 
 
 module.exports = function (app) {
-  
   /**
    * Node mailer test
    */
-  
   app.get('/', csrfProtection, (req, res) => {
     console.log(req.csrfToken());
     res.render('index', {
@@ -26,9 +22,6 @@ module.exports = function (app) {
       csrfToken: req.csrfToken()
     });
   });
-
-  
-
   app.get("/signup", csrfProtection, users.signup);
   app.get("/login", csrfProtection, users.login);
   app.post("/signup", parseForm, csrfProtection, passport.authenticate(("local-signup"), {
@@ -60,15 +53,15 @@ module.exports = function (app) {
       // TODO: flash
       console.log("Not activated account");
       res.send("deactivated");
-    }
-    else if (req.isAuthenticated()) {
+    } else if (req.isAuthenticated()) {
       next();
     } else {
       // User wants to save a design but is not logged in..
-      // get the uploaded file via multer mem-storage and 
+      // get the uploaded file via multer mem-storage and
       // save it in session until the user has logged in
       const upload = require("../config/multer");
       upload(req, res, err => {
+        if (err) { console.log(err); }
         req.session.image = req.file;
         res.send("unauthorized");
       });
@@ -78,10 +71,10 @@ module.exports = function (app) {
   app.get("/uploads/dot_designs/:imagename", isLoggedIn, dotDesigner.getImage);
 
   // admin routes
-  app.get("/admin", /*needsRole("Admin", "/"),*/ admin.index);
-  app.get("/users", /*needsRole("Admin", "/"),*/ users.index);
+  app.get("/admin", /* needsRole("Admin", "/"),*/ admin.index);
+  app.get("/users", /* needsRole("Admin", "/"),*/ users.index);
   // admin view for single user exposes the id, no need for fancy /profile url here
-  app.get("/users/:id", csrfProtection, /*needsRole("Admin", "/"), */ users.show);
+  app.get("/users/:id", csrfProtection, /* needsRole("Admin", "/"), */ users.show);
   app.post("/users/:id/activate", parseForm, csrfProtection, users.activate);
   app.post("/users/:id/deactivate", parseForm, csrfProtection, users.deactivate);
   // TODO: move to controller
