@@ -20,7 +20,7 @@
           {{else}}
             <p>Acticate this account?</p>
             <form action="/users/{{user._id}}/activate" method="post">
-              <input type="hidden" name="_csrf" value="{{csrfToken}}">
+              <input type="hidden" name="_csrf" value="{{csrfToken}}" />
               <input type="submit" value="Activate">
             </form>
           {{/if}}
@@ -45,6 +45,11 @@
         <div class="image-container">
           <img src="" height="100px" width="100px" class="hidden" data-image-url="{{imageUrl}}" />
           <p class="dot-design-name">{{name}}</p>
+          <form name="{{name}}" action="add" method="POST" class="add-button-form form">
+            <input type="hidden" name="buttonID" value="{{id}}" />
+            <input type="hidden" name="_csrf" value="{{../csrfToken}}" />
+            <input type="submit" value="Add to cart" class="pure-button pure-button-primary"></button>  
+          </form>
 
 
         </div>

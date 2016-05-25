@@ -3,7 +3,7 @@ import PdfJs from "pdfjs-dist";
 import PdfJsWorker from "pdfjs-dist/build/pdf.worker";
 
 
-const MAX_SIZE = 1000000;
+const MAX_SIZE = 10000000; 
 
 export default class ImageUploader {
   uploadToClient(file) {
@@ -93,8 +93,8 @@ export default class ImageUploader {
             type = "unknown"; // Or you can use the blob.type as fallback
             break;
         }
-        console.log("isValidImage");
-        console.log(image);
+        console.log("Image size: " + image.size);
+
         if (image.size > MAX_SIZE) {
           reject(new Error("Image size exceeds the max allowed"));
         } else if (type === "image/jpeg" || type === "image/png" || type === "application/pdf") {
