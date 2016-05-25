@@ -47,9 +47,13 @@ app.use(methodOverride("_method"));
 // Middleware for checking if user is admin
 app.use((req, res, next) => {
   res.locals.user = req.user;
+  res.locals.cart = req.session.cart;
+  res.locals.loggedIn = req.isAuthenticated();
   res.locals.notAdmin = req.user ? req.user.role.toLowerCase() !== "admin" : true;
   next();
 });
+
+
 
 // CSP
 app.use(helmet.contentSecurityPolicy({
@@ -92,6 +96,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   res.locals.login = req.isAuthenticated(); // should be able to get this in handlebars no?
+  res.locals.cart = req.session.cart; // pass the cart 
   next();
 });
 

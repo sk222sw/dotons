@@ -45,6 +45,7 @@ module.exports = function (app) {
   }));
   app.get("/logout", (req, res) => {
     req.logout();
+    req.session.destroy();
     res.redirect("/");
   });
   // order

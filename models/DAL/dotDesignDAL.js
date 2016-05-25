@@ -41,12 +41,10 @@ const dotDesignDAL = {
       User.findById(userID, (err, user) => {
         if (err) return reject(err);
         var design = user.designs.find((des) => {
-          console.log(typeof des.id);
-          console.log(typeof designID);
           return des.id === designID;
         });
-        
-        console.log(design);
+        if (!design) return reject("No design found");
+        resolve(design);
       });
     });
   }
