@@ -91,14 +91,6 @@ canvas {
     border-radius: 0;
 }
 
-#upload-submit {
-
-}
-
-#save-submit {
-
-}
-
 #upload-submit:hover, #save-submit:hover, .upload-label span:hover {
     background-color: rgba(48, 108, 235, 1);
 }
@@ -117,4 +109,28 @@ canvas {
     margin: 10px;
     padding: 10px;
     font-size: 1.2em;
+}
+
+@media screen and (max-width: 35.5em) {
+  body {
+  }
+
+  .designer-button {
+    width: 100%;
+    display: inline;
+  }
+
+  #upload-submit, #save-submit, .upload-label span, .upload-label span:hover {
+    width: 100%;
+    display: inline;
+  }
+
+  .upload-area {
+    height: 100px;
+  }
+
+  #canvas-area, #designer-area {
+    width: 400px;
+  }
+
 }
