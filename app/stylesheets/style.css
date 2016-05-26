@@ -35,6 +35,10 @@ a {
   margin-right: auto;
 }
 
+.active {
+  background: #eee;
+}
+
 .product {
   padding: 10px;
 }
@@ -143,7 +147,7 @@ nav {
 }
 
 .design {
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
 .design .image-container {
@@ -160,6 +164,7 @@ nav {
 
 .dot-design-name {
   font-size: 0.8em;
+  text-align: center;
 }
 
 /*******************************************/

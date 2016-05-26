@@ -48,11 +48,11 @@
           <form name="{{name}}"  method="POST" class="add-button-form form">
             <input type="hidden" name="buttonID" value="{{id}}" />
             <input type="hidden" name="_csrf" value="{{../csrfToken}}" />
-            {{#if user.activated}}
+            {{#if ../user.activated}}
               {{#if ordered}}
-                <input type="submit" name="order" value="Remove from cart" class="pure-button pure-button-primary remove"></input>
+                <input type="submit" name="order" value="Remove from cart" class="pure-button remove"></input>
               {{else}}
-                <input type="submit" name="order" value="Add to cart" class="pure-button pure-button-primary add"></input>
+                <input type="submit" name="order" value="Add to cart" class="pure-button add"></input>
               {{/if}}
             {{/if}}
           </form>
