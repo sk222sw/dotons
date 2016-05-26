@@ -17,7 +17,7 @@
 
 #center-image, #undo, #redo {
     background-color: white;
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.7);
 }
 
 #center-image:hover, #undo:hover, #redo:hover {
@@ -35,7 +35,6 @@
     height: 60px;
     border-radius: 0;
     color: white;
-    border-top: solid rgba(0, 0, 0, 0.1) 1px;
 }
 
 canvas {
@@ -48,18 +47,10 @@ canvas {
     height: 50px;
 }
 
-.upload-label {
-    border-top: solid rgba(0, 0, 0, 0.1) 1px;
-}
-
-.upload-image-span {
-  border-top: solid rgba(0, 0, 0, 0.1) 1px;
-}
-
 .upload-label span {
     float: left;
     height: 50px;
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.7);
     width: 50%;
     background-color: white;
     border-radius: 0;
@@ -80,10 +71,9 @@ canvas {
     width: 50%;
     height: 50px;
     float: right;
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.7);
     background-color: white;
     border-radius: 0;
-    border-bottom: solid rgba(0, 0, 0, 0.1) 1px;
 }
 
 #upload-submit:hover, #save-submit:hover, .upload-label span:hover {
