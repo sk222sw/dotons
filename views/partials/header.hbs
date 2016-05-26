@@ -15,7 +15,15 @@
         <li class="pure-menu-item"><a href="#" class="pure-menu-link">About</a></li>
         <li class="pure-menu-item"><a href="#" class="pure-menu-link">Contact</a></li>
         {{#if user}}
-        <li class="pure-menu-item"><a href="/profile" class="pure-menu-link">Profile</a></li>  
+
+          <li class="pure-menu-item">
+            <a href="/cart" class="pure-menu-link">
+              Items in cart: <span class="cart-count">{{cartCount}}</span>
+            </a>
+          </li>
+
+
+          <li class="pure-menu-item"><a href="/profile" class="pure-menu-link">Profile</a></li>  
         {{/if}}
       </div>
     </div>

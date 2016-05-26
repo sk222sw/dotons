@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt-node");
 
 const roles = require("./enums/roles").getRoleValues;
+const ROLES = require("./enums/roles").roles;
 const dotDesignSchema = require("./dotDesign").schema;
 const orderSchema = require("./order").schema;
 
@@ -52,5 +53,29 @@ userSchema.methods.generateHash = function(password) {
 userSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.password);
 };
+
+/**
+ * Gets the dot price for a user based on their role
+ *
+ * @param priceList
+ * @returns {Number}
+ */
+userSchema.methods.getUserPrice = function(priceList) {
+
+  switch (this.role) {
+    case ROLES.BUSINESS:
+      return priceList.businessPrice;
+    case ROLES.PRIVATE:
+      return priceList.privatePrice;
+    case ROLES.PRIVATE_RETAIL:
+      return priceList.privateRetailsPrice;
+    case ROLES.BUSINESS_RETAIL:
+      return priceList.businessRetailPrice;
+    default:
+      return priceList.privatePrice;
+  }
+};
+
+
 
 module.exports = mongoose.model("User", userSchema);

@@ -195,7 +195,7 @@ ctrl.prototype.profile = function(req, res, next) {
 function renderProfile(user, res, req, flash) {
   PriceListDal.getPriceList()
     .then((priceList) => {
-      return getPriceByRole(priceList, user.role);
+      return user.getUserPrice(priceList, user.role);
     })
     .then((price) => {
       console.log("renderProfile() called. CSRF: " + req.csrfToken());
@@ -234,20 +234,6 @@ function setOrderedDesignsToNonOrderable(designs, cart) {
   return ret;
 }
 
-function getPriceByRole(priceList, role) {
-  // This should probably be a User-model instance method?
-  switch (role) {
-    case ROLES.BUSINESS:
-      return priceList.businessPrice;
-    case ROLES.PRIVATE:
-      return priceList.privatePrice;
-    case ROLES.PRIVATE_RETAIL:
-      return priceList.privateRetailsPrice;
-    case ROLES.BUSINESS_RETAIL:
-      return priceList.businessRetailPrice;
-    default:
-      return priceList.privatePrice;
-  }
-}
+
 
 module.exports = new ctrl();
