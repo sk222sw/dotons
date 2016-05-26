@@ -59,7 +59,7 @@ a {
 
 .middle {
   vertical-align: middle;
-  
+
 }
 
 .about {
@@ -72,7 +72,7 @@ a {
 /**************************************/
 
 .pure-menu a {
-  
+
 }
 .logo {
   width: 60px;
@@ -166,7 +166,7 @@ nav {
 /*       Profile-info section              */
 /*******************************************/
 #profile-description {
-  
+
 }
 
 .account-info p {
@@ -184,7 +184,7 @@ nav {
 .settings-icon {
   font-size: 12em;
   width: 100px;
-  
+
   float: right;
 }
 
@@ -234,13 +234,13 @@ table {
 
 
 /******************************************
-   new-design is the New Design button on 
+   new-design is the New Design button on
    profile needs different name but naming sucks
 /******************************************/
 .new-design {
   text-align: center;
   position: relative;
- 
+
 }
 
 .new-design:hover {
@@ -275,7 +275,7 @@ table {
 /******************************************/
 .button-xlarge {
   font-size: 125%;
-  
+
 }
 
 /******************************************/

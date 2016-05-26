@@ -15,20 +15,12 @@
     height: 400px;
 }
 
-#center-image {
-    background-color: #448AFF;
-}
-
-#undo {
-    background-color: #448AFF;
-}
-
-#redo {
-    background-color: #448AFF;
+#center-image, #undo, #redo {
+    background-color: white;
+    color: rgba(0, 0, 0, 0.5);
 }
 
 #center-image:hover, #undo:hover, #redo:hover {
-    background-color: rgba(48, 108, 235, 1);
     cursor: pointer;
 }
 
@@ -43,6 +35,7 @@
     height: 60px;
     border-radius: 0;
     color: white;
+    border-top: solid rgba(0, 0, 0, 0.1) 1px;
 }
 
 canvas {
@@ -51,23 +44,24 @@ canvas {
 }
 
 .upload-area {
-    background-color: rgba(98, 168, 255, 1);
-    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.25);
+    background-color: white;
     height: 50px;
 }
 
 .upload-label {
-    background-color: blue;
-    height: 50px;
-    width: 100%;
+    border-top: solid rgba(0, 0, 0, 0.1) 1px;
+}
+
+.upload-image-span {
+  border-top: solid rgba(0, 0, 0, 0.1) 1px;
 }
 
 .upload-label span {
     float: left;
     height: 50px;
-    color: white;
+    color: rgba(0, 0, 0, 0.5);
     width: 50%;
-    background-color: rgba(98, 168, 255, 1);
+    background-color: white;
     border-radius: 0;
     line-height: 35px;
 }
@@ -77,7 +71,7 @@ canvas {
     height: 50px;
     color: white;
     width: 50%;
-    background-color: rgba(98, 168, 255, 1);
+    background-color: white;
     border-radius: 0;
 }
 
@@ -86,21 +80,13 @@ canvas {
     width: 50%;
     height: 50px;
     float: right;
-    color: white;
-    background-color: rgba(98, 168, 255, 1);
+    color: rgba(0, 0, 0, 0.5);
+    background-color: white;
     border-radius: 0;
-}
-
-#upload-submit {
-
-}
-
-#save-submit {
-
+    border-bottom: solid rgba(0, 0, 0, 0.1) 1px;
 }
 
 #upload-submit:hover, #save-submit:hover, .upload-label span:hover {
-    background-color: rgba(48, 108, 235, 1);
 }
 
 #dot-design {
@@ -117,4 +103,26 @@ canvas {
     margin: 10px;
     padding: 10px;
     font-size: 1.2em;
+}
+
+@media screen and (max-width: 35.5em) {
+  .designer-button {
+    width: 100%;
+    display: inline;
+  }
+
+  #upload-submit, #save-submit, .upload-label span, .upload-label span:hover {
+    width: 100%;
+    display: inline;
+  }
+
+  .upload-area {
+    height: 100px;
+  }
+
+  #canvas-area, #designer-area {
+    width: 400px;
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.0);
+  }
+
 }
