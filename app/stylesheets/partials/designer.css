@@ -15,20 +15,12 @@
     height: 400px;
 }
 
-#center-image {
-    background-color: #448AFF;
-}
-
-#undo {
-    background-color: #448AFF;
-}
-
-#redo {
-    background-color: #448AFF;
+#center-image, #undo, #redo {
+    background-color: white;
+    color: rgba(0, 0, 0, 0.7);
 }
 
 #center-image:hover, #undo:hover, #redo:hover {
-    background-color: rgba(48, 108, 235, 1);
     cursor: pointer;
 }
 
@@ -51,23 +43,16 @@ canvas {
 }
 
 .upload-area {
-    background-color: rgba(98, 168, 255, 1);
-    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.25);
+    background-color: white;
     height: 50px;
-}
-
-.upload-label {
-    background-color: blue;
-    height: 50px;
-    width: 100%;
 }
 
 .upload-label span {
     float: left;
     height: 50px;
-    color: white;
+    color: rgba(0, 0, 0, 0.7);
     width: 50%;
-    background-color: rgba(98, 168, 255, 1);
+    background-color: white;
     border-radius: 0;
     line-height: 35px;
 }
@@ -77,7 +62,7 @@ canvas {
     height: 50px;
     color: white;
     width: 50%;
-    background-color: rgba(98, 168, 255, 1);
+    background-color: white;
     border-radius: 0;
 }
 
@@ -86,13 +71,12 @@ canvas {
     width: 50%;
     height: 50px;
     float: right;
-    color: white;
-    background-color: rgba(98, 168, 255, 1);
+    color: rgba(0, 0, 0, 0.7);
+    background-color: white;
     border-radius: 0;
 }
 
 #upload-submit:hover, #save-submit:hover, .upload-label span:hover {
-    background-color: rgba(48, 108, 235, 1);
 }
 
 #dot-design {
@@ -112,9 +96,6 @@ canvas {
 }
 
 @media screen and (max-width: 35.5em) {
-  body {
-  }
-
   .designer-button {
     width: 100%;
     display: inline;
@@ -131,6 +112,7 @@ canvas {
 
   #canvas-area, #designer-area {
     width: 400px;
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.0);
   }
 
 }
