@@ -18,10 +18,9 @@ ctrl.prototype.add = function(req, res) {
   DotDesignDAL.getUserDesignByID(req.user.id, req.body.buttonID)
     .then((design, err) => {
       if (err) return res.send({ success: false });
-      
 
       addToCart(req.session, design);
-      
+
       return res.send({ success: true, cart: getCart(req.session) });
     })
     .catch(error => {
@@ -49,7 +48,17 @@ function addToCart(session, design) {
     console.log("Cart did not exist or was not an array, created upon adding");
     session.cart = [];
   }
-  console.log("Added to cart!");
-  session.cart.push(design);
-  session.save(); // Idk why it does not save session without this...
+
+  const containsDesign = session.cart.length === 0 ? false :
+    session.cart.some(element => {
+      console.log(element._id === design.id);
+      return element._id === design.id;
+    });
+
+
+  if (!containsDesign) {
+    console.log("Added to cart!");
+    session.cart.push(design);
+    session.save(); // Idk why it does not save session without this...
+  }
 }
