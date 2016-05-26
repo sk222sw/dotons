@@ -10,9 +10,11 @@ const addToCartForms = document.getElementsByClassName("add-button-form");
 if (addToCartForms) { // more than the login forms
   _.each(addToCartForms, (element, index) => {
     console.log(element);
-    element.addEventListener("click", e => {
+    element.addEventListener("submit", e => {
       e.preventDefault();
-      console.log("Simulating adding the button with id " + element.buttonID.value);
+      console.log("ADDED btn to cart");
+      console.log(element);
+      element.add.disabled = true;
 
       request
         .post("/add")
