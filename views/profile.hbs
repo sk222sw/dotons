@@ -48,7 +48,8 @@
           <form name="{{name}}" action="add" method="POST" class="add-button-form form">
             <input type="hidden" name="buttonID" value="{{id}}" />
             <input type="hidden" name="_csrf" value="{{../csrfToken}}" />
-            <input type="submit" value="Add to cart" class="pure-button pure-button-primary"></button>  
+            {{name}}
+            <input type="submit" name="add" value="Add to cart" class="pure-button pure-button-primary"></button>  
           </form>
 
 
