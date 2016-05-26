@@ -199,11 +199,15 @@ function renderProfile(user, res, req, flash) {
     })
     .then((price) => {
       console.log("renderProfile() called. CSRF: " + req.csrfToken());
+      const designs = setOrderedDesignsToNonOrderable(user.designs, req.session.cart);
+      designs.forEach(design => {
+        console.log(design.ordered);
+      });
       res.render("profile", {
         user,
         email: user.email,
         price,
-        designs: user.designs,
+        designs,
         message: flash,
         csrfToken: req.csrfToken()
       });
@@ -211,6 +215,23 @@ function renderProfile(user, res, req, flash) {
     .catch((error) => {
       console.log(error);
     });
+}
+
+
+function setOrderedDesignsToNonOrderable(designs, cart) {
+  if (!cart) return designs;
+
+  const ret = designs.map((design) => {
+    design.ordered = cart.every(element => {
+      return element._id === design.id;
+    });
+
+    return design;
+  });
+  ret.forEach(element => {
+
+  });
+  return ret;
 }
 
 function getPriceByRole(priceList, role) {

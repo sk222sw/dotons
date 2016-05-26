@@ -13,7 +13,7 @@ const dotDesignDAL = {
 
   /**
    * Adds a dot design to the current user
-   * 
+   *
    *
    * @param {String} userid - id of the current user
    * @param {DotDesign} dotDesign - to be added
@@ -34,6 +34,19 @@ const dotDesignDAL = {
 
   getUserDesigns: (userid) => {
     return User.findById(userid).exec();
+  },
+
+  getUserDesignByID: (userID, designID) => {
+    return new Promise((resolve, reject) => {
+      User.findById(userID, (err, user) => {
+        if (err) return reject(err);
+        var design = user.designs.find((des) => {
+          return des.id === designID;
+        });
+        if (!design) return reject("No design found");
+        resolve(design);
+      });
+    });
   }
 
 

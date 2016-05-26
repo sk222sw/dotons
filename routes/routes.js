@@ -6,6 +6,7 @@ const users = require("../controllers/users");
 const admin = require("../controllers/admin");
 const orders = require("../controllers/orders");
 const dotDesigner = require("../controllers/dotDesigns.js");
+const cart = require("../controllers/cart.js");
 const csrf = require("csurf");
 const bodyParser = require('body-parser');
 const csrfProtection = csrf({ cookie: true });
@@ -44,22 +45,22 @@ module.exports = function (app) {
   }));
   app.get("/logout", (req, res) => {
     req.logout();
+    req.session.destroy();
     res.redirect("/");
   });
   // order
-  app.get("/order/new", csrfProtection, isLoggedIn, orders.new);
-  app.post("/order/add", csrfProtection, parseForm, orders.addToOrder);
   app.post("/order/create", parseForm, csrfProtection, orders.create);
+  
+  // "shopping cart"
+  app.get("/cart", isLoggedIn, csrfProtection, isLoggedIn, cart.show);
+  app.post("/add", parseForm, csrfProtection, cart.add);
+  app.post("/remove", parseForm, csrfProtection, cart.remove);
 
   // tool
   app.get("/designer", csrfProtection, dotDesigner.new);
 
   app.post("/designer/upload", (req, res, next) => {
-    if (!req.user.activated) {
-      // TODO: flash
-      console.log("Not activated account");
-      res.send("deactivated");
-    } else if (req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
       next();
     } else {
       // User wants to save a design but is not logged in..
