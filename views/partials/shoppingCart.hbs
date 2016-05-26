@@ -1,5 +1,12 @@
-{{cart}}
+<h3>Shopping cart </h3>
+<ul>
 
+</ul>
 {{#if cart}}
   <h1>Shopping cart exists!!!</h1>
+  {{#each cart}}
+  <li>{{name}}</li>
+  hehe
+  
+  {{/each}}
 {{/if}}
