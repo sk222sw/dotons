@@ -1,4 +1,5 @@
 const DotDesignDAL = require("../models/DAL/dotDesignDAL.js");
+const PriceListDAL = require("../models/DAL/priceListDAL");
 
 const ctrl = function() {};
 
@@ -10,6 +11,10 @@ ctrl.prototype.show = function(req, res) {
     res.send({ cart: getCart(req.session) });
   } else {
     // Render the cart
+    res.render("cart", {
+      cart: getCart(req.session),
+      active: { cart: true }
+    });
   }
 };
 

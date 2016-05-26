@@ -14,12 +14,19 @@ export default class Designer {
     this.c.setWidth(parentWidth);
     this.c.setHeight(parentHeight);
 
+    console.log("parentHeight", parentHeight);
+
     // max dimensions
     this.imageMaxHeight = this.c.height;
     this.imageMaxWidth = this.c.width;
 
+    const bigOverlayImagePath = "/images/overlay_big.png";
+    const smallOverlayImagePath = "/images/overlay_small2.png";
+
+    const overlayImage = parentWidth > 500 ? bigOverlayImagePath : smallOverlayImagePath;
+
     // New code, solves bug of not rendering circle until canvas has been clicked..
-    this.circle = fabric.Image.fromURL("/images/dotty.png", image => {
+    this.circle = fabric.Image.fromURL(overlayImage, image => {
       image.set({
         opacity: 0.82,
         width: this.c.width,

@@ -48,6 +48,7 @@ app.use(methodOverride("_method"));
 app.use((req, res, next) => {
   res.locals.user = req.user;
   res.locals.cart = req.session.cart;
+  res.locals.cartCount = req.session.cart ? req.session.cart.length : 0;
   res.locals.loggedIn = req.isAuthenticated();
   res.locals.notAdmin = req.user ? req.user.role.toLowerCase() !== "admin" : true;
   next();

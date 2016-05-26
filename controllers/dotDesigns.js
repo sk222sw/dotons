@@ -38,7 +38,8 @@ ctrl.prototype.new = function(req, res, next) {
 
   res.render("dotDesigner", {
     title: "dotons - designer",
-    csrfToken: req.csrfToken()
+    csrfToken: req.csrfToken(),
+    active: { designer: true }
   });
 };
 

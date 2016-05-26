@@ -25,7 +25,10 @@ const ctrl = function() {};
 ctrl.prototype.index = function(req, res) {
   userDAL.getUsers()
     .then(users => {
-      res.render("users", { users });
+      res.render("users", { 
+        users,
+        active: { users: true } 
+      });
     })
     .catch(error => {
       // db error
@@ -123,6 +126,7 @@ ctrl.prototype.signup = function(req, res) {
   console.log(context.roles);
 
   context.title = "dotons - signup";
+  context.active = { signup: true };
 
   // set flash message if exists
   context.message = req.flash("signupMessage");
@@ -195,7 +199,7 @@ ctrl.prototype.profile = function(req, res, next) {
 function renderProfile(user, res, req, flash) {
   PriceListDal.getPriceList()
     .then((priceList) => {
-      return getPriceByRole(priceList, user.role);
+      return user.getUserPrice(priceList, user.role);
     })
     .then((price) => {
       console.log("renderProfile() called. CSRF: " + req.csrfToken());
@@ -206,7 +210,8 @@ function renderProfile(user, res, req, flash) {
         price,
         designs,
         message: flash,
-        csrfToken: req.csrfToken()
+        csrfToken: req.csrfToken(),
+        active: { profile: true }
       });
     })
     .catch((error) => {
@@ -234,20 +239,6 @@ function setOrderedDesignsToNonOrderable(designs, cart) {
   return ret;
 }
 
-function getPriceByRole(priceList, role) {
-  // This should probably be a User-model instance method?
-  switch (role) {
-    case ROLES.BUSINESS:
-      return priceList.businessPrice;
-    case ROLES.PRIVATE:
-      return priceList.privatePrice;
-    case ROLES.PRIVATE_RETAIL:
-      return priceList.privateRetailsPrice;
-    case ROLES.BUSINESS_RETAIL:
-      return priceList.businessRetailPrice;
-    default:
-      return priceList.privatePrice;
-  }
-}
+
 
 module.exports = new ctrl();

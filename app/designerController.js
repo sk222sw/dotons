@@ -69,7 +69,7 @@ function upload(file, target, event) {
     const img = designer.crop();
     const blob = dataURLtoBlob(img);
     const fd = new FormData();
-    fd.set("dot-design", blob, document.getElementById("dot-design").files[0].name);
+    fd.append("dot-design", blob, document.getElementById("dot-design").files[0].name);
 
       // superagent post formdata is not playing nicely with multer.
       // the fileupload NEEDS to be done with AJAX since if you submit
