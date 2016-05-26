@@ -6,11 +6,17 @@ import request from "superagent";
 import Promise from "bluebird";
 
 const addToCartForms = document.getElementsByClassName("add-button-form");
+const cartCounter = document.querySelector(".cart-count");
+console.log(cartCounter);
+
+
 
 if (addToCartForms) { // more than the login forms
   _.each(addToCartForms, (element, index) => {
     element.addEventListener("submit", e => {
       e.preventDefault();
+
+      
 
       
       if (element.order.classList.contains("add")) {
@@ -27,6 +33,8 @@ if (addToCartForms) { // more than the login forms
             element.order.value = "Remove from cart"
             element.order.classList.remove("add");
             element.order.classList.add("remove");
+            cartCounter.innerHTML = response.cart.length;
+            
 
             // do something with the cart yao
           } else {
@@ -43,6 +51,7 @@ if (addToCartForms) { // more than the login forms
             console.log(response);
             if(err) console.log(err) // handle error
             if (response.success) {
+              cartCounter.innerHTML = response.cart.length;
               console.log("removed from cart");
               
               element.order.classList.add("add");
@@ -57,15 +66,6 @@ if (addToCartForms) { // more than the login forms
   });
 }
 
-function addToCart() {
-  return new Promise((resolve, reject) => {
-    
-  });
-}
-
-function updateCart() {
-  
-}
 
 
 

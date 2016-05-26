@@ -8,10 +8,7 @@ const PriceListDal = {
    * @returns {PriceList}
    */
   getPriceList: () => {
-    return PriceList.findOne({}, (err, priceList) => {
-      if (err) console.log(err); // todo: handle shit
-
-    }).exec();
+    return PriceList.findOne({}).exec();
   }
 };
 
