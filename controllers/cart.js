@@ -13,7 +13,7 @@ ctrl.prototype.show = function(req, res) {
     // Render the cart
     res.render("cart", {
       cart: getCart(req.session),
-      price 
+      active: { cart: true }
     });
   }
 };

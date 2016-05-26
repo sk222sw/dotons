@@ -25,7 +25,10 @@ const ctrl = function() {};
 ctrl.prototype.index = function(req, res) {
   userDAL.getUsers()
     .then(users => {
-      res.render("users", { users });
+      res.render("users", { 
+        users,
+        active: { users: true } 
+      });
     })
     .catch(error => {
       // db error
@@ -123,6 +126,7 @@ ctrl.prototype.signup = function(req, res) {
   console.log(context.roles);
 
   context.title = "dotons - signup";
+  context.active = { signup: true };
 
   // set flash message if exists
   context.message = req.flash("signupMessage");
@@ -206,7 +210,8 @@ function renderProfile(user, res, req, flash) {
         price,
         designs,
         message: flash,
-        csrfToken: req.csrfToken()
+        csrfToken: req.csrfToken(),
+        active: { profile: true }
       });
     })
     .catch((error) => {

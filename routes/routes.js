@@ -52,10 +52,22 @@ module.exports = function (app) {
   app.post("/order/create", parseForm, csrfProtection, orders.create);
   
   // "shopping cart"
-  app.get("/cart", isLoggedIn, csrfProtection, isLoggedIn, cart.show);
-  app.post("/add", parseForm, csrfProtection, cart.add);
-  app.post("/remove", parseForm, csrfProtection, cart.remove);
-
+  app.get("/cart", isLoggedIn, csrfProtection, cart.show);
+  app.post("/add", isLoggedIn, (req, res, next) => {
+    if (req.user.activated) {
+      next();
+    } else {
+      res.send({ success: false });
+    }
+  }, parseForm, csrfProtection, cart.add);
+  app.post("/remove", isLoggedIn, (req, res, next) => {
+    if (req.user.activated) {
+      next();
+    } else {
+      res.send({ success: false });
+    } 
+  }, parseForm, csrfProtection, cart.remove);
+    
   // tool
   app.get("/designer", csrfProtection, dotDesigner.new);
 
