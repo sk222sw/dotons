@@ -200,9 +200,6 @@ function renderProfile(user, res, req, flash) {
     .then((price) => {
       console.log("renderProfile() called. CSRF: " + req.csrfToken());
       const designs = setOrderedDesignsToNonOrderable(user.designs, req.session.cart);
-      designs.forEach(design => {
-        console.log(design.ordered);
-      });
       res.render("profile", {
         user,
         email: user.email,
@@ -220,17 +217,20 @@ function renderProfile(user, res, req, flash) {
 
 function setOrderedDesignsToNonOrderable(designs, cart) {
   if (!cart) return designs;
+  if (cart.length === 0) return designs;
+  cart.forEach(elem => {
+    console.log("         __ cart item: " + elem.name);
+  });
+
 
   const ret = designs.map((design) => {
-    design.ordered = cart.every(element => {
+    design.ordered = cart.some(element => {
       return element._id === design.id;
     });
 
     return design;
   });
-  ret.forEach(element => {
-
-  });
+  
   return ret;
 }
 
