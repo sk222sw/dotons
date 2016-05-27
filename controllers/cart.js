@@ -13,7 +13,8 @@ ctrl.prototype.show = function(req, res) {
     // Render the cart
     res.render("cart", {
       cart: getCart(req.session),
-      active: { cart: true }
+      active: { cart: true },
+      csrfToken: req.csrfToken()
     });
   }
 };
