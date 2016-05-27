@@ -48,6 +48,7 @@ if (designsDiv) {
   })
 }
 
+
 // if (addToCartForms && designsDiv) { // more than the login forms
 //   const loginModal = document.getElementById("login-modal");
 //   const modalContainer = document.getElementById("form-modal-container");
@@ -103,15 +104,8 @@ if (designsDiv) {
         
 //       }
       
-<<<<<<< d4adc37c15b39f9d313ca4059b05779bd5938984
-    });
-  });
-}
-=======
+
 //     });
 //   });
 // }
 
-
-
->>>>>>> reworking add to cart to modal
