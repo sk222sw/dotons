@@ -25,6 +25,5 @@ modalContainer.addEventListener("click", () => {
  * prevent form window from inheriting modalContainer click
  */
 loginModal.addEventListener("click", (e) => {
-  console.log(e.stopPropagation());
   e.stopPropagation();
 });

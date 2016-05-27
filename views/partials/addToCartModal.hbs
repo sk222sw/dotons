@@ -3,18 +3,22 @@
     <div class="login">
       <div id="button-close-form-modal">X</div>
       <h2>Add to cart</h2>
+      <p class="name"></p>
        
       <form class="modal-form pure-form add-to-cart-form" method="POST">
         <fieldset>
           <input type="hidden" name="_csrf" value="{{csrfToken}}">
+
+          <img id="modal-pic" width="50px" height="50px" src="" />
           <div class="10mm-order">
-            <img id="modal-pic" width="50px" height="50px" src="" />
-            <input type="checkbox" checked="true" name="10mm-selected">
-            <input type="number" value="1000" name="11mm-quantity">  
+            <label for="selected10mm">10 mm</label>
+            <input type="checkbox" checked="true" name="selected10mm">
+            <input type="number" value="1000" name="quantity10mm">  
           </div>
           <div class="11mm-order">
-            <input type="checkbox" name="11mm-selected">
-            <input type="number" value="1000" name="11mm-quantity">  
+            <label for="selected11mm">11 mm</label>
+            <input type="checkbox" name="selected11mm">
+            <input type="number" value="1000" disabled="true" name="quantity11mm">  
           </div>
         </fieldset>
         <input type="hidden" name="buttonID" value="" />

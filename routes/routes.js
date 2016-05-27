@@ -62,6 +62,7 @@ module.exports = function (app) {
       res.send({ success: false });
     }
   }, parseForm, csrfProtection, cart.add);
+  
   app.post("/cart/remove", isLoggedIn, (req, res, next) => {
     if (req.user.activated) {
       next();

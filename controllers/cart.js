@@ -20,7 +20,7 @@ ctrl.prototype.show = function(req, res) {
 };
 
 ctrl.prototype.add = function(req, res) {
-
+  console.log(req.body);
   DotDesignDAL.getUserDesignByID(req.user.id, req.body.buttonID)
     .then((design, err) => {
       if (err) return res.send({ success: false });
