@@ -86,14 +86,3 @@ if (addToCartForms && designsDiv) { // more than the login forms
     });
   });
 }
-
-const loginModal = document.getElementById("form-modal-container");
-if (loginModal.classList.contains("hidden")) {
-  const loginForm = loginModal.querySelector(".login-form");
-  console.log(loginForm);
-  console.log(loginForm)
-}
-
-
-
-
