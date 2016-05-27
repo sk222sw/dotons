@@ -1,22 +1,22 @@
 <div id="form-modal-container" class="pure-g modal-container hidden">
-  <div id="login-modal" class="pure-u-1 pure-u-md-1-3 form-modal">
+  <div id="modal" class="pure-u-1 pure-u-md-1-3 form-modal">
     <div class="login">
     <div id="button-close-form-modal">X</div>
-    <h2>Log in</h2>
-    <form class="modal-form pure-form login-form" action="/login" method="POST">
-      <fieldset>
-        <input type="hidden" name="_csrf" value="{{csrfToken}}">
-        <div class="">
-          <!--<label for="email">Email</label>-->
-          <input type="email" name="email" placeholder="Email" required></input>
-        </div>
-        <div class="">
-          <!--<label for="password">Password</label>-->
-          <input type="password" name="password" placeholder="Password" required></input>
-        </div>
-        <button type="submit" class="pure-button">Log in</button>
-      </fieldset>
-    </form>
+      <h2>Log in</h2>
+      <form class="modal-form pure-form login-form" action="/login" method="POST">
+        <fieldset>
+          <input type="hidden" name="_csrf" value="{{csrfToken}}">
+          <div class="">
+            <!--<label for="email">Email</label>-->
+            <input type="email" name="email" placeholder="Email" required></input>
+          </div>
+          <div class="">
+            <!--<label for="password">Password</label>-->
+            <input type="password" name="password" placeholder="Password" required></input>
+          </div>
+          <button type="submit" class="pure-button">Log in</button>
+        </fieldset>
+      </form>
     </div>
   </div>
 </div>

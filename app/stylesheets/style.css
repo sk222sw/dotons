@@ -96,7 +96,7 @@ nav {
   line-height: 100px;
 }
 
-.login {
+.login, .add-to-cart {
   text-align: center;
   position: relative;
   width: 100%;

@@ -43,9 +43,11 @@
       <div class="pure-u-md-1-3">&nbsp;</div>
       <div class="pure-u-1 pure-u-md-1-3 design">
         <div class="image-container">
-          <img src="" height="100px" width="100px" class="hidden" data-image-url="{{imageUrl}}" />
+          <img src="" height="100px" width="100px" class="hidden dot-image" data-image-url="{{imageUrl}}" />
           <p class="dot-design-name">{{name}}</p>
-          <form name="{{name}}"  method="POST" class="add-button-form form">
+          <a href="#" class="pure-button add-to-cart">Add to cart</a>
+          <input type="hidden" class="buttonID" value="{{id}}" />
+          <!--<form name="{{name}}"  method="POST" class="add-button-form form">
             <input type="hidden" name="buttonID" value="{{id}}" />
             <input type="hidden" name="_csrf" value="{{../csrfToken}}" />
             {{#if ../user.activated}}
@@ -55,7 +57,7 @@
                 <input type="submit" name="order" value="Add to cart" class="pure-button add"></input>
               {{/if}}
             {{/if}}
-          </form>
+          </form>-->
 
 
         </div>
@@ -69,3 +71,5 @@
 
 </div>
 </div>
+
+{{>addToCartModal}}
