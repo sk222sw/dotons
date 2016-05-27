@@ -273,6 +273,26 @@ table {
   background: rgba(0, 0, 0, 0.7);
   padding: 10px;
 }
+/******************************************/
+/** /cart css things                     **/
+/******************************************/
+.order-line {
+  height: 80px;
+  border-bottom: 1px solid black;
+}
+
+.order-line img {
+  vertical-align: middle;
+  height: 75px;
+  width: 75px;
+}
+
+
+.order-line:last-child {
+  border-bottom: none;
+}
+
+
 
 
 /******************************************/

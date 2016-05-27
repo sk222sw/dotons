@@ -49,18 +49,20 @@ module.exports = function (app) {
     res.redirect("/");
   });
   // order
-  app.post("/order/create", parseForm, csrfProtection, orders.create);
+  app.post("/orders/create", isLoggedIn, parseForm, csrfProtection, orders.create);
+  app.get("/orders", isLoggedIn, orders.index);
+  app.get("/orders/:id", isLoggedIn, orders.show);
   
   // "shopping cart"
   app.get("/cart", isLoggedIn, csrfProtection, cart.show);
-  app.post("/add", isLoggedIn, (req, res, next) => {
+  app.post("/cart/add", isLoggedIn, (req, res, next) => {
     if (req.user.activated) {
       next();
     } else {
       res.send({ success: false });
     }
   }, parseForm, csrfProtection, cart.add);
-  app.post("/remove", isLoggedIn, (req, res, next) => {
+  app.post("/cart/remove", isLoggedIn, (req, res, next) => {
     if (req.user.activated) {
       next();
     } else {

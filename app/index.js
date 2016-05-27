@@ -9,9 +9,30 @@ const addToCartForms = document.getElementsByClassName("add-button-form");
 const cartCounter = document.querySelector(".cart-count");
 console.log(cartCounter);
 
+const cartInfo = document.querySelector(".cart-info");
+if (cartInfo) {
+  const cart = cartInfo.getElementsByTagName("img");
+  
+  Array.prototype.forEach.call(cart, img => {
+    request
+      .get(img.getAttribute("data-image-url"))
+      .end((err, res) => {
+        if (err) {
+          console.log(err);
+        } else {
+          img.src = img.getAttribute("data-image-url");
+          img.classList.toggle("hidden");
+        }
+      });
+  });
+}
 
+console.log(addToCartForms);
+const designsDiv = document.getElementById("designs");
+console.log(designsDiv);
 
-if (addToCartForms) { // more than the login forms
+if (addToCartForms && designsDiv) { // more than the login forms
+  console.log("hehen prevent default shizzle");
   _.each(addToCartForms, (element, index) => {
     element.addEventListener("submit", e => {
       e.preventDefault();
@@ -21,7 +42,7 @@ if (addToCartForms) { // more than the login forms
       
       if (element.order.classList.contains("add")) {
         request
-        .post("/add")
+        .post("cart/add")
         .send({ buttonID: element.buttonID.value, _csrf: element._csrf.value })
         .withCredentials()
         .end((err, res) => {
@@ -43,7 +64,7 @@ if (addToCartForms) { // more than the login forms
         });  
       } else if (element.order.classList.contains("remove")) {
         request
-          .post("/remove")
+          .post("/cart/remove")
           .send({ buttonID: element.buttonID.value, _csrf: element._csrf.value })
           .withCredentials()
           .end((err, res) => {
@@ -64,6 +85,13 @@ if (addToCartForms) { // more than the login forms
       
     });
   });
+}
+
+const loginModal = document.getElementById("form-modal-container");
+if (loginModal.classList.contains("hidden")) {
+  const loginForm = loginModal.querySelector(".login-form");
+  console.log(loginForm);
+  console.log(loginForm)
 }
 
 

@@ -15,7 +15,11 @@
     {{/if}}
 
     {{{body}}}
-    {{> loginModal }}
+    {{#if user}}
+    <!-- stupid handlebars with no logial not operator... -->
+    {{else}}
+      {{> loginModal }}
+    {{/if}}
     <script type="text/javascript" src="javascripts/app.js"></script>
   </body>
 </html>
