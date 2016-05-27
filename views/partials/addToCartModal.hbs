@@ -1,0 +1,25 @@
+<div id="form-modal-container" class="pure-g modal-container hidden">
+  <div id="modal" class="pure-u-1 pure-u-md-1-3 form-modal">
+    <div class="login">
+      <div id="button-close-form-modal">X</div>
+      <h2>Add to cart</h2>
+       
+      <form class="modal-form pure-form add-to-cart-form" method="POST">
+        <fieldset>
+          <input type="hidden" name="_csrf" value="{{csrfToken}}">
+          <div class="10mm-order">
+            <img id="modal-pic" width="50px" height="50px" src="" />
+            <input type="checkbox" checked="true" name="10mm-selected">
+            <input type="number" value="1000" name="11mm-quantity">  
+          </div>
+          <div class="11mm-order">
+            <input type="checkbox" name="11mm-selected">
+            <input type="number" value="1000" name="11mm-quantity">  
+          </div>
+        </fieldset>
+        <input type="hidden" name="buttonID" value="" />
+        <button type="submit" class="pure-button">Add</button>
+      </form>
+    </div>
+  </div>
+</div>
