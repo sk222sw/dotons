@@ -20,12 +20,18 @@ ctrl.prototype.show = function(req, res) {
 };
 
 ctrl.prototype.add = function(req, res) {
-
+  console.log(req.body);
   DotDesignDAL.getUserDesignByID(req.user.id, req.body.buttonID)
     .then((design, err) => {
       if (err) return res.send({ success: false });
-
-      addToCart(req.session, design);
+      // design found
+      addToCart(req.session, {
+        design,
+        selected10mm: req.body.selected10mm,
+        selected11mm: req.body.selected11mm,
+        quantity10mm: req.body.quantity10mm,
+        quantity11mm: req.body.quantity11mm
+      });
 
       return res.send({ success: true, cart: getCart(req.session) });
     })
@@ -75,7 +81,7 @@ function removeFromCart(session, designId) {
   console.log("ITEMS IN CART NOW:    ");
   if (session.cart.length > 0) {
     session.cart.forEach((item, index) => {
-    console.log(index + ". " + item.name);
+    console.log(index + ". " + item.design.name);
   });    
   }
   
@@ -84,7 +90,7 @@ function removeFromCart(session, designId) {
 }
 
 
-function addToCart(session, design) {
+function addToCart(session, cartItem) {
   if (!session.cart || !Array.isArray(session.cart)) {
     console.log("Cart did not exist or was not an array, created upon adding");
     session.cart = [];
@@ -92,14 +98,14 @@ function addToCart(session, design) {
 
   const containsDesign = session.cart.length === 0 ? false :
     session.cart.some(element => {
-      console.log(element._id === design.id);
-      return element._id === design.id;
+      console.log(element._id === cartItem.design.id);
+      return element._id === cartItem.design.id;
     });
 
 
   if (!containsDesign) {
     console.log("Added to cart!");
-    session.cart.push(design);
+    session.cart.push(cartItem);
     session.save(); // Idk why it does not save session without this...
   }
   console.log("ITEMS IN CART NOW:    ");

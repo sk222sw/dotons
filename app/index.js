@@ -12,88 +12,176 @@ console.log(cartCounter);
 const cartInfo = document.querySelector(".cart-info");
 if (cartInfo) {
   const cart = cartInfo.getElementsByTagName("img");
-  
+
   Array.prototype.forEach.call(cart, img => {
     request
       .get(img.getAttribute("data-image-url"))
       .end((err, res) => {
         if (err) {
           console.log(err);
-        } else {
-          img.src = img.getAttribute("data-image-url");
-          img.classList.toggle("hidden");
         }
+        console.log(img.getAttribute("data-image-url"));
+        img.src = img.getAttribute("data-image-url");
+        img.classList.toggle("hidden");
       });
   });
 }
 
 console.log(addToCartForms);
 const designsDiv = document.getElementById("designs");
-console.log(designsDiv);
+if (designsDiv) {
+  const designs = document.querySelectorAll(".design");
+  const modalContainer = document.getElementById("form-modal-container");
+  const modalPic = modalContainer.querySelector("#modal-pic");
+  const form = modalContainer.querySelector(".add-to-cart-form");
+  const submitButton = form.querySelector(".pure-button");
+  const priceTag = form.querySelector(".totalPrice");
 
-if (addToCartForms && designsDiv) { // more than the login forms
-  console.log("hehen prevent default shizzle");
-  _.each(addToCartForms, (element, index) => {
-    element.addEventListener("submit", e => {
-      e.preventDefault();
+  form.selected10mm.onchange = () => {
+    form.quantity10mm.disabled = !form.selected10mm.checked;
+    console.log(!form.selected10mm.checked);
+    console.log(!form.selected11mm.checked);
+    submitButton.disabled = !form.selected10mm.checked && !form.selected11mm.checked;
+  };
 
-      
 
-      
-      if (element.order.classList.contains("add")) {
-        request
-        .post("cart/add")
-        .send({ buttonID: element.buttonID.value, _csrf: element._csrf.value })
-        .withCredentials()
-        .end((err, res) => {
-          if (err) console.log(err); // handle error
-          const response = JSON.parse(res.text);
-          console.log(response);
-          if (response.success) {
-            console.log("added to cart");
-            element.order.value = "Remove from cart"
-            element.order.classList.remove("add");
-            element.order.classList.add("remove");
-            cartCounter.innerHTML = response.cart.length;
-            
+  form.selected11mm.addEventListener("change", () => {
+    console.log(!form.selected10mm.checked);
+    console.log(!form.selected11mm.checked);
+    form.quantity11mm.disabled = !form.selected11mm.checked;
+    submitButton.disabled = !form.selected10mm.checked && !form.selected11mm.checked;
+  });
 
-            // do something with the cart yao
-          } else {
-            // Could not add, present error
-          }
-        });  
-      } else if (element.order.classList.contains("remove")) {
-        request
-          .post("/cart/remove")
-          .send({ buttonID: element.buttonID.value, _csrf: element._csrf.value })
-          .withCredentials()
-          .end((err, res) => {
-            const response = JSON.parse(res.text);
-            console.log(response);
-            if(err) console.log(err) // handle error
-            if (response.success) {
-              cartCounter.innerHTML = response.cart.length;
-              console.log("removed from cart");
-              
-              element.order.classList.add("add");
-              element.order.classList.remove("remove");
-              element.order.value = "Add to cart";
-            }
-          });
-        
-      }
-      
+
+
+  _.each(designs, element => {
+    element.addEventListener("click", () => {
+
+      const dotImage = element.querySelector(".dot-image");
+      const buttonID = element.querySelector(".buttonID").value;
+
+      modalContainer.classList.toggle("hidden");
+      form.buttonID.value = buttonID;
+      modalPic.src = dotImage.getAttribute("data-image-url");
     });
+  });
+  console.log(form._csrf);
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    console.log("Submit");
+    request
+      .post("cart/add")
+      .send({
+        buttonID: form.buttonID.value,
+        _csrf: form._csrf.value,
+        selected10mm: form.selected10mm.checked,
+        selected11mm: form.selected11mm.checked,
+        quantity10mm: form.quantity10mm.value,
+        quantity11mm: form.quantity11mm.value
+      })
+      .end((err, res) => {
+        if (err) console.log(err);
+        console.log(response);
+        const response = JSON.parse(res.text);
+        if (response.success) {
+          console.log("added to cart");
+          cartCounter.innerHTML = response.cart.length;
+          modalContainer.classList.toggle("hidden");
+          console.log(response.cart);
+        } else {
+          console.log("Could not add to cart");
+        }
+      });
   });
 }
 
-const loginModal = document.getElementById("form-modal-container");
-if (loginModal.classList.contains("hidden")) {
-  const loginForm = loginModal.querySelector(".login-form");
-  console.log(loginForm);
-  console.log(loginForm)
+const cart = document.querySelector(".cart-info");
+if (cart) {
+  const tBody = cart.querySelector(".pure-table").tBodies[0];
+  const tRows = tBody.getElementsByTagName("tr");
+  _.each(tRows, row => {
+    const checkbox10 = row.querySelector(".checkbox-10mm");
+    const checkbox11 = row.querySelector(".checkbox-11mm");
+    const input10 = row.querySelector(".quantity-10mm");
+    const input11 = row.querySelector(".quantity-11mm");
+    input10.disabled = !checkbox10.checked;
+    input11.disabled = !checkbox11.checked;
+    checkbox10.onchange = () => {
+      input10.disabled = !checkbox10.checked;
+      console.log(!checkbox10.checked);
+      console.log(!checkbox10.checked);
+      
+    };
+
+
+    checkbox11.addEventListener("change", () => {
+
+      input11.disabled = !checkbox11.checked;
+      
+    });
+  });
+  
 }
 
 
+// if (addToCartForms && designsDiv) { // more than the login forms
+//   const loginModal = document.getElementById("login-modal");
+//   const modalContainer = document.getElementById("form-modal-container");
+//   const closeLoginModal = document.getElementById("button-close-form-modal");
+//   console.log("hehen prevent default shizzle");
+//   _.each(addToCartForms, (element, index) => {
+//     element.addEventListener("click", e => {
+//       e.preventDefault();
 
+
+
+//       if (element.order.classList.contains("add")) {
+
+//         request
+//         .post("cart/add")
+//         .send({ buttonID: element.buttonID.value, _csrf: element._csrf.value })
+//         .withCredentials()
+//         .end((err, res) => {
+//           if (err) console.log(err); // handle error
+//           const response = JSON.parse(res.text);
+//           console.log(response);
+//           if (response.success) {
+//             console.log("added to cart");
+//             element.order.value = "Remove from cart"
+//             element.order.classList.remove("add");
+//             element.order.classList.add("remove");
+//             cartCounter.innerHTML = response.cart.length;
+
+
+//             // do something with the cart yao
+//           } else {
+//             // Could not add, present error
+//           }
+//         });
+//       } else if (element.order.classList.contains("remove")) {
+//         request
+//           .post("/cart/remove")
+//           .send({ buttonID: element.buttonID.value, _csrf: element._csrf.value })
+//           .withCredentials()
+//           .end((err, res) => {
+//             const response = JSON.parse(res.text);
+//             console.log(response);
+//             if(err) console.log(err) // handle error
+//             if (response.success) {
+//               cartCounter.innerHTML = response.cart.length;
+//               console.log("removed from cart");
+
+//               element.order.classList.add("add");
+//               element.order.classList.remove("remove");
+//               element.order.value = "Add to cart";
+//             }
+//           });
+
+//       }
+
+
+//     });
+//   });
+// }
 

@@ -75,12 +75,8 @@ a {
 /***** HEADER                  ********/
 /**************************************/
 
-.pure-menu a {
 
-}
 .logo {
-  width: 60px;
-  vertical-align: middle;
 }
 
 nav {
@@ -100,7 +96,7 @@ nav {
   line-height: 100px;
 }
 
-.login {
+.login, .add-to-cart {
   text-align: center;
   position: relative;
   width: 100%;
@@ -333,8 +329,18 @@ table {
   font-size: 3em;
   text-transform: lowercase;
   text-align: left;
-  padding-left: 0;
+  height: 120px;
 }
+
+.brand-logo {
+  height: 120px;
+  width: 100px;
+  background-repeat: no-repeat;
+  background-image: url("/images/logo.png");
+  background-size: 70%;
+  margin-top: -15px;
+}
+
 
 .custom-toggle {
     width: 34px;
@@ -396,6 +402,12 @@ table {
     .custom-toggle {
         display: block;
     }
+  .brand-logo {
+    margin: 0 auto;
+    background-repeat: no-repeat;
+    background-image: url("/images/logo_small.png");
+    background-size: 100%;
+  }
 
 }
 
