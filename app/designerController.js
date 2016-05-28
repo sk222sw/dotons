@@ -11,25 +11,22 @@ import request from "superagent";
 
 const flash = document.getElementById("designer-flash");
 const flashMessage = document.getElementById("designer-flash-message");
-
-function displayDesignerFlash(error) {
-  flashMessage.innerHTML = error;
-  flash.classList.remove("hidden");
-  setTimeout(() => {
-    hideDesignerFlash();
-  }, 3000);
-}
-
-function hideDesignerFlash() {
-  flash.classList.add("hidden");
-  flashMessage.innerHTML = "";
-}
-
-// TODO: Better error-presentation for the user, flashhshhshshhs-messhahshshhages <-lol
+const designsDiv = document.getElementById("designs");
+const cartInfo = document.querySelector(".cart-info");
 const form = document.getElementById("upload-form");
-// declare designer here. Might need to call crop method
-// on saving the image
+const dotDesign = document.getElementById("dot-design");
 let designer = null;
+
+// checks what images need to be loaded!
+// either all the designs or just the order
+// if the user is in /cart
+if (designsDiv) {
+  const imageNodeList = designsDiv.getElementsByTagName("img");
+  loadImages(imageNodeList);
+} else if (cartInfo) {
+  const imageNodeList = cartInfo.getElementsByTagName("img");
+  loadImages(imageNodeList);
+}
 
 if (form && form.addEventListener) {
   designer = new Designer();
@@ -44,8 +41,6 @@ if (form && form.addEventListener) {
   }, false);
 }
 
-const dotDesign = document.getElementById("dot-design");
-
 if (dotDesign) {
   dotDesign.onchange = function(event) {
     designer.removeImage();
@@ -58,6 +53,7 @@ if (dotDesign) {
 }
 
 function upload(file, target, event) {
+  // TODO: Refactor
   const imageUploader = new ImageUploader();
   if (!file) {
     displayDesignerFlash();
@@ -71,11 +67,10 @@ function upload(file, target, event) {
     const fd = new FormData();
     fd.append("dot-design", blob, document.getElementById("dot-design").files[0].name);
 
-      // superagent post formdata is not playing nicely with multer.
-      // the fileupload NEEDS to be done with AJAX since if you submit
-      // the form with the regular submit-event, the appended formdata with
-      // the cropped picture does not get sent to the server.. bs
-
+    // superagent post formdata is not playing nicely with multer.
+    // the fileupload NEEDS to be done with AJAX since if you submit
+    // the form with the regular submit-event, the appended formdata with
+    // the cropped picture does not get sent to the server.. bs
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "designer/upload");
     xhr.onload = function(event) {
@@ -111,6 +106,19 @@ function upload(file, target, event) {
   }
 }
 
+function displayDesignerFlash(error) {
+  flashMessage.innerHTML = error;
+  flash.classList.remove("hidden");
+  setTimeout(() => {
+    hideDesignerFlash();
+  }, 3000);
+}
+
+function hideDesignerFlash() {
+  flash.classList.add("hidden");
+  flashMessage.innerHTML = "";
+}
+
 function dataURLtoBlob(dataURI) {
   // convert base64/URLEncoded data component to raw binary data held in a string
   let byteString;
@@ -129,18 +137,6 @@ function dataURLtoBlob(dataURI) {
   }
 
   return new Blob([ia], { type: mimeString });
-}
-
-/* get user images, refactor to own file l8r */
-/* needs refactor badly //TODO */
-const designsDiv = document.getElementById("designs");
-const cartInfo = document.querySelector(".cart-info");
-if (designsDiv) {
-  const imageNodeList = designsDiv.getElementsByTagName("img");
-  loadImages(imageNodeList);
-} else if (cartInfo) {
-  const imageNodeList = cartInfo.getElementsByTagName("img");
-  loadImages(imageNodeList);
 }
 
 function loadImages(imageNodeList) {
