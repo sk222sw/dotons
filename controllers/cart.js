@@ -14,10 +14,22 @@ ctrl.prototype.show = function(req, res) {
     res.render("cart", {
       cart: getCart(req.session),
       active: { cart: true },
-      csrfToken: req.csrfToken()
+      csrfToken: req.csrfToken(),
     });
   }
 };
+
+/**
+ * Adds an item to the cart. An item in the cart looks like this:
+ *  {
+ *    design: DotDesign, // The Model-class 
+ *    selected10mm: true,
+ *    selected11mm: false,
+ *    quantity10mm: 10000,
+ *    quantity11mm: 0 
+*   }
+    selected10/11 comes from a checkbox in the form
+ */
 
 ctrl.prototype.add = function(req, res) {
   console.log(req.body);
@@ -27,10 +39,16 @@ ctrl.prototype.add = function(req, res) {
       // design found
       addToCart(req.session, {
         design,
-        selected10mm: req.body.selected10mm,
-        selected11mm: req.body.selected11mm,
-        quantity10mm: req.body.quantity10mm,
-        quantity11mm: req.body.quantity11mm
+        "10mm": {
+          ordered: req.body.selected10mm,
+          quantity: req.body.quantity10mm,
+          price: req.session.price * req.body.quantity10mm  
+        },
+        "11mm": {
+          ordered: req.body.selected11mm,
+          quantity: req.body.quantity11mm,
+          price: req.session.price * req.body.quantity11mm
+        }
       });
 
       return res.send({ success: true, cart: getCart(req.session) });
@@ -98,8 +116,8 @@ function addToCart(session, cartItem) {
 
   const containsDesign = session.cart.length === 0 ? false :
     session.cart.some(element => {
-      console.log(element._id === cartItem.design.id);
-      return element._id === cartItem.design.id;
+      console.log(element.design._id === cartItem.design.id);
+      return element.design._id === cartItem.design.id;
     });
 
 
