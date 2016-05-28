@@ -13,22 +13,6 @@ const cartInfo = document.querySelector(".cart-info");
 
 // Loads the images in the cart. 
 // TODO: REfactor, same code exists in designerController.js
-if (cartInfo) {
-  const cart = cartInfo.getElementsByTagName("img");
-
-  Array.prototype.forEach.call(cart, img => {
-    request
-      .get(img.getAttribute("data-image-url"))
-      .end((err, res) => {
-        if (err) {
-          console.log(err);
-        }
-        console.log(img.getAttribute("data-image-url"));
-        img.src = img.getAttribute("data-image-url");
-        img.classList.toggle("hidden");
-      });
-  });
-}
 
 const designsDiv = document.getElementById("designs");
 if (designsDiv) {
