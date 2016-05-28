@@ -67,9 +67,63 @@ if (designsDiv) {
 }
 
 const cart = document.querySelector(".cart-info");
+console.log(cart);
 if (cart) {
+  const orderItems = document.querySelectorAll(".order-item");
+  const updateButton = document.querySelector(".update-order");
+  updateButton.addEventListener("click", e => {
+    _.each(orderItems, item => {
+      console.log(item);
+      const input10 = item.querySelector(".quantity-10mm");
+      const input11 = item.querySelector(".quantity-11mm");
+      const price10 = item.querySelector(".price-10mm");
+      const price11 = item.querySelector(".price-11mm");
+      const checkbox10 = item.querySelector(".checkbox-10mm");
+      const checkbox11 = item.querySelector(".checkbox-11mm");
+      
+      price10.innerHTML = checkbox10.checked ? input10.value * 16 : 0;
+      price11.innerHTML = checkbox11.checked ? input11.value * 16 : 0;
+    });
+  });
   
+  _.each(orderItems, item => {
+    item.querySelector(".remove-item").addEventListener("click", e => {
+      console.log(item.querySelector(".button-id"));
+      if (confirm("Are you sure?")) {
+        
+        
+        request
+          .post("/cart/remove")
+          .send({
+            buttonID: item.querySelector(".button-id").value,
+            _csrf: document.querySelector(".csrf").value,
+          })
+          .withCredentials()
+          .end((err, res) => {
+            if (err) console.log(err);
+            else {
+              const response = JSON.parse(res.text);
+              console.log(response);
+              item.parentNode.removeChild(item);
+              console.log(response.cart);
+              if (response.cart.length === 0) {
+                updateButton.classList.add("hidden");
+                document.querySelector(".order-item-header").classList.add("hidden");
+                document.querySelector(".submit").disabled = true;
+                document.querySelector(".submit").classList.add("hidden");
+                cart.innerHTML = "<p>There are no dots in your cart...</p>";
+                cartCounter.innerHTML = response.cart.length;
+                
+              }
+            }  
+          });
+      }
+    });
+  });
+      
 }
+
+
 // if (cart) {
 //   const tBody = cart.querySelector(".pure-table").tBodies[0];
 //   const tRows = tBody.getElementsByTagName("tr");

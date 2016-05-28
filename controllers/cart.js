@@ -62,6 +62,7 @@ ctrl.prototype.add = function(req, res) {
 };
 
 ctrl.prototype.remove = function(req, res) {
+  console.log(req.body);
   var removed = removeFromCart(req.session, req.body.buttonID);
   if (removed) {
     res.send({ success: true, cart: getCart(req.session) });
@@ -87,12 +88,12 @@ function removeFromCart(session, designId) {
     return false;
   }  
   
-  session.cart.forEach((design, index) => {
-    console.log(design._id);
-    console.log(designId);
-    if (design._id === designId) {
+  session.cart.forEach((cartItem, index) => {
+    console.log("CARTITEM ID " + cartItem.design._id);
+    console.log("DESIGN ID : " + designId);
+    if (cartItem.design._id === designId) {
       
-      console.log("Removed design " + design.name);
+      console.log("Removed design " + cartItem.design.name);
 
       session.cart.splice(index, 1);
       removed = true;
