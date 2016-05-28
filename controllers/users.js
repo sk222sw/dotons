@@ -199,6 +199,7 @@ ctrl.prototype.profile = function(req, res, next) {
 function renderProfile(user, res, req, flash) {
   PriceListDal.getPriceList()
     .then((priceList) => {
+      req.session.price = user.getUserPrice(priceList, user.role)
       return user.getUserPrice(priceList, user.role);
     })
     .then((price) => {

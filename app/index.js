@@ -10,6 +10,9 @@ const cartCounter = document.querySelector(".cart-count");
 console.log(cartCounter);
 
 const cartInfo = document.querySelector(".cart-info");
+
+// Loads the images in the cart. 
+// TODO: REfactor, same code exists in designerController.js
 if (cartInfo) {
   const cart = cartInfo.getElementsByTagName("img");
 
@@ -27,7 +30,6 @@ if (cartInfo) {
   });
 }
 
-console.log(addToCartForms);
 const designsDiv = document.getElementById("designs");
 if (designsDiv) {
   const designs = document.querySelectorAll(".design");
@@ -39,21 +41,14 @@ if (designsDiv) {
 
   form.selected10mm.onchange = () => {
     form.quantity10mm.disabled = !form.selected10mm.checked;
-    console.log(!form.selected10mm.checked);
-    console.log(!form.selected11mm.checked);
     submitButton.disabled = !form.selected10mm.checked && !form.selected11mm.checked;
   };
 
-
   form.selected11mm.addEventListener("change", () => {
-    console.log(!form.selected10mm.checked);
-    console.log(!form.selected11mm.checked);
     form.quantity11mm.disabled = !form.selected11mm.checked;
     submitButton.disabled = !form.selected10mm.checked && !form.selected11mm.checked;
   });
-
-
-
+  
   _.each(designs, element => {
     element.addEventListener("click", () => {
 
@@ -65,11 +60,9 @@ if (designsDiv) {
       modalPic.src = dotImage.getAttribute("data-image-url");
     });
   });
-  console.log(form._csrf);
 
   form.addEventListener("submit", e => {
     e.preventDefault();
-    console.log("Submit");
     request
       .post("cart/add")
       .send({
@@ -82,13 +75,11 @@ if (designsDiv) {
       })
       .end((err, res) => {
         if (err) console.log(err);
-        console.log(response);
         const response = JSON.parse(res.text);
         if (response.success) {
-          console.log("added to cart");
           cartCounter.innerHTML = response.cart.length;
           modalContainer.classList.toggle("hidden");
-          console.log(response.cart);
+          console.log(modalContainer);
         } else {
           console.log("Could not add to cart");
         }
@@ -98,31 +89,29 @@ if (designsDiv) {
 
 const cart = document.querySelector(".cart-info");
 if (cart) {
-  const tBody = cart.querySelector(".pure-table").tBodies[0];
-  const tRows = tBody.getElementsByTagName("tr");
-  _.each(tRows, row => {
-    const checkbox10 = row.querySelector(".checkbox-10mm");
-    const checkbox11 = row.querySelector(".checkbox-11mm");
-    const input10 = row.querySelector(".quantity-10mm");
-    const input11 = row.querySelector(".quantity-11mm");
-    input10.disabled = !checkbox10.checked;
-    input11.disabled = !checkbox11.checked;
-    checkbox10.onchange = () => {
-      input10.disabled = !checkbox10.checked;
-      console.log(!checkbox10.checked);
-      console.log(!checkbox10.checked);
-      
-    };
-
-
-    checkbox11.addEventListener("change", () => {
-
-      input11.disabled = !checkbox11.checked;
-      
-    });
-  });
   
 }
+// if (cart) {
+//   const tBody = cart.querySelector(".pure-table").tBodies[0];
+//   const tRows = tBody.getElementsByTagName("tr");
+//   _.each(tRows, row => {
+//     const checkbox10 = row.querySelector(".checkbox-10mm");
+//     const checkbox11 = row.querySelector(".checkbox-11mm");
+//     const input10 = row.querySelector(".quantity-10mm");
+//     const input11 = row.querySelector(".quantity-11mm");
+//     input10.disabled = !checkbox10.checked;
+//     input11.disabled = !checkbox11.checked;
+//     checkbox10.onchange = () => {
+//       input10.disabled = !checkbox10.checked;
+//       console.log(!checkbox10.checked);
+//       console.log(!checkbox10.checked);
+//     };
+//     checkbox11.addEventListener("change", () => {
+//       input11.disabled = !checkbox11.checked;
+//     });
+//   }); 
+// }
+
 
 
 // if (addToCartForms && designsDiv) { // more than the login forms
