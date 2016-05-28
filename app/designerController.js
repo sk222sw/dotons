@@ -134,20 +134,26 @@ function dataURLtoBlob(dataURI) {
 /* get user images, refactor to own file l8r */
 /* needs refactor badly //TODO */
 const designsDiv = document.getElementById("designs");
+const cartInfo = document.querySelector(".cart-info");
 if (designsDiv) {
-  const imgs = designsDiv.getElementsByTagName("img");
+  const imageNodeList = designsDiv.getElementsByTagName("img");
+  loadImages(imageNodeList);
+} else if (cartInfo) {
+  const imageNodeList = cartInfo.getElementsByTagName("img");
+  loadImages(imageNodeList);
+}
 
-  Array.prototype.forEach.call(imgs, item => {
+function loadImages(imageNodeList) {
+  Array.prototype.forEach.call(imageNodeList, img => {
     request
-      .get(item.getAttribute("data-image-url"))
+      .get(img.getAttribute("data-image-url"))
       .end((err, res) => {
         if (err) {
           console.log(err);
-        } else {
-          item.src = item.getAttribute("data-image-url");
-
-          item.classList.toggle("hidden");
         }
+        console.log(img.getAttribute("data-image-url"));
+        img.src = img.getAttribute("data-image-url");
+        img.classList.toggle("hidden");
       });
   });
 }
