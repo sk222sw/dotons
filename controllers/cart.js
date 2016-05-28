@@ -42,12 +42,14 @@ ctrl.prototype.add = function(req, res) {
         "10mm": {
           ordered: req.body.selected10mm,
           quantity: req.body.quantity10mm,
-          price: req.session.price * req.body.quantity10mm  
+          price: req.body.selected10mm ?
+            req.session.price * req.body.quantity10mm : 0
         },
         "11mm": {
           ordered: req.body.selected11mm,
           quantity: req.body.quantity11mm,
-          price: req.session.price * req.body.quantity11mm
+          price: req.body.selected11mm ?
+            req.session.price * req.body.quantity11mm : 0
         }
       });
 
