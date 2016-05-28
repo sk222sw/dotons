@@ -288,6 +288,29 @@ table {
   border-bottom: none;
 }
 
+.cart-info {
+  border: 1px solid black;
+  padding: 20px;
+}
+
+.order-item {
+  line-height: 25px;
+}
+
+.order-item input {
+  width: 100px;
+}
+
+.order-item label, .order-item span {
+  line-height: 30px;
+  vertical-align: middle;
+}
+
+.order-item img {
+  vertical-align: middle;
+}
+
+
 
 
 
@@ -407,6 +430,11 @@ table {
     background-repeat: no-repeat;
     background-image: url("/images/logo_small.png");
     background-size: 100%;
+  }
+  
+  /**/
+  .pure-u-hidden {
+    display: none;
   }
 
 }
