@@ -111,6 +111,7 @@ export default class ImageUploader {
 function convertDataURIToBinary(dataURI) {
   // Used to convert a base64 representation of a pdf to
   // a binary array
+  // this comes from SO but cant remember thread... // TODO: link SO thread
   const BASE64_MARKER = ';base64,';
   const base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
   const base64 = dataURI.substring(base64Index);

@@ -7,14 +7,9 @@ import Promise from "bluebird";
 
 const addToCartForms = document.getElementsByClassName("add-button-form");
 const cartCounter = document.querySelector(".cart-count");
-console.log(cartCounter);
-
 const cartInfo = document.querySelector(".cart-info");
-
-// Loads the images in the cart. 
-// TODO: REfactor, same code exists in designerController.js
-
 const designsDiv = document.getElementById("designs");
+
 if (designsDiv) {
   const designs = document.querySelectorAll(".design");
   const modalContainer = document.getElementById("form-modal-container");
