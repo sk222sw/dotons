@@ -4,6 +4,7 @@ import DesignerController from "./designerController";
 import _ from "lodash";
 import request from "superagent";
 import Promise from "bluebird";
+import CartItem from "./cartItem";
 
 const addToCartForms = document.getElementsByClassName("add-button-form");
 const cartCounter = document.querySelector(".cart-count");
@@ -66,6 +67,20 @@ if (designsDiv) {
   });
 }
 
+function getCartItem(item) {
+  const id = item.querySelector(".button-id").value;
+  const input10 = item.querySelector(".quantity-10mm").value;
+  const input11 = item.querySelector(".quantity-11mm").value;
+  const price10 = item.querySelector(".price-10mm").value;
+  const price11 = item.querySelector(".price-11mm").value;
+  const checkbox10 = item.querySelector(".checkbox-10mm").checked;
+  const checkbox11 = item.querySelector(".checkbox-11mm").checked;
+  
+  
+  return new CartItem(id, checkbox10, checkbox11, input10, input11)
+}
+
+
 const cart = document.querySelector(".cart-info");
 console.log(cart);
 if (cart) {
@@ -81,17 +96,41 @@ if (cart) {
       const checkbox10 = item.querySelector(".checkbox-10mm");
       const checkbox11 = item.querySelector(".checkbox-11mm");
       
-      price10.innerHTML = checkbox10.checked ? input10.value * 16 : 0;
-      price11.innerHTML = checkbox11.checked ? input11.value * 16 : 0;
+      price10.innerHTML = checkbox10.checked ? input10.value * 16 + " kr" : 0 + " kr";
+      price11.innerHTML = checkbox11.checked ? input11.value * 16 + " kr" : 0 + " kr";
+           
     });
+  });
+  
+  const form = cart.querySelector(".pure-form");
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const order = [];
+    const formCartItems = form.getElementsByTagName("fieldset");
+    _.each(formCartItems, item => {
+
+      const cartItem = getCartItem(item);
+
+      order.push(cartItem);
+    });
+
+    request
+      .post("/orders/create")
+      .send({ order, _csrf: document.querySelector(".csrf").value })
+      .withCredentials()
+      .end((err, res) => {
+        if (err) console.log(err);
+        else {
+          const response = JSON.parse(res.text);
+          console.log(response);  
+        }
+      })
   });
   
   _.each(orderItems, item => {
     item.querySelector(".remove-item").addEventListener("click", e => {
-      console.log(item.querySelector(".button-id"));
+
       if (confirm("Are you sure?")) {
-        
-        
         request
           .post("/cart/remove")
           .send({
@@ -119,91 +158,5 @@ if (cart) {
           });
       }
     });
-  });
-      
+  });     
 }
-
-
-// if (cart) {
-//   const tBody = cart.querySelector(".pure-table").tBodies[0];
-//   const tRows = tBody.getElementsByTagName("tr");
-//   _.each(tRows, row => {
-//     const checkbox10 = row.querySelector(".checkbox-10mm");
-//     const checkbox11 = row.querySelector(".checkbox-11mm");
-//     const input10 = row.querySelector(".quantity-10mm");
-//     const input11 = row.querySelector(".quantity-11mm");
-//     input10.disabled = !checkbox10.checked;
-//     input11.disabled = !checkbox11.checked;
-//     checkbox10.onchange = () => {
-//       input10.disabled = !checkbox10.checked;
-//       console.log(!checkbox10.checked);
-//       console.log(!checkbox10.checked);
-//     };
-//     checkbox11.addEventListener("change", () => {
-//       input11.disabled = !checkbox11.checked;
-//     });
-//   }); 
-// }
-
-
-
-// if (addToCartForms && designsDiv) { // more than the login forms
-//   const loginModal = document.getElementById("login-modal");
-//   const modalContainer = document.getElementById("form-modal-container");
-//   const closeLoginModal = document.getElementById("button-close-form-modal");
-//   console.log("hehen prevent default shizzle");
-//   _.each(addToCartForms, (element, index) => {
-//     element.addEventListener("click", e => {
-//       e.preventDefault();
-
-
-
-//       if (element.order.classList.contains("add")) {
-
-//         request
-//         .post("cart/add")
-//         .send({ buttonID: element.buttonID.value, _csrf: element._csrf.value })
-//         .withCredentials()
-//         .end((err, res) => {
-//           if (err) console.log(err); // handle error
-//           const response = JSON.parse(res.text);
-//           console.log(response);
-//           if (response.success) {
-//             console.log("added to cart");
-//             element.order.value = "Remove from cart"
-//             element.order.classList.remove("add");
-//             element.order.classList.add("remove");
-//             cartCounter.innerHTML = response.cart.length;
-
-
-//             // do something with the cart yao
-//           } else {
-//             // Could not add, present error
-//           }
-//         });
-//       } else if (element.order.classList.contains("remove")) {
-//         request
-//           .post("/cart/remove")
-//           .send({ buttonID: element.buttonID.value, _csrf: element._csrf.value })
-//           .withCredentials()
-//           .end((err, res) => {
-//             const response = JSON.parse(res.text);
-//             console.log(response);
-//             if(err) console.log(err) // handle error
-//             if (response.success) {
-//               cartCounter.innerHTML = response.cart.length;
-//               console.log("removed from cart");
-
-//               element.order.classList.add("add");
-//               element.order.classList.remove("remove");
-//               element.order.value = "Add to cart";
-//             }
-//           });
-
-//       }
-
-
-//     });
-//   });
-// }
-
