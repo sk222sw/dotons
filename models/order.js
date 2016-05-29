@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const dotDesignSchema = require("./dotDesign").schema;
 const userSchema = require("./user")
 
-const line = mongoose.Schema({
+const lineSchema = mongoose.Schema({
   design: dotDesignSchema,
   size: {
     type: String,
@@ -21,15 +21,16 @@ const line = mongoose.Schema({
 
 const orderSchema = mongoose.Schema({
   orderDate: { type: Date, default: Date.now },
-  lines: [line],
-  user: userSchema,
+  lines: [lineSchema],
   shipped: { type: Boolean, default: false }
 });
 
 const Order = mongoose.model("Order", orderSchema);
+const Line = mongoose.model("Line", lineSchema);
 
 
 module.exports = {
   schema: orderSchema,
-  model: Order
+  model: Order,
+  line: Line
 };
