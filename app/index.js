@@ -4,6 +4,7 @@ import DesignerController from "./designerController";
 import _ from "lodash";
 import request from "superagent";
 import Promise from "bluebird";
+import CartItem from "./cartItem";
 
 const addToCartForms = document.getElementsByClassName("add-button-form");
 const cartCounter = document.querySelector(".cart-count");
@@ -66,6 +67,20 @@ if (designsDiv) {
   });
 }
 
+function getCartItem(item) {
+  const id = item.querySelector(".button-id").value;
+  const input10 = item.querySelector(".quantity-10mm").value;
+  const input11 = item.querySelector(".quantity-11mm").value;
+  const price10 = item.querySelector(".price-10mm").value;
+  const price11 = item.querySelector(".price-11mm").value;
+  const checkbox10 = item.querySelector(".checkbox-10mm").checked;
+  const checkbox11 = item.querySelector(".checkbox-11mm").checked;
+  
+  
+  return new CartItem(id, checkbox10, checkbox11, input10, input11)
+}
+
+
 const cart = document.querySelector(".cart-info");
 console.log(cart);
 if (cart) {
@@ -83,15 +98,39 @@ if (cart) {
       
       price10.innerHTML = checkbox10.checked ? input10.value * 16 + " kr" : 0 + " kr";
       price11.innerHTML = checkbox11.checked ? input11.value * 16 + " kr" : 0 + " kr";
+           
     });
+  });
+  
+  const form = cart.querySelector(".pure-form");
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const order = [];
+    const formCartItems = form.getElementsByTagName("fieldset");
+    _.each(formCartItems, item => {
+
+      const cartItem = getCartItem(item);
+
+      order.push(cartItem);
+    });
+
+    request
+      .post("/orders/create")
+      .send({ order, _csrf: document.querySelector(".csrf").value })
+      .withCredentials()
+      .end((err, res) => {
+        if (err) console.log(err);
+        else {
+          const response = JSON.parse(res.text);
+          console.log(response);  
+        }
+      })
   });
   
   _.each(orderItems, item => {
     item.querySelector(".remove-item").addEventListener("click", e => {
-      console.log(item.querySelector(".button-id"));
+
       if (confirm("Are you sure?")) {
-        
-        
         request
           .post("/cart/remove")
           .send({
