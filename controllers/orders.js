@@ -1,11 +1,35 @@
 const orderDAL = require("../models/DAL/orderDAL");
 const dotDesignDAL = require("../models/DAL/dotDesignDAL");
+const User = require("../models/user");
+const ROLES = require("../models/enums/roles").roles;
 const Order = require("../models/order").model;
 const Line = require("../models/order").line;
 
 const ctrl = function() {};
 
 ctrl.prototype.index = function(req, res) {
+  if (req.user.role === ROLES.ADMIN) {
+    User.find({}, (err, users) => {
+      const orders = [];
+      
+      users.forEach(user => {
+        user.orders.forEach(order => {
+          orders.push(order);
+        });
+      });
+      
+      res.render("orders", {
+        orders
+      });
+    });    
+  } else {
+    User.findById(req.user.id, (err, user) => {
+      res.render("orders", {
+        orders: user.orders
+      });
+    });
+  }
+  
 
 }
 

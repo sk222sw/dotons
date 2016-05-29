@@ -1,0 +1,14 @@
+<div class="container">
+  {{#each orders}}
+    <div class="order">
+      <p class="">{{orderDate}}</p>
+      <p>{{shipped}}</p>
+      {{#each lines}}
+        <p>{{design.name}}</p>
+        <p>{{quantity}}</p>
+        <p>{{size}}</p>
+        <p>{{price}}</p>    
+      {{/each}}
+    </div>
+  {{/each}}
+</div>
