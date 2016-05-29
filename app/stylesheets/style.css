@@ -297,7 +297,7 @@ table {
   line-height: 25px;
 }
 
-.order-item input {
+.order-item input[type="number"] {
   width: 100px;
 }
 
@@ -320,6 +320,9 @@ table {
 .button-xlarge {
   font-size: 125%;
 
+}
+.button-error {
+  background: rgb(202, 60, 60); /* this is a maroon */
 }
 
 /******************************************/
