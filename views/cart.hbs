@@ -32,31 +32,34 @@
           </div> 
           <div class="pure-u-1 pure-u-md-1-5">&nbsp;</div>
         </div>
+        <hr />
+        
         
         {{#each cart}}
         <div class="pure-g order-item">
           <input type="hidden" name="buttonID" value="{{design._id}}" class="button-id" />
 
-          <div class="pure-u-1 pure-u-md-1-4">
+          <div class="pure-u-1 pure-u-md-1-5">
              <img src="" height="50px" width="50px" class="hidden" data-image-url="{{design.imageUrl}}" />
           </div>
-          <div class="pure-u-1 pure-u-md-1-4">
+          <div class="pure-u-1 pure-u-md-1-5">
             <div><label for="10mm">10mm</label><input type="checkbox" {{#if 10mm.ordered}}checked{{/if}} name="10mm" class="checkbox-10mm"></div>
             <div><label for="11mm">11mm</label><input type="checkbox" {{#if 11mm.ordered}}checked{{/if}} name="11mm" class="checkbox-11mm"></div>
           </div>
-          <div class="pure-u-1 pure-u-md-1-4">
+          <div class="pure-u-1 pure-u-md-1-5">
             <div><input type="number" name="10mm-quantity" value="{{10mm.quantity}}" min="1000" class="quantity-10mm"></div>
             <div><input type="number" name="11mm-quantity" value="{{11mm.quantity}}" min="1000" class="quantity-11mm"></div>
           </div>
-          <div class="pure-u-1 pure-u-md-1-4">
+          <div class="pure-u-1 pure-u-md-1-5">
 
             <div><span class="price-10mm">{{10mm.price}} kr</span></div>
             <div><span class="price-11mm">{{11mm.price}} kr</span></div>  
           </div>
-          <div class="pure-u-1 pure-u-md-1-4">
-            <a href="#" class="pure-button remove-item">Remove from cart</a>
+          <div class="pure-u-1 pure-u-md-1-5">
+            <a href="#" class="pure-button button-error remove-item">Remove</a>
           </div>
         </div>
+        <hr />
         {{/each}}       
          
         <button type="submit" class="pure-button submit">Place order</button>

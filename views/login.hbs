@@ -3,18 +3,16 @@
     &nbsp;
   </div>
   <div class="one-third column login">
-    <h2>log in</h2>
-    <form class="login-form" action="/login" method="POST">
+    <h2>Log in</h2>
+    <form class="login-form pure-form" action="/login" method="POST">
       <input type="hidden" name="_csrf" value="{{csrfToken}}">
       <div class="">
-        <label for="email">Email</label>
-        <input type="email" name="email" value="user@user.com"></input>
+        <input type="email" placeholder="Email" name="email" value="user@user.com"></input>
       </div>
       <div class="">
-        <label for="password">Password</label>
-        <input type="password" name="password" value="hej"></input>
+        <input type="password" placeholder="Password" name="password" value="hej"></input>
       </div>
-      <button type="submit">Log in</button>
+      <button type="submit" class="pure-button">Log in</button>
     </form>
   </div>
   <div class="one-third column">
