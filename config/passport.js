@@ -58,16 +58,13 @@ module.exports = function(passport) {
             html: "<p>Hello and welcome to dotons!</p>"
           });
           
-          const activationLink = "http://localhost:3000/users/" + user.id;
+          const activationLink = "https://dotons.xyz/" + user.id;
           
           mailer.sendMail({
             recipient: "ad222kr@student.lnu.se",
             subject: "New business account awaiting activation",
             html: "<p>A new account needs activating</p>" + 
-                  "<a href='www.google.com'>Google</a>" +
-                  "<a href='" + activationLink + "'>Activate</a>" +
-                  "<p>localhost:3000/users/" + user.id + "</p>" + 
-                  "<a href='http://localhost:3000/users/5740726b33df889c1c07dad3'>Test</a>"
+                  "<a href='" + activationLink + "'>Activate</a>"
           });
         }
           
