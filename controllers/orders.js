@@ -10,29 +10,35 @@ const ctrl = function() {};
 
 ctrl.prototype.index = function(req, res, next) {
   if (req.user.role === ROLES.ADMIN) {
-    User.find({}, (err, users) => {
-      if (err) {
-        const error = new Error("Something went wrong, try again");
-        error.status = 400;
-        next(error);
-      }
-      var orders = [];
+    // User.find({}, (err, users) => {
+    //   if (err) {
+    //     const error = new Error("Something went wrong, try again");
+    //     error.status = 400;
+    //     next(error);
+    //   }
+    //   var orders = [];
 
-      users.forEach(user => {
-        user.orders.forEach(order => {
-          order.user = user.email;
-          orders.push(order);
-        });
-      });
+    //   users.forEach(user => {
+    //     user.orders.forEach(order => {
+    //       order.user = user.email;
+    //       orders.push(order);
+    //     });
+    //   });
      
-      orders = sortOdersByDate(orders);
-      orders = formatOrderDates(orders);     
-
-      res.render("orders", {
-        orders,
-        csrfToken: req.csrfToken()
+    //   orders = sortOdersByDate(orders);
+    //   orders = formatOrderDates(orders);     
+    orderDAL.getOrders()
+      .then(orders => {
+          res.render("orders", {
+          orders,
+          csrfToken: req.csrfToken()
+        });
+      })
+      .catch(errors => {
+        return next(error);  
       });
-    });
+      
+    
   } else {
     User.findById(req.user.id, (err, user) => {
       if (err) {
@@ -60,8 +66,9 @@ ctrl.prototype.ship = (req, res, next) => {
       res.redirect("/orders/" + req.params.id);
     })
     .catch(error => {
+      console.log(err);
       req.flash = "Something went wrong... Try again";
-      res.redirect("orders");
+      res.redirect("/orders");
     });
 };
 

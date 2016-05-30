@@ -2,6 +2,8 @@ const Order = require("../order").model;
 const User = require("../user");
 const mongoose = require("mongoose");
 mongoose.Promise = require("bluebird");
+const _ = require("lodash");
+const dateUtils = require("../../modules/dateUtils");
 
 const orderDAL = {
   
@@ -74,7 +76,50 @@ const orderDAL = {
     });
   },
   
-  
+  getOrders: () => {
+    return new Promise((resolve, reject) => {
+      User.find({}).exec()
+        .then(users => {
+          const orders = [];
+          users.forEach(user => {
+            user.orders.forEach(order => {
+              order.user = user.email
+              orders.push(order);
+            })
+          });
+          return orders;  
+        })
+        .then(orders => {
+          orders = dateUtils.sortCollectionByDate(orders);
+          orders = dateUtils.formatCollectionDates(orders);
+          return orders;
+        })
+        .then(orders => {
+          resolve(orders);
+        })
+        .catch(error => {
+          reject(error);
+        })
+    })
+  },
+}
+
+const sortOdersByDate = (orders) => {
+  return orders.sort((a, b) => {
+    return new Date(b.orderDate) - new Date(a.orderDate);
+  });
+};
+
+const formatOrderDates = (orders) => {
+  return orders.map((order) => {
+    const newOrder = order; //NWO
+    console.log(new Date(order.orderDate).toISOString().slice(0, 10));
+    console.log(newOrder.orderDate);
+    newOrder.orderDate = new Date(order.orderDate).toISOString().slice(0, 10);
+    newOrder.displayDate = new Date(order.orderDate).toISOString().slice(0, 10);
+    console.log(newOrder.orderDate);
+    return newOrder;
+  });
 }
 
 module.exports = orderDAL;

@@ -15,14 +15,14 @@
             <p>Deactivate this account?</p>
             <form action="/users/{{user._id}}/deactivate" method="post">
               <input type="hidden" name="_csrf" value="{{csrfToken}}">
-              <input type="submit" value="Deactivate" />
+              <input type="submit" class="pure-button deactivate" value="Deactivate" />
             </form>
 
           {{else}}
             <p>Acticate this account?</p>
             <form action="/users/{{user._id}}/activate" method="post">
               <input type="hidden" name="_csrf" value="{{csrfToken}}" />
-              <input type="submit" value="Activate">
+              <input type="submit" class="pure-button deactivate" value="Activate">
             </form>
           {{/if}}
         {{/if}}
