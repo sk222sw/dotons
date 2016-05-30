@@ -326,13 +326,10 @@ table {
 /******************************************/
 .button-xlarge {
   font-size: 125%;
-
-<<<<<<< db2bc9e246c911318e5d2d521f3b5fdced6b7b20
 }
+
 .button-error {
   background: rgb(202, 60, 60); /* this is a maroon */
-=======
->>>>>>> designer mobile
 }
 
 /******************************************/
