@@ -104,67 +104,47 @@ ctrl.prototype.show = function(req, res, next) {
 
 ctrl.prototype.create = function(req, res) {
 
-  console.log(orderDAL);
-
-  console.log(req.body);
-  const order = new Order();
-  // req.body.order.forEach((orderItem => {
-  //   dotDesignDAL.getUserDesignByID(req.user.id, orderItem.id)
-  //     .then(design => {
-  //       if (orderItem.ordered10mm) {
-  //         const line10 = new Line();
-  //         line10.size = "10mm";
-  //         line10.quantity =  orderItem.quantity10mm;
-  //         line10.price = orderItem.quantity10mm * req.session.price;
-  //         order.lines.push(line10);
-  //       }
-  //       if (orderItem.ordered11mm) {
-  //         const line11 = new Line();
-  //         line11.size = "11mm";
-  //         line11.quantity = orderItem.quantity11mm;
-  //         line11.price = orderItem.quantity11mm * req.session.price;
-  //         order.lines.push(line11);
-  //         console.log("PUSHING LINE TO ORDER");
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //       res.send({ success: false });
-  //     })
-  // }));
-
-  
+  const order = new Order(); 
+  var itemsProcessed = 0;
   req.body.order.forEach((orderItem => {
-    console.log(orderItem.quantity10mm);
-    console.log(orderItem.quantity11mm);
-    order.totalPrice = 0;
-    
 
-    if (orderItem.ordered10mm) {
-      const line10 = createOrderLine("10mm", orderItem.quantity10mm, req.session.price);
-      line10.design = mongoose.Types.ObjectId(orderItem.id);
-      order.totalPrice += line10.price;
-      order.lines.push(line10);
-    }
-    if (orderItem.ordered11mm) {
-      const line11 = createOrderLine("11mm", orderItem.quantity11mm, req.session.price);
-      line11.design = mongoose.Types.ObjectId(orderItem.id);
-      order.totalPrice += line11.price;
-      order.lines.push(line11);
-      console.log("PUSHING LINE TO ORDER");
-    }
+    order.totalPrice = 0;
+    dotDesignDAL.getUserDesignByID(req.user.id, orderItem.id)
+      .then(design => {
+        console.log("dotDesignDAL___________: ")
+        console.log("dotDesignDAL_____________")
+        if (orderItem.ordered10mm) {
+          console.log("CRETING A LINE IN ORDER");
+          const line10 = createOrderLine("10mm", orderItem.quantity10mm, req.session.price);
+          console.log(design);
+          line10.design = design;
+          order.totalPrice += line10.price;
+          order.lines.push(line10);
+        }
+        if (orderItem.ordered11mm) {
+          console.log("CREATING A LINE IN ORDER");
+          const line11 = createOrderLine("11mm", orderItem.quantity11mm, req.session.price);
+          line11.design = design;
+          order.totalPrice += line11.price;
+          order.lines.push(line11);
+        }
+        itemsProcessed++;
+        if (itemsProcessed === req.body.order.length) {
+          orderDAL.addOrderToUser(req.user.id, order)
+            .then(order => {
+              console.log("hehe    here is das order");
+              console.log(order);
+              req.session.cart = null;
+              res.send({ success: true, order });
+            })
+            .catch(error => {
+              console.log(error);
+              res.send({ success: false, error });
+            });  
+        }
+      }); 
   }));
-  console.log(order);
-  orderDAL.addOrderToUser(req.user.id, order)
-    .then(order => {
-      console.log("hehe");
-      req.session.cart = null;
-      res.send({ success: true, order });
-    })
-    .catch(error => {
-      console.log(error);
-      res.send({ success: false, error });
-    });
+  
 
 };
 

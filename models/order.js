@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const dotDesignSchema = require("./dotDesign").schema;
 
 const lineSchema = mongoose.Schema({
-  design: { type: mongoose.Schema.Types.ObjectId, ref: "DotDesign" },
+  design: { type: dotDesignSchema },
   size: {
     type: String,
     required: [true, "A size is required, 11 or 10mm"]
