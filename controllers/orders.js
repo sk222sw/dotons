@@ -4,6 +4,7 @@ const User = require("../models/user");
 const ROLES = require("../models/enums/roles").roles;
 const Order = require("../models/order").model;
 const Line = require("../models/order").line;
+const mongoose = require("mongoose");
 
 const ctrl = function() {};
 
@@ -15,19 +16,19 @@ ctrl.prototype.index = function(req, res, next) {
         error.status = 400;
         next(error);
       }
-      if (!users) {
-        const error = new Error("Resource does not exist");
-        error.status = 404;
-        next(error);
-      }
       const orders = [];
-      
+
       users.forEach(user => {
         user.orders.forEach(order => {
+          order.user = user.email;
           orders.push(order);
         });
       });
-      
+
+      orders.sort((a, b) => {
+        return new Date(b.orderDate) - new Date(a.orderDate);
+      });
+
       res.render("orders", {
         orders
       });
@@ -39,7 +40,7 @@ ctrl.prototype.index = function(req, res, next) {
         error.status = 400;
         next(error);
       }
-      if (!user) {
+      else if (!user) {
         const error = new Error("Could not find the resource");
         error.status = 404;
         next(error);
@@ -49,36 +50,62 @@ ctrl.prototype.index = function(req, res, next) {
       });
     });
   }
-  
 
-}
 
-ctrl.prototype.show = function(req, res) {
+};
+
+ctrl.prototype.show = function(req, res, next) {
   // buildin pyramids for sure
   if (req.user.role === ROLES.ADMIN) {
-    User.find({}, (err, users) => {
-      users.forEach(user => {
-        user.orders.forEach(order => {
-          if (order.id === req.params.id) {
-            res.render("order", {
-              order
-            });
-          }  
+    orderDAL.getOrderByID(req.params.id)
+      .then(order => {
+        res.render("order", {
+          order
         });
+      })
+      .catch(error => {
+        console.log(error);
+        next(error); 
       });
-      res.send(404);
-    });
   } else {
-    User.find
+    orderDAL.getCurrentUserOrderByID(req.user.id, req.params.id)
+      .then(order => {
+        console.log(order);
+        res.render("order", {
+          order
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        next(error);
+      });
   }
-}
+  // if (req.user.role === ROLES.ADMIN) {
+  //   User.find({}, (err, users) => {
+  //     users.forEach(user => {
+  //       user.orders.forEach(order => {
+  //         console.log(order.id);
+  //         console.log(req.params.id);
+  //         console.log(req.params.id === order.id);
+  //         if (req.params.id === order.id) {
+  //           console.log("TRUE MOTHACLUXKA");
+  //           res.render("order", {
+  //             order
+  //           });
+  //         }
+  //       });
+  //     });
+  //   });
+  // } else {
+  // }
+};
 
 
 
 ctrl.prototype.create = function(req, res) {
- 
+
   console.log(orderDAL);
-  
+
   console.log(req.body);
   const order = new Order();
   // req.body.order.forEach((orderItem => {
@@ -105,41 +132,51 @@ ctrl.prototype.create = function(req, res) {
   //       res.send({ success: false });
   //     })
   // }));
-  var c = 0;
+
+  
   req.body.order.forEach((orderItem => {
+    console.log(orderItem.quantity10mm);
+    console.log(orderItem.quantity11mm);
+    order.totalPrice = 0;
+    
+
     if (orderItem.ordered10mm) {
-      const line10 = new Line();
-      line10.size = "10mm";
-      line10.quantity =  orderItem.quantity10mm;
-      line10.price = orderItem.quantity10mm * req.session.price;
+      const line10 = createOrderLine("10mm", orderItem.quantity10mm, req.session.price);
+      line10.design = mongoose.Types.ObjectId(orderItem.id);
+      order.totalPrice += line10.price;
       order.lines.push(line10);
     }
     if (orderItem.ordered11mm) {
-      const line11 = new Line();
-      line11.size = "11mm";
-      line11.quantity = orderItem.quantity11mm;
-      line11.price = orderItem.quantity11mm * req.session.price;
+      const line11 = createOrderLine("11mm", orderItem.quantity11mm, req.session.price);
+      line11.design = mongoose.Types.ObjectId(orderItem.id);
+      order.totalPrice += line11.price;
       order.lines.push(line11);
       console.log("PUSHING LINE TO ORDER");
     }
-    c++;
-    if (c === req.body.order.length) {
-      console.log("forEach IS MOTHEFLUCKING DONE AAAAIGHT");
-       
-      
-    }
   }));
+  console.log(order);
   orderDAL.addOrderToUser(req.user.id, order)
-        .then(order => {
-          console.log("hehe");
-          res.send({ success: true, order });
-        })
-        .catch(error => {
-          console.log(error);
-          res.send({ success: false, error });
-        });
- 
+    .then(order => {
+      console.log("hehe");
+      req.session.cart = null;
+      res.send({ success: true, order });
+    })
+    .catch(error => {
+      console.log(error);
+      res.send({ success: false, error });
+    });
+
 };
+
+function createOrderLine(size, quantity, dotPrice) {
+  const line = new Line();
+  line.size = size;
+  line.quantity = quantity;
+  line.price = quantity * dotPrice;
+  
+  return line;
+  
+}
 
 
 module.exports = new ctrl();

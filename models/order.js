@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
-const dotDesignSchema = require("./dotDesign").schema;
-const userSchema = require("./user")
 
 const lineSchema = mongoose.Schema({
-  design: dotDesignSchema,
+  design: { type: mongoose.Schema.Types.ObjectId, ref: "DotDesign" },
   size: {
     type: String,
     required: [true, "A size is required, 11 or 10mm"]
@@ -22,6 +20,7 @@ const lineSchema = mongoose.Schema({
 const orderSchema = mongoose.Schema({
   orderDate: { type: Date, default: Date.now },
   lines: [lineSchema],
+  totalPrice: Number,
   shipped: { type: Boolean, default: false }
 });
 
