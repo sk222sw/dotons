@@ -15,8 +15,9 @@ const designsDiv = document.getElementById("designs");
 const cartInfo = document.querySelector(".cart-info");
 const form = document.getElementById("upload-form");
 const dotDesign = document.getElementById("dot-design");
-const order = document.getElementById(".order-info");
+const order = document.querySelector(".order-info");
 let designer = null;
+console.log(order);
 
 // checks what images need to be loaded!
 // either all the designs or just the order
@@ -28,6 +29,7 @@ if (designsDiv) {
   const imageNodeList = cartInfo.getElementsByTagName("img");
   loadImages(imageNodeList);
 } else if (order) {
+  console.log("hehe ordah");
   const imageNodeList = order.getElementsByTagName("img");
   loadImages(imageNodeList);
 }
@@ -145,14 +147,16 @@ function dataURLtoBlob(dataURI) {
 
 function loadImages(imageNodeList) {
   Array.prototype.forEach.call(imageNodeList, img => {
+    const url = "/" + img.getAttribute("data-image-url");
+    console.log(url);
     request
-      .get(img.getAttribute("data-image-url"))
+      .get(url)
       .end((err, res) => {
         if (err) {
           console.log(err);
         }
         console.log(img.getAttribute("data-image-url"));
-        img.src = img.getAttribute("data-image-url");
+        img.src = "/" + img.getAttribute("data-image-url");
         img.classList.toggle("hidden");
       });
   });

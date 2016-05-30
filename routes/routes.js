@@ -49,8 +49,9 @@ module.exports = function (app) {
     res.redirect("/");
   });
   // order
+  app.post("/orders/:id/ship", isLoggedIn, needsRole("admin", "/profile"), parseForm, csrfProtection, orders.ship);
   app.post("/orders/create", isLoggedIn, parseForm, csrfProtection, orders.create);
-  app.get("/orders", isLoggedIn, (req, res, next) => {
+  app.get("/orders", isLoggedIn, csrfProtection, (req, res, next) => {
     if (req.user.activated) {
       next();
     } else {
@@ -105,14 +106,14 @@ module.exports = function (app) {
   app.get("/uploads/dot_designs/:imagename", isLoggedIn, dotDesigner.getImage);
 
   // admin routes
-  app.get("/admin", /* needsRole("Admin", "/"),*/ admin.index);
-  app.get("/users", /* needsRole("Admin", "/"),*/ users.index);
+  app.get("/admin", needsRole("Admin", "/"), admin.index);
+  app.get("/users", needsRole("Admin", "/"), users.index);
   // admin view for single user exposes the id, no need for fancy /profile url here
-  app.get("/users/:id", csrfProtection, /* needsRole("Admin", "/"), */ users.show);
+  app.get("/users/:id", csrfProtection, needsRole("Admin", "/"), users.show);
   app.post("/users/:id/activate", parseForm, csrfProtection, users.activate);
   app.post("/users/:id/deactivate", parseForm, csrfProtection, users.deactivate);
   // TODO: move to controller
-  app.get('/designs', /* needsRole("Admin", "/"), */ (req, res) => {
+  app.get('/designs', needsRole("Admin", "/"), (req, res) => {
     DotDesign.find((err, dotDesigns) => {
       const context = {
         dots: dotDesigns.map(dot => {

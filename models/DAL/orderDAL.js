@@ -13,7 +13,6 @@ const orderDAL = {
         user.save(error => {
           console.log("In user.save aaaaaaaaight");
           if (error) return reject(error);
-          console.log("PASSED ERROR CHECK AND IS NOW SUPPOSED TO FUCKING RESOLVE THIS SHIT");
           return resolve(order);
         });  
       });
@@ -28,18 +27,9 @@ const orderDAL = {
         console.log("forEach starts");
         users.forEach(user => {
           order = user.orders.find((ord) => {
-            
-            console.log("in forEach");
-            console.log(typeof ord.id);
-            console.log(ord.id);
-            console.log(typeof orderid);
-            console.log(ord.id === orderid);
-            console.log(orderid);
             return ord.id === orderid;
           });
         });
-        console.log(order);
-        console.log("forEach ended");
         if (!order) return reject("No order found");
         resolve(order);
       })
@@ -59,7 +49,32 @@ const orderDAL = {
         resolve(order);
       });
     });
-  }
+  },
+  
+  setOrderShipped: (orderid) => {
+    return new Promise((resolve, reject) => {
+      User.find({}, (err, users) => {
+        if (err) return reject(err);
+        var order;
+        var orderUser;
+        users.forEach(user => {
+          order = user.orders.find((ord) => {
+            return ord.id === orderid;
+          });
+          if (order) orderUser = user;
+        });
+        if (!order) return reject("No order found");
+        order.shipped = true;
+        orderUser.save(err => {
+          if (err) return reject(err);
+          console.log(order);
+          resolve();
+        });
+      });
+    });
+  },
+  
+  
 }
 
 module.exports = orderDAL;

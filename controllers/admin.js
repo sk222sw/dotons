@@ -16,6 +16,7 @@ ctrl.prototype.index = function(req, res) {
 
     DotDesign.count({}, (error, dotCount) => {
       context.dotCount = dotCount;
+
       res.render("adminDashboard", context);
     });
   });

@@ -16,7 +16,7 @@ ctrl.prototype.index = function(req, res, next) {
         error.status = 400;
         next(error);
       }
-      const orders = [];
+      var orders = [];
 
       users.forEach(user => {
         user.orders.forEach(order => {
@@ -24,13 +24,13 @@ ctrl.prototype.index = function(req, res, next) {
           orders.push(order);
         });
       });
-
-      orders.sort((a, b) => {
-        return new Date(b.orderDate) - new Date(a.orderDate);
-      });
+     
+      orders = sortOdersByDate(orders);
+      orders = formatOrderDates(orders);     
 
       res.render("orders", {
-        orders
+        orders,
+        csrfToken: req.csrfToken()
       });
     });
   } else {
@@ -39,20 +39,51 @@ ctrl.prototype.index = function(req, res, next) {
         const error = new Error("Something went wrong, try again");
         error.status = 400;
         next(error);
+      } else if (!user) {
+        const error2 = new Error("Could not find the resource");
+        error2.status = 404;
+        next(error2);
       }
-      else if (!user) {
-        const error = new Error("Could not find the resource");
-        error.status = 404;
-        next(error);
-      }
+      var orders = sortOdersByDate(user.orders);
+      orders = formatOrderDates(orders);
       res.render("orders", {
-        orders: user.orders
+        orders
       });
     });
   }
-
-
 };
+
+ctrl.prototype.ship = (req, res, next) => {
+  orderDAL.setOrderShipped(req.params.id)
+    .then(() => {
+      req.flash = "Shipped!";
+      res.redirect("/orders/" + req.params.id);
+    })
+    .catch(error => {
+      req.flash = "Something went wrong... Try again";
+      res.redirect("orders");
+    });
+};
+
+const sortOdersByDate = (orders) => {
+  return orders.sort((a, b) => {
+    return new Date(b.orderDate) - new Date(a.orderDate);
+  });
+};
+
+const formatOrderDates = (orders) => {
+  return orders.map((order) => {
+    const newOrder = order; //NWO
+    console.log(new Date(order.orderDate).toISOString().slice(0, 10));
+    console.log(newOrder.orderDate);
+    newOrder.orderDate = new Date(order.orderDate).toISOString().slice(0, 10);
+    newOrder.displayDate = new Date(order.orderDate).toISOString().slice(0, 10);
+    console.log(newOrder.orderDate);
+    return newOrder;
+  });
+}
+
+
 
 ctrl.prototype.show = function(req, res, next) {
   // buildin pyramids for sure
@@ -80,24 +111,6 @@ ctrl.prototype.show = function(req, res, next) {
         next(error);
       });
   }
-  // if (req.user.role === ROLES.ADMIN) {
-  //   User.find({}, (err, users) => {
-  //     users.forEach(user => {
-  //       user.orders.forEach(order => {
-  //         console.log(order.id);
-  //         console.log(req.params.id);
-  //         console.log(req.params.id === order.id);
-  //         if (req.params.id === order.id) {
-  //           console.log("TRUE MOTHACLUXKA");
-  //           res.render("order", {
-  //             order
-  //           });
-  //         }
-  //       });
-  //     });
-  //   });
-  // } else {
-  // }
 };
 
 
@@ -111,10 +124,7 @@ ctrl.prototype.create = function(req, res) {
     order.totalPrice = 0;
     dotDesignDAL.getUserDesignByID(req.user.id, orderItem.id)
       .then(design => {
-        console.log("dotDesignDAL___________: ")
-        console.log("dotDesignDAL_____________")
         if (orderItem.ordered10mm) {
-          console.log("CRETING A LINE IN ORDER");
           const line10 = createOrderLine("10mm", orderItem.quantity10mm, req.session.price);
           console.log(design);
           line10.design = design;
@@ -122,7 +132,6 @@ ctrl.prototype.create = function(req, res) {
           order.lines.push(line10);
         }
         if (orderItem.ordered11mm) {
-          console.log("CREATING A LINE IN ORDER");
           const line11 = createOrderLine("11mm", orderItem.quantity11mm, req.session.price);
           line11.design = design;
           order.totalPrice += line11.price;
@@ -132,8 +141,6 @@ ctrl.prototype.create = function(req, res) {
         if (itemsProcessed === req.body.order.length) {
           orderDAL.addOrderToUser(req.user.id, order)
             .then(order => {
-              console.log("hehe    here is das order");
-              console.log(order);
               req.session.cart = null;
               res.send({ success: true, order });
             })
