@@ -36,8 +36,6 @@
           
           
         <div class="pure-u-1 pure-u-md-1-4">
-          {{design}}
-          
             <img src="" height="50px" width="50px" class="hidden" data-image-url="{{design.imageUrl}}" />
         </div>
         <div class="pure-u-1 pure-u-md-1-4">
@@ -58,8 +56,10 @@
         {{/each}}       
         <div class="pure-g">
           <div class="pure-u-1 pure-u-md-1-4">
+            <p><b>Shipping status</b></p>
           </div>
         <div class="pure-u-1 pure-u-md-1-4">
+          <p>{{#if order.shipped}}Shipped!{{else}}Not shipped{{/if}}</p>
         </div>
         <div class="pure-u-1 pure-u-md-1-4">
           <p><b>Total price</b></p>
@@ -68,7 +68,6 @@
            <p>{{order.totalPrice}}</p>
           
         </div>
-        
         </div>
       </div>
   </div>
