@@ -22,7 +22,7 @@ const ctrl = function() {};
  * @param req (description)
  * @param res (description)
  */
-ctrl.prototype.index = function(req, res) {
+ctrl.prototype.index = function(req, res, next) {
   userDAL.getUsers()
     .then(users => {
       res.render("users", { 
@@ -34,10 +34,14 @@ ctrl.prototype.index = function(req, res) {
       // db error
       console.log("DB error");
       console.log(error);
+      const err = new Error("Database error");
+      error.status = 503;
+      next(err);
+      
     });
 };
 
-ctrl.prototype.activate = function (req, res) {
+ctrl.prototype.activate = function (req, res, next) {
   userDAL.activateUser(req.params.id)
     .then((user) => {
       console.log(user);
@@ -45,12 +49,13 @@ ctrl.prototype.activate = function (req, res) {
     })
     .catch(error => {
       console.log(error);
+      const err = new Error("Database error");
+      error.status = 503;
+      next(err);
     });
-
-
 };
 
-ctrl.prototype.deactivate = function (req, res) {
+ctrl.prototype.deactivate = function (req, res, next) {
   userDAL.deactivateUser(req.params.id)
     .then((user) => {
       console.log(user);
@@ -58,6 +63,9 @@ ctrl.prototype.deactivate = function (req, res) {
     })
     .catch(error => {
       console.log(error);
+      const err = new Error("Database error");
+      error.status = 503;
+      next(err);
     });
 
 };
@@ -75,7 +83,7 @@ ctrl.prototype.deactivate = function (req, res) {
  * @param req (description)
  * @param res (description)
  */
-ctrl.prototype.show = function(req, res) {
+ctrl.prototype.show = function(req, res, next) {
   const userId = req.params.id;
   console.log(userId);
   userDAL.getUserById(userId)
@@ -84,8 +92,10 @@ ctrl.prototype.show = function(req, res) {
       renderProfile(user, res, req);
     })
     .catch(error => {
-      console.log("DB error");
       console.log(error);
+      const err = new Error("User not found");
+      err.status = 404;
+      return next(err);
     });
 };
 
@@ -179,6 +189,9 @@ ctrl.prototype.profile = function(req, res, next) {
       })
       .catch(error => {
         console.log(error);
+        const err = new Error("Something went wrong when saving the design");
+        err.status = 400;
+        next(err);
       });
   } else {
     // User was already logged in, just render the view
@@ -217,6 +230,7 @@ function renderProfile(user, res, req, flash) {
     })
     .catch((error) => {
       console.log(error);
+      
     });
 }
 
