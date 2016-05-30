@@ -1,0 +1,32 @@
+<div class="pure-g orders">
+<div class="pure-u-md-1-3">&nbsp;</div>
+<div class="pure-u-md-1-3">
+    {{#if notAdmin}}
+      <h1>My orders</h1>
+    {{else}}
+      <h1>All orders</h1>
+    {{/if}}
+
+      <table class="pure-table">
+        <thead>
+          <th>Order date</th>
+          <th>Shipped</th>
+          <th>Customer</th>
+          <th></th>
+        </thead>
+        <tbody>
+          {{#each orders}} 
+          <tr>
+          <th>{{orderDate}}</th>
+          <th>{{#if shipped}}Yes{{else}}No{{/if}}</th>
+          <th>{{user}}</th>
+          <th><a href="/orders/{{id}}/">View order</a></th> 
+          {{/each}}
+          </tr>
+        </tbody>
+      </table>
+     
+      
+    
+  </div>
+</div>

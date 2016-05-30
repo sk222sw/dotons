@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="pure-g">
+    <div class="pure-u-md-1-4">
+      &nbsp;
+    </div>
+    <div class="pure-u-1 pure-u-md-1-2">
+    <h2>Order {{order._id}}</h2>
+    </div>
+  </div>
+  <div class="pure-g">
+    <div class="pure-u-md-1-4">
+      &nbsp;
+    </div>
+    <div class="pure-u-1 pure-u-md-1-2 order-info">
+
+        <div class="pure-g order-item-header">
+          <div class="pure-u-1 pure-u-md-1-4">
+            &nbsp;
+          </div>
+          <div class="pure-u-1 pure-u-md-1-4">
+            <h5>Size</h5>
+          </div>
+          <div class="pure-u-1 pure-u-md-1-4">
+            <h5>Quanitity</h5>
+          </div>
+          <div class="pure-u-1 pure-u-md-1-4">
+            <h5>Price</h5>  
+          </div> 
+        </div>
+        <hr />
+        
+        
+        {{#each order.lines}}
+        <div class="pure-g order-item">
+        
+          
+          
+        <div class="pure-u-1 pure-u-md-1-4">
+          {{design}}
+          
+            <img src="" height="50px" width="50px" class="hidden" data-image-url="{{design.imageUrl}}" />
+        </div>
+        <div class="pure-u-1 pure-u-md-1-4">
+          {{size}}  
+        </div>
+        <div class="pure-u-1 pure-u-md-1-4">
+          {{quantity}} 
+        </div>
+        <div class="pure-u-1 pure-u-md-1-4">
+           {{price}}
+          
+        </div>
+
+      </div>
+
+
+        <hr />
+        {{/each}}       
+        <div class="pure-g">
+          <div class="pure-u-1 pure-u-md-1-4">
+          </div>
+        <div class="pure-u-1 pure-u-md-1-4">
+        </div>
+        <div class="pure-u-1 pure-u-md-1-4">
+          <p><b>Total price</b></p>
+        </div>
+        <div class="pure-u-1 pure-u-md-1-4">
+           <p>{{order.totalPrice}}</p>
+          
+        </div>
+        
+        </div>
+      </div>
+  </div>
+
+
+  
+  
+</div>

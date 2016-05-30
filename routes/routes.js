@@ -50,8 +50,20 @@ module.exports = function (app) {
   });
   // order
   app.post("/orders/create", isLoggedIn, parseForm, csrfProtection, orders.create);
-  app.get("/orders", isLoggedIn, orders.index);
-  app.get("/orders/:id", isLoggedIn, orders.show);
+  app.get("/orders", isLoggedIn, (req, res, next) => {
+    if (req.user.activated) {
+      next();
+    } else {
+      res.redirect("profile");
+    }
+  }, orders.index);
+  app.get("/orders/:id", (req, res, next) => {
+    if (req.user.activated) {
+      next();
+    } else {
+      res.redirect("profile");
+    }
+  }, isLoggedIn, orders.show);
   
   // "shopping cart"
   app.get("/cart", isLoggedIn, csrfProtection, cart.show);

@@ -4,7 +4,7 @@ export default class CartItem {
     this.ordered10mm = ordered10mm;
     this.ordered11mm = ordered11mm;
     this.quantity11mm = quantity11mm;
-    this.quantity10mm = quantity11mm;
+    this.quantity10mm = quantity10mm;
     this.dotPrice = dotPrice;  
   } 
   

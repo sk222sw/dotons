@@ -20,7 +20,34 @@ const orderDAL = {
     }); 
   },
   
-  getOrderByID: (userid, orderid) => {
+  getOrderByID: (orderid) => {
+    return new Promise((resolve, reject) => {
+      User.find({}, (err, users) => {
+        if (err) return reject(err);
+        var order;
+        console.log("forEach starts");
+        users.forEach(user => {
+          order = user.orders.find((ord) => {
+            
+            console.log("in forEach");
+            console.log(typeof ord.id);
+            console.log(ord.id);
+            console.log(typeof orderid);
+            console.log(ord.id === orderid);
+            console.log(orderid);
+            return ord.id === orderid;
+          });
+        });
+        console.log(order);
+        console.log("forEach ended");
+        if (!order) return reject("No order found");
+        resolve(order);
+      })
+    });  
+  },
+
+
+  getCurrentUserOrderByID: (userid, orderid) => {
     return new Promise((resolve, reject) => {
       User.findById(userid, (err, user) => {
         if (err) return reject(err);
@@ -28,6 +55,7 @@ const orderDAL = {
           return ord.id === orderid;
         });
         if (!order) return reject("No order found");
+        order.populate("design");
         resolve(order);
       });
     });

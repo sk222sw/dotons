@@ -15,6 +15,7 @@ const designsDiv = document.getElementById("designs");
 const cartInfo = document.querySelector(".cart-info");
 const form = document.getElementById("upload-form");
 const dotDesign = document.getElementById("dot-design");
+const order = document.getElementById(".order-info");
 let designer = null;
 
 // checks what images need to be loaded!
@@ -25,6 +26,9 @@ if (designsDiv) {
   loadImages(imageNodeList);
 } else if (cartInfo) {
   const imageNodeList = cartInfo.getElementsByTagName("img");
+  loadImages(imageNodeList);
+} else if (order) {
+  const imageNodeList = order.getElementsByTagName("img");
   loadImages(imageNodeList);
 }
 
