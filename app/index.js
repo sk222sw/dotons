@@ -10,6 +10,11 @@ const addToCartForms = document.getElementsByClassName("add-button-form");
 const cartCounter = document.querySelector(".cart-count");
 const cartInfo = document.querySelector(".cart-info");
 const designsDiv = document.getElementById("designs");
+const order = document.querySelector(".order-info");
+
+if (order) {
+  
+}
 
 if (designsDiv) {
   const designs = document.querySelectorAll(".design");
@@ -71,19 +76,23 @@ function getCartItem(item) {
   const id = item.querySelector(".button-id").value;
   const input10 = item.querySelector(".quantity-10mm").value;
   const input11 = item.querySelector(".quantity-11mm").value;
+  console.log(input10);
+  console.log(input11);
   const price10 = item.querySelector(".price-10mm").value;
   const price11 = item.querySelector(".price-11mm").value;
   const checkbox10 = item.querySelector(".checkbox-10mm").checked;
   const checkbox11 = item.querySelector(".checkbox-11mm").checked;
   
   
-  return new CartItem(id, checkbox10, checkbox11, input10, input11)
+  const ret = new CartItem(id, checkbox10, checkbox11, input10, input11);
+  return ret;
 }
 
 
 const cart = document.querySelector(".cart-info");
 console.log(cart);
 if (cart) {
+  const price = document.querySelector(".price").value;
   const orderItems = document.querySelectorAll(".order-item");
   const updateButton = document.querySelector(".update-order");
   updateButton.addEventListener("click", e => {
@@ -96,8 +105,8 @@ if (cart) {
       const checkbox10 = item.querySelector(".checkbox-10mm");
       const checkbox11 = item.querySelector(".checkbox-11mm");
       
-      price10.innerHTML = checkbox10.checked ? input10.value * 16 + " kr" : 0 + " kr";
-      price11.innerHTML = checkbox11.checked ? input11.value * 16 + " kr" : 0 + " kr";
+      price10.innerHTML = checkbox10.checked ? input10.value * price + " kr" : 0 + " kr";
+      price11.innerHTML = checkbox11.checked ? input11.value * price + " kr" : 0 + " kr";
            
     });
   });
@@ -122,7 +131,11 @@ if (cart) {
         if (err) console.log(err);
         else {
           const response = JSON.parse(res.text);
-          console.log(response);  
+          if (response.success) {
+            window.location.href = "/orders/" + response.order._id;
+          } else {
+            // show flash smth went wrong
+          }
         }
       })
   });

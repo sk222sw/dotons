@@ -16,7 +16,7 @@
       {{#if cart}}
        <form name="order" action="/orders/create" method="POST" class="pure-form">
         <input type="hidden" name="_csrf" value="{{csrfToken}}" class="csrf">
-        
+        <input type="hidden" name="customerPrice" value={{price}} class="price"/>
         <div class="pure-g order-item-header">
           <div class="pure-u-1 pure-u-md-1-5">
             &nbsp;
@@ -42,7 +42,7 @@
         
           
           <input type="hidden" name="buttonID" value="{{design._id}}" class="button-id" />
-
+           
           <div class="pure-u-1 pure-u-md-1-5">
              <img src="" height="50px" width="50px" class="hidden" data-image-url="{{design.imageUrl}}" />
           </div>
