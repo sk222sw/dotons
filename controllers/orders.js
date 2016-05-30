@@ -7,9 +7,19 @@ const Line = require("../models/order").line;
 
 const ctrl = function() {};
 
-ctrl.prototype.index = function(req, res) {
+ctrl.prototype.index = function(req, res, next) {
   if (req.user.role === ROLES.ADMIN) {
     User.find({}, (err, users) => {
+      if (err) {
+        const error = new Error("Something went wrong, try again");
+        error.status = 400;
+        next(error);
+      }
+      if (!users) {
+        const error = new Error("Resource does not exist");
+        error.status = 404;
+        next(error);
+      }
       const orders = [];
       
       users.forEach(user => {
@@ -21,9 +31,19 @@ ctrl.prototype.index = function(req, res) {
       res.render("orders", {
         orders
       });
-    });    
+    });
   } else {
     User.findById(req.user.id, (err, user) => {
+      if (err) {
+        const error = new Error("Something went wrong, try again");
+        error.status = 400;
+        next(error);
+      }
+      if (!user) {
+        const error = new Error("Could not find the resource");
+        error.status = 404;
+        next(error);
+      }
       res.render("orders", {
         orders: user.orders
       });
@@ -34,7 +54,23 @@ ctrl.prototype.index = function(req, res) {
 }
 
 ctrl.prototype.show = function(req, res) {
-
+  // buildin pyramids for sure
+  if (req.user.role === ROLES.ADMIN) {
+    User.find({}, (err, users) => {
+      users.forEach(user => {
+        user.orders.forEach(order => {
+          if (order.id === req.params.id) {
+            res.render("order", {
+              order
+            });
+          }  
+        });
+      });
+      res.send(404);
+    });
+  } else {
+    User.find
+  }
 }
 
 
