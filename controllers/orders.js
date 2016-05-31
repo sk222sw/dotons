@@ -10,24 +10,7 @@ const mongoose = require("mongoose");
 const ctrl = function() {};
 
 ctrl.prototype.index = function(req, res, next) {
-  if (req.user.role === ROLES.ADMIN) {
-    // User.find({}, (err, users) => {
-    //   if (err) {
-    //     const error = new Error("Something went wrong, try again");
-    //     error.status = 400;
-    //     next(error);
-    //   }
-    //   var orders = [];
-
-    //   users.forEach(user => {
-    //     user.orders.forEach(order => {
-    //       order.user = user.email;
-    //       orders.push(order);
-    //     });
-    //   });
-     
-    //   orders = sortOdersByDate(orders);
-    //   orders = formatOrderDates(orders);     
+  if (req.user.role === ROLES.ADMIN) {S    
     orderDAL.getOrders()
       .then(orders => {
           res.render("orders", {
@@ -54,23 +37,6 @@ ctrl.prototype.index = function(req, res, next) {
         err.status = 400;
         next(err);
       });
-    
-    // User.findById(req.user.id, (err, user) => {
-    //   if (err) {
-    //     const error = new Error("Something went wrong, try again");
-    //     error.status = 400;
-    //     next(error);
-    //   } else if (!user) {
-    //     const error2 = new Error("Could not find the resource");
-    //     error2.status = 404;
-    //     next(error2);
-    //   }
-    //   var orders = sortOdersByDate(user.orders);
-    //   orders = formatOrderDates(orders);
-    //   res.render("orders", {
-    //     orders
-    //   });
-    // });
   }
 };
 
