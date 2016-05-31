@@ -4,6 +4,7 @@ const User = require("../models/user");
 const ROLES = require("../models/enums/roles").roles;
 const Order = require("../models/order").model;
 const Line = require("../models/order").line;
+const userDAL = require("../models/DAL/userDAL");
 const mongoose = require("mongoose");
 
 const ctrl = function() {};
@@ -40,22 +41,36 @@ ctrl.prototype.index = function(req, res, next) {
       
     
   } else {
-    User.findById(req.user.id, (err, user) => {
-      if (err) {
-        const error = new Error("Something went wrong, try again");
-        error.status = 400;
-        next(error);
-      } else if (!user) {
-        const error2 = new Error("Could not find the resource");
-        error2.status = 404;
-        next(error2);
-      }
-      var orders = sortOdersByDate(user.orders);
-      orders = formatOrderDates(orders);
-      res.render("orders", {
-        orders
+    userDAL.getUserById(req.user.id)
+      .then(user => {
+        var orders = sortOdersByDate(user.orders);
+        orders = formatOrderDates(orders);
+        res.render("orders", {
+          orders
+        });  
+      })
+      .catch(error => {
+        const err = new Error("Something went wrong, try again");
+        err.status = 400;
+        next(err);
       });
-    });
+    
+    // User.findById(req.user.id, (err, user) => {
+    //   if (err) {
+    //     const error = new Error("Something went wrong, try again");
+    //     error.status = 400;
+    //     next(error);
+    //   } else if (!user) {
+    //     const error2 = new Error("Could not find the resource");
+    //     error2.status = 404;
+    //     next(error2);
+    //   }
+    //   var orders = sortOdersByDate(user.orders);
+    //   orders = formatOrderDates(orders);
+    //   res.render("orders", {
+    //     orders
+    //   });
+    // });
   }
 };
 
