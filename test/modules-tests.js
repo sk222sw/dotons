@@ -23,11 +23,18 @@ describe("isValidImage-module", () => {
     });
 
 
-    it("should return false on .ico", () => {
-      const image = {
-        mimeType: "image/ico",
-        originalname: "favicon.ico"
-      };
+    it("3. should return false on .ico", () => {
+      const image = fs.readFileSync("test/assets/favicon.ico");
+      assert.equal(isValidImage(image), false);
+    });
+    
+    it("4. should return falce in .gif", () => {
+      const image = fs.readFileSync("test/assets/ajax-loader.gif");
+      assert.equal(isValidImage(image), false);
+    });
+    
+    it("5 . should return false on corrupted png(false mimetype)", () => {
+      const image = fs.readFileSync("test/assets/corrupted.png");
       assert.equal(isValidImage(image), false);
     });
   });

@@ -114,10 +114,10 @@ export default class Designer {
       .addEventListener("click", () => {
         this.redo();
       });
-    document.getElementById("crop")
-      .addEventListener("click", () => {
-        this.crop();
-      });
+    // document.getElementById("crop")
+    //   .addEventListener("click", () => {
+    //     this.crop();
+    //   });
     this.c.on("object:modified", () => {
       this.addHistory();
     });
@@ -190,7 +190,9 @@ export default class Designer {
       this.undoIndex--;
     }
     this.c.remove(this.image); // DRY but needed or fabric will add a new copy to the canvas :S:S:S
+    console.log(this.history);
     if (this.undoIndex === 0) {
+      console.log("undo centered object");
       this.c.centerObject(this.image);
     } else {
       this.image = this.history[this.undoIndex - 1];
