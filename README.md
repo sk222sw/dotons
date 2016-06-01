@@ -21,9 +21,9 @@
 
 2. `npm install -g supervisor` to install supervisor globally
 
-3. `npm run build` to make webpack bundle and minify client side code
+3. `webpack -p` to make webpack bundle and minify client side code
 
-4. `npm run deploy` or `npm run deploy-windows` to run express in production mode
+4. `npm run deploy` for unix systems or `npm run deploy-windows` on windows to run express in production mode
 
 ***
 
