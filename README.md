@@ -4,7 +4,7 @@
 
 ## Instructions
 
-**Make sure you have NodeJS and NPM installed. See (https://github.com/sk222sw/dotons/wiki/Teknisk-dokumentation)[Test specification] for more info**
+**Make sure you have NodeJS and NPM installed. See [https://github.com/sk222sw/dotons/wiki/Teknisk-dokumentation](Test specification) for more info**
 
 ### Development
 
