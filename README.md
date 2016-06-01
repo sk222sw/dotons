@@ -4,6 +4,8 @@
 
 ## Instructions
 
+**Make sure you have NodeJS and NPM installed. See (Test specification)[https://github.com/sk222sw/dotons/wiki/Teknisk-dokumentation] for more info**
+
 ### Development
 
 1. `npm install` to install dependencies
