@@ -58,7 +58,7 @@ module.exports = function(passport) {
             html: "<p>Hello and welcome to dotons!</p>"
           });
           
-          const activationLink = "https://dotons.xyz/" + user.id;
+          const activationLink = "https://dotons.xyz/users/" + user.id;
           
           mailer.sendMail({
             recipient: "ad222kr@student.lnu.se",
