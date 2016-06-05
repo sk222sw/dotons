@@ -2,21 +2,29 @@ const User = require("../models/user");
 const DotDesign = require("../models/dotDesign").model;
 const Order = require("../models/order").model;
 const orderDAL = require("../models/DAL/orderDAL");
+
+/**
+ * Constructor function for the AdminController
+ */
 const ctrl = function() {};
 
 /**
  * GET /admin
  *
- * @param req (description)
- * @param res (description)
+ * @param req - request object
+ * @param res - response object
  */
 ctrl.prototype.index = function(req, res) {
   const context = {};
+  // Get the count of users
   User.count({}, (err, userCount) => {
     context.userCount = userCount;
 
+    // WHen done, get the count of designs
     DotDesign.count({}, (error, dotCount) => {
       context.dotCount = dotCount;
+      
+      // Get the designs and filter out the non shipped ones
       orderDAL.getOrders()
         .then(orders => {
           return orders.filter(order => {

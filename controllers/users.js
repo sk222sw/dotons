@@ -41,6 +41,13 @@ ctrl.prototype.index = function(req, res, next) {
     });
 };
 
+/**
+ * POST /users/:id/activate
+ * 
+ * @param req - request object
+ * @param res - response object
+ * @param next - next callback
+ */
 ctrl.prototype.activate = function (req, res, next) {
   userDAL.activateUser(req.params.id)
     .then((user) => {
@@ -55,6 +62,13 @@ ctrl.prototype.activate = function (req, res, next) {
     });
 };
 
+/**
+ * POST /users/:id/deactivate
+ * 
+ * @param req - request object
+ * @param res - response object
+ * @param next - next callback
+ */
 ctrl.prototype.deactivate = function (req, res, next) {
   userDAL.deactivateUser(req.params.id)
     .then((user) => {

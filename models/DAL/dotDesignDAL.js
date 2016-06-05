@@ -17,6 +17,8 @@ const dotDesignDAL = {
    *
    * @param {String} userid - id of the current user
    * @param {DotDesign} dotDesign - to be added
+   * 
+   * @return {Promise} - resolves if the dot was added
    */
   addDotDesignToUser: (userid, dotDesign) => {
     return new Promise((resolve, reject) => {
@@ -32,10 +34,21 @@ const dotDesignDAL = {
     });
   },
 
+  /**
+   * @param {string|ObjectId} userid 
+   * 
+   * @return {Promise} - resolves if the user designs was found
+   */
   getUserDesigns: (userid) => {
     return User.findById(userid).exec();
   },
 
+  /**
+   * param {string|ObjectId} userID
+   * @param {string|ObjectId} designID
+   * 
+   * @return {Promise} - resolves if the design was found
+   */
   getUserDesignByID: (userID, designID) => {
     return new Promise((resolve, reject) => {
       User.findById(userID, (err, user) => {

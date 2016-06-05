@@ -7,8 +7,20 @@ const Line = require("../models/order").line;
 const userDAL = require("../models/DAL/userDAL");
 const mongoose = require("mongoose");
 
+/**
+ * Constructor function for the OrdersController
+ */
 const ctrl = function() {};
 
+/**
+ * Shows all orders if admin. Shows all users orders if non-admin
+ * 
+ * GET /orders
+ * 
+ * @param req - request object
+ * @param res - response object
+ * @param next - next callback
+ */
 ctrl.prototype.index = function(req, res, next) {
   if (req.user.role === ROLES.ADMIN) {S    
     orderDAL.getOrders()
@@ -40,6 +52,15 @@ ctrl.prototype.index = function(req, res, next) {
   }
 };
 
+/**
+ * Sets an order to shipped status
+ * 
+ * POST /orders/:id/ship
+ * 
+ * @param req - request object
+ * @param res - response object
+ * @param next - next callback
+ */
 ctrl.prototype.ship = (req, res, next) => {
   orderDAL.setOrderShipped(req.params.id)
     .then(() => {
@@ -53,12 +74,22 @@ ctrl.prototype.ship = (req, res, next) => {
     });
 };
 
+/**
+ * Sorts an array of orders by date
+ * 
+ * @param {array} orders 
+ */
 const sortOdersByDate = (orders) => {
   return orders.sort((a, b) => {
     return new Date(b.orderDate) - new Date(a.orderDate);
   });
 };
 
+/**
+ * Takes an array of orders and formats their dates to an ISO-string
+ * 
+ * @param {array} orders
+ */
 const formatOrderDates = (orders) => {
   return orders.map((order) => {
     const newOrder = order; //NWO
@@ -71,8 +102,15 @@ const formatOrderDates = (orders) => {
   });
 }
 
-
-
+/**
+ * Shows a single order
+ * 
+ * GET /orders/:id
+ * 
+ * @param req - request object
+ * @param res - response object
+ * @param next - next callback
+ */
 ctrl.prototype.show = function(req, res, next) {
   // buildin pyramids for sure
   if (req.user.role === ROLES.ADMIN) {
@@ -101,8 +139,14 @@ ctrl.prototype.show = function(req, res, next) {
   }
 };
 
-
-
+/**
+ * Create an order
+ * 
+ * POST /orders/create
+ * 
+ * @param req - reques object
+ * @param res - response object
+ */
 ctrl.prototype.create = function(req, res) {
 
   const order = new Order(); 
@@ -143,6 +187,13 @@ ctrl.prototype.create = function(req, res) {
 
 };
 
+/**
+ * Creates an order line
+ * 
+ * @param {string} size - size of the dotDesignDAL
+ * @param {number} quantity - number of dots ordered
+ * @param {number} dotPrice - single price of dot
+ */
 function createOrderLine(size, quantity, dotPrice) {
   const line = new Line();
   line.size = size;

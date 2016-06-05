@@ -90,6 +90,12 @@ ctrl.prototype.create = function(req, res, next) {
   });
 };
 
+/**
+ * Serves an image of a dot, not located in the public folder
+ * 
+ * @param req - the request object
+ * @param res - the response object
+ */
 ctrl.prototype.getImage = function(req, res) {
   const imagename = req.params.imagename;
   res.sendFile(path.resolve("uploads/dot_designs/" + imagename));
