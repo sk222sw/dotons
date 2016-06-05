@@ -39,11 +39,14 @@ const orderDAL = {
         console.log("forEach starts");
         users.forEach(user => {
           order = user.orders.find((ord) => {
+            console.log(ord.id === orderid);
             return ord.id === orderid;
           });
+          if (order) return resolve(order);
         });
+        console.log("forEach end");
+
         if (!order) return reject("No order found");
-        resolve(order);
       })
     });  
   },
@@ -77,24 +80,59 @@ const orderDAL = {
    */
   setOrderShipped: (orderid) => {
     return new Promise((resolve, reject) => {
-      User.find({}, (err, users) => {
-        if (err) return reject(err);
-        var order;
-        var orderUser;
-        users.forEach(user => {
-          order = user.orders.find((ord) => {
+      User.find({}).exec()
+        .then(users => {
+          const orders = [];
+          users.forEach(user => {
+            user.orders.forEach(order => {
+              orders.push(order);
+            })
+          });  
+          return orders;
+        })
+        .then(orders => {
+          console.log(orders);
+          const order = orders.find(ord => {
             return ord.id === orderid;
           });
-          if (order) orderUser = user;
-        });
-        if (!order) return reject("No order found");
-        order.shipped = true;
-        orderUser.save(err => {
-          if (err) return reject(err);
-          console.log(order);
-          resolve();
-        });
-      });
+          return order
+        })
+        .then(order => {
+          order.shipped = true;
+          order.parent().save(err => {
+            if (err) return reject(err);
+            return resolve("Order shipped");
+          })
+        })
+        .catch(error => {
+          reject(error);
+        })
+      // User.find({}, (err, users) => {
+      //   if (err) return reject(err);
+      //   var order;
+      //   var orderUser;
+      //   users.forEach(user => {
+      //     order = user.orders.find((ord) => {
+      //       return ord.id === orderid;
+      //     });
+      //     if (order){
+      //       console.log("FOUND ORDER");
+      //       orderUser = user;
+      //       order.shipped = true;
+      //       orderUser.save(err => {
+      //         if (err) return reject(err);
+      //         return resolve("Order shipped");
+      //       })
+      //     } 
+      //   });
+      //   if (!order) return reject("No order found");
+      //   // order.shipped = true;
+      //   // orderUser.save(err => {
+      //   //   if (err) return reject(err);
+      //   //   console.log(order);
+      //   //   resolve();
+      //   // });
+      // });
     });
   },
   

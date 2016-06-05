@@ -20,13 +20,19 @@ if (loginButton) {
 /**
  * close modal when the user clicks outside the form window
  */
-modalContainer.addEventListener("click", () => {
+if (modalContainer) {
+  modalContainer.addEventListener("click", () => {
   modalContainer.classList.add("hidden");
-});
+});  
+}
+
 
 /**
  * prevent form window from inheriting modalContainer click
  */
-loginModal.addEventListener("click", (e) => {
-  e.stopPropagation();
-});
+if (loginModal) {
+  loginModal.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });  
+}
+
