@@ -22,7 +22,7 @@ const ctrl = function() {};
  * @param next - next callback
  */
 ctrl.prototype.index = function(req, res, next) {
-  if (req.user.role === ROLES.ADMIN) {S    
+  if (req.user.role === ROLES.ADMIN) {    
     orderDAL.getOrders()
       .then(orders => {
           res.render("orders", {
@@ -62,15 +62,19 @@ ctrl.prototype.index = function(req, res, next) {
  * @param next - next callback
  */
 ctrl.prototype.ship = (req, res, next) => {
+  console.log("Shipping order...");
   orderDAL.setOrderShipped(req.params.id)
     .then(() => {
+      console.log("Shipped!!");
       req.flash = "Shipped!";
       res.redirect("/orders/" + req.params.id);
     })
     .catch(error => {
-      console.log(err);
+      console.log("Error when sipping");
+      console.log(error);
       req.flash = "Something went wrong... Try again";
-      res.redirect("/orders");
+
+      res.redirect("/orders/");
     });
 };
 
@@ -116,6 +120,7 @@ ctrl.prototype.show = function(req, res, next) {
   if (req.user.role === ROLES.ADMIN) {
     orderDAL.getOrderByID(req.params.id)
       .then(order => {
+        console.log(order);
         res.render("order", {
           order
         });
@@ -193,6 +198,8 @@ ctrl.prototype.create = function(req, res) {
  * @param {string} size - size of the dotDesignDAL
  * @param {number} quantity - number of dots ordered
  * @param {number} dotPrice - single price of dot
+ * 
+ * @returns {Line}
  */
 function createOrderLine(size, quantity, dotPrice) {
   const line = new Line();
