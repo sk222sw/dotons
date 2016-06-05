@@ -2,12 +2,20 @@ import Promise from "bluebird";
 import PdfJs from "pdfjs-dist";
 import PdfJsWorker from "pdfjs-dist/build/pdf.worker";
 
-
+/**
+ * Max size of images to upload
+ */
 const MAX_SIZE = 10000000; 
 
+/**
+ * Class responsible of uploading images to the server
+ */
 export default class ImageUploader {
+  
+  /**
+   * Uploads an image to the client to check filesize and mimetype
+   */
   uploadToClient(file) {
-      console.log("new");
 
     // TODO: refactor into smaller functions
     return new Promise((resolve, reject) => {
@@ -64,6 +72,10 @@ export default class ImageUploader {
     });
   }
 
+  /**
+   * Checks the real mimetype of the image since you cannot 
+   * trust user input.
+   */
   isValidImage(image) {
     // http://stackoverflow.com/a/29672957 how to check the real mime-type in js
     return new Promise((resolve, reject) => {

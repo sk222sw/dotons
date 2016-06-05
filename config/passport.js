@@ -8,10 +8,18 @@ const mailer = require("../modules/mailer");
  * @param passport (description)
  */
 module.exports = function(passport) {
+  /**
+   * @param {User} user - the user
+   * @param {function} done - callback called when operation is done
+   */
   passport.serializeUser((user, done) => {
     done(null, user.id);
   });
 
+  /**
+   * @param {ObjectId} id - Id of the user
+   * @param {function} done - callback called when operation is done
+   */
   passport.deserializeUser((id, done) => {
     User.findById(id, (err, user) => {
       done(err, user);

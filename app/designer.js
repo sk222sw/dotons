@@ -2,7 +2,14 @@
 
 import _ from "lodash";
 
+/**
+ * The designer class, responsible of image maniplation
+ * and cropping
+ */
 export default class Designer {
+  /**
+   * Instantiates a new instance of the Designer class
+   */
   constructor() {
     const parentNode = document.getElementById("canvas-area");
     const parentWidth = parentNode.clientWidth;
@@ -39,7 +46,12 @@ export default class Designer {
       this.c.renderAll();
     });
   }
-
+  
+  /**
+   * Initiates the designer
+   * 
+   * @param {string} img - Base64 string representation of an image
+   */
   init(image) {
     // create image node
     this.imageNode = document.createElement("img");
@@ -142,10 +154,12 @@ export default class Designer {
 
   }
 
-  /*
-  * crop image to a circle
-  * TODO crop when image is saved?
-  */
+  /**
+   * Crops the image to an arc. Takes the canvas and 
+   * converts to a png and returns it.
+   * 
+   * @return the cropped canvas.
+   */
   crop() {
     // make it non selectable and disable controls/borders
     // else they are seen in the cropped pic

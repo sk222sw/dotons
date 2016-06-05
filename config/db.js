@@ -1,5 +1,7 @@
-// TODO: Fix a production database setup in the droplet
-
+/**
+ * Configuration for mongodb, contains connection strings
+ * for development and production.
+ */
 const mongo = {
   development: {
     connection_string: "mongodb://dotons:dotons2016@ds013300.mlab.com:13300/dotons"
