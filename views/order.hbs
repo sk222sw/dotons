@@ -14,18 +14,21 @@
     <div class="pure-u-1 pure-u-md-1-2 order-info">
 
         <div class="pure-g order-item-header">
-          <div class="pure-u-1 pure-u-md-1-4">
+          <div class="pure-u-1 pure-u-md-1-5">
             &nbsp;
           </div>
-          <div class="pure-u-1 pure-u-md-1-4">
+          <div class="pure-u-1 pure-u-md-1-5">
             <h5>Size</h5>
           </div>
-          <div class="pure-u-1 pure-u-md-1-4">
+          <div class="pure-u-1 pure-u-md-1-5">
             <h5>Quanitity</h5>
           </div>
-          <div class="pure-u-1 pure-u-md-1-4">
+          <div class="pure-u-1 pure-u-md-1-5">
             <h5>Price</h5>  
           </div> 
+          <div class="pure-u-1 pure-u-md-1-5">
+            <h5>Download</h5>  
+          </div>
         </div>
         <hr />
         
@@ -35,18 +38,24 @@
         
           
           
-        <div class="pure-u-1 pure-u-md-1-4">
+        <div class="pure-u-1 pure-u-md-1-5">
             <img src="" height="50px" width="50px" class="hidden" data-image-url="{{design.imageUrl}}" />
         </div>
-        <div class="pure-u-1 pure-u-md-1-4">
+        <div class="pure-u-1 pure-u-md-1-5">
           {{size}}  
         </div>
-        <div class="pure-u-1 pure-u-md-1-4">
+        <div class="pure-u-1 pure-u-md-1-5">
           {{quantity}} 
         </div>
-        <div class="pure-u-1 pure-u-md-1-4">
+        <div class="pure-u-1 pure-u-md-1-5">
            {{price}}
           
+        </div>
+
+        <div class="pure-u-1 pure-u-md-1-5">
+            <a href="/{{design.pdf10Url}}">10mm pdf</a><br>
+            <a href="/{{design.pdf11Url}}">11mm pdf</a><br>
+            <a href="/{{design.imageUrl}}">Original</a><br>
         </div>
 
       </div>
