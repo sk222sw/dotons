@@ -6,7 +6,12 @@ const _ = require("lodash");
 const dateUtils = require("../../modules/dateUtils");
 
 const orderDAL = {
-  
+  /**
+   * @param {string|ObjectId} userid
+   * @param {Order} order
+   * 
+   * @returns {Promise} - resolves if the orders was added
+   */
   addOrderToUser: (userid, order) => {
     return new Promise((resolve, reject) => {
       User.findById(userid, (err, user) => {
@@ -21,6 +26,11 @@ const orderDAL = {
     }); 
   },
   
+  /**
+   * @param {string|ObjectId} orderid
+   * 
+   * @return {Promise} - resolves if the order was found
+   */
   getOrderByID: (orderid) => {
     return new Promise((resolve, reject) => {
       User.find({}, (err, users) => {
@@ -38,7 +48,14 @@ const orderDAL = {
     });  
   },
 
-
+  /**
+   * Gets an order belonging to the current logged in user
+   * 
+   * @param {string|ObjectId} - userid
+   * @param {string|ObjectId} - orderid
+   * 
+   * @return {Promise} - resolves if the order was found
+   */
   getCurrentUserOrderByID: (userid, orderid) => {
     return new Promise((resolve, reject) => {
       User.findById(userid, (err, user) => {
@@ -53,6 +70,11 @@ const orderDAL = {
     });
   },
   
+  /**
+   * @param {string|ObjectId} orderid
+   * 
+   * @return {Promise} - resolves if the operation was succesful
+   */
   setOrderShipped: (orderid) => {
     return new Promise((resolve, reject) => {
       User.find({}, (err, users) => {
@@ -76,6 +98,11 @@ const orderDAL = {
     });
   },
   
+  /**
+   * Gets all orders
+   * 
+   * @return {Promise} - resolves if the orders was found
+   */
   getOrders: () => {
     return new Promise((resolve, reject) => {
       User.find({}).exec()

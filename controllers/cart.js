@@ -1,10 +1,20 @@
 const DotDesignDAL = require("../models/DAL/dotDesignDAL.js");
 const PriceListDAL = require("../models/DAL/priceListDAL");
 
+/** Constructor function for the CartController */
 const ctrl = function() {};
 
 const CART_SESSION_KEY = "SHOPPING_CART";
 
+/**
+ * Renders the cart or sends the object if it'save
+ * and AJAX request
+ * 
+ * GET /cart
+ * 
+ * @param req - request object
+ * @param res - response object
+ */
 ctrl.prototype.show = function(req, res) {
   if (req.xhr) {
     // Send the caret
@@ -21,15 +31,12 @@ ctrl.prototype.show = function(req, res) {
 };
 
 /**
- * Adds an item to the cart. An item in the cart looks like this:
- *  {
- *    design: DotDesign, // The Model-class 
- *    selected10mm: true,
- *    selected11mm: false,
- *    quantity10mm: 10000,
- *    quantity11mm: 0 
-*   }
-    selected10/11 comes from a checkbox in the form
+ * Adds an item to the cart.
+ * 
+ * POST /cart/add
+ * 
+ * @param req - request object
+ * @param res - response object
  */
 
 ctrl.prototype.add = function(req, res) {
@@ -62,6 +69,14 @@ ctrl.prototype.add = function(req, res) {
     });
 };
 
+/**
+ * Removes an item from the cart
+ * 
+ * POST /cart/remove/
+ * 
+ * @param req - request object
+ * @param res - respone object
+ */
 ctrl.prototype.remove = function(req, res) {
   console.log(req.body);
   var removed = removeFromCart(req.session, req.body.buttonID);
@@ -74,6 +89,9 @@ ctrl.prototype.remove = function(req, res) {
 
 module.exports = new ctrl();
 
+/**
+ * @param sessions - the session object, located in req
+ */
 function getCart(session) {
   if (session.cart) {
     return session.cart;
@@ -82,6 +100,10 @@ function getCart(session) {
   return session.cart;
 }
 
+/**
+ * @param session - the session object
+ * @param {string} designId - id of the dot design
+ */
 function removeFromCart(session, designId) {
   var removed = false;
   
@@ -111,7 +133,10 @@ function removeFromCart(session, designId) {
   return removed;
 }
 
-
+/**
+ * @param session - the session object
+ * @parm {object} cartItem - the item to add to the cart
+ */
 function addToCart(session, cartItem) {
   if (!session.cart || !Array.isArray(session.cart)) {
     console.log("Cart did not exist or was not an array, created upon adding");

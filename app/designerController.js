@@ -34,6 +34,8 @@ if (designsDiv) {
   loadImages(imageNodeList);
 }
 
+// form is the upload-form on the designer page
+// check if it exists and initate upload stuf
 if (form && form.addEventListener) {
   designer = new Designer();
   form.addEventListener("submit", event => {
@@ -47,6 +49,7 @@ if (form && form.addEventListener) {
   }, false);
 }
 
+
 if (dotDesign) {
   dotDesign.onchange = function(event) {
     designer.removeImage();
@@ -58,6 +61,14 @@ if (dotDesign) {
   };
 }
 
+/**
+ * Uploads an image to the server after the user
+ * wants to save it
+ * 
+ * @param {file} file - the file to upload
+ * @param {object} target - the event target
+ * @param {object} event - the event fired
+ */
 function upload(file, target, event) {
   // TODO: Refactor
   const imageUploader = new ImageUploader();
@@ -76,7 +87,7 @@ function upload(file, target, event) {
     // superagent post formdata is not playing nicely with multer.
     // the fileupload NEEDS to be done with AJAX since if you submit
     // the form with the regular submit-event, the appended formdata with
-    // the cropped picture does not get sent to the server.. bs
+    // the cropped picture does not get sent to the server..
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "designer/upload");
     xhr.onload = function(event) {
@@ -84,6 +95,8 @@ function upload(file, target, event) {
         if (xhr.response === "unauthorized") {
           document.getElementById("form-modal-container").classList.toggle("hidden");
         } else if (xhr.response === "success") {
+          // Need to redirect here since we cannot do it
+          // in the backend with express if the request is ajax
           window.location.href = "/profile";
         } else if (xhr.response === "deactivated") {
           console.log("Your account is not activated");
@@ -112,6 +125,9 @@ function upload(file, target, event) {
   }
 }
 
+/**
+ * @param {string} - the message
+ */
 function displayDesignerFlash(error) {
   flashMessage.innerHTML = error;
   flash.classList.remove("hidden");
@@ -125,7 +141,13 @@ function hideDesignerFlash() {
   flashMessage.innerHTML = "";
 }
 
+/**
+ * Converts a base64 data url to a Blob
+ * 
+ * @param {string} dataURI - base64 string representation of a file (image)
+ */
 function dataURLtoBlob(dataURI) {
+  // http://stackoverflow.com/a/12300351 - Blob from DatURL?
   // convert base64/URLEncoded data component to raw binary data held in a string
   let byteString;
   if (dataURI.split(',')[0].indexOf('base64') >= 0) {
@@ -145,6 +167,11 @@ function dataURLtoBlob(dataURI) {
   return new Blob([ia], { type: mimeString });
 }
 
+/**
+ * Loads images one by one via ajax
+ * 
+ * @param {nodeList} - the nodelist of the images to load
+ */
 function loadImages(imageNodeList) {
   Array.prototype.forEach.call(imageNodeList, img => {
     const url = "/" + img.getAttribute("data-image-url");
